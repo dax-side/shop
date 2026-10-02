@@ -5,6 +5,96 @@ export type ProductImage = { src: string; alt: string };
 const VIEWS = ["front", "side", "detail", "in-use"] as const;
 
 const PRODUCTS: Record<string, { number: string; alts: [string, string, string, string] }> = {
+  "wooden-spoon-set": {
+    number: "023",
+    alts: [
+      "Carved wooden spoons and a wooden cup",
+      "Two wooden spoons on a grey surface",
+      "Wooden spoons and spatulas laid out on a table",
+      "Wooden spoons standing in a utensil jar",
+    ],
+  },
+  "wooden-mortar-and-pestle": {
+    number: "029",
+    alts: [
+      "Wooden mortar and pestle on a grey background",
+      "Polished wooden mortar with a dark pestle",
+      "Wooden pestle resting in a bowl of salt",
+      "Pounding pepper and herbs in a mortar",
+    ],
+  },
+  "calabash-bowl": {
+    number: "015",
+    alts: [
+      "Stacked round gourd bowls",
+      "Polished calabash cups",
+      "Close-up of a carved gourd surface",
+      "Decorated gourds in a bowl",
+    ],
+  },
+  "glass-tumblers-set-of-4": {
+    number: "019",
+    alts: [
+      "Glass tumblers of water on a sunlit table",
+      "Ribbed drinking glasses casting shadows",
+      "Clear tumblers stacked in a pyramid",
+      "Glass tumblers beside a water carafe",
+    ],
+  },
+  "cotton-bath-towel": {
+    number: "005",
+    alts: [
+      "Folded cotton bath towels on a wooden stool",
+      "Towels hanging on hooks in a bathroom",
+      "Rolled grey cotton towel",
+      "Stack of soft white towels",
+    ],
+  },
+  "black-soap-bar": {
+    number: "003",
+    alts: [
+      "Bar of dark handmade soap held in a hand",
+      "Stack of black and white handmade soap bars",
+      "Handmade soap bars on linen",
+      "Hands holding a bar of handmade soap",
+    ],
+  },
+  "natural-hand-broom": {
+    number: "042",
+    alts: [
+      "Natural fibre broom hanging by a wooden screen",
+      "Short hand broom on a dark wooden floor",
+      "Close-up of natural broom fibres",
+      "Fibre brooms bound with coloured cord",
+    ],
+  },
+  "bristle-dish-brush": {
+    number: "044",
+    alts: [
+      "Wooden dish brushes with natural bristles",
+      "Dish brush beside a brass kitchen tap",
+      "Close-up of natural bristle brushes",
+      "Wooden brushes in a jar by a window",
+    ],
+  },
+  "kraft-envelopes-pack": {
+    number: "055",
+    alts: [
+      "Kraft paper envelopes on a wooden board",
+      "Kraft envelope with a blank card",
+      "Brown envelopes with old photographs",
+      "Envelope and card with a pencil",
+    ],
+  },
+  "wooden-desk-tray": {
+    number: "057",
+    alts: [
+      "Walnut desk tray holding earbuds and a watch",
+      "Wooden tray with a wallet, phone and pens",
+      "Two empty wooden desk trays",
+      "Wooden tray with glasses on a desk",
+    ],
+  },
   "stoneware-mug": {
     number: "014",
     alts: [

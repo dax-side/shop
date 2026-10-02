@@ -12,7 +12,7 @@
     "db:migrate": "tsx src/db/migrate.ts",
     "db:seed": "tsx src/db/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "vercel-build": "npm run db:migrate && tsx src/db/seed.ts --if-empty && next build"
+    "vercel-build": "npm run db:migrate && tsx src/db/seed.ts --missing-only && next build"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",
