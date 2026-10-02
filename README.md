@@ -37,7 +37,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Feature | Description | Status |
 | --- | --- | --- |
 | Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Done |
-| Product page | Image gallery, finish options, quantity, details table, "goes well with" | Planned |
+| Product page | Image gallery, finish options, quantity, details table, "goes well with" | Done |
 | Bag | Add, update and remove items with a running total | Done |
 | Checkout | Delivery or pickup, contact and address details, order summary | Planned |
 | Persistence | Products, orders and customers stored in Neon Postgres | Planned |
@@ -87,6 +87,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   │   └── layout.tsx  # Root layout and fonts
 │   ├── components/     # Shared UI: header, footer, logo, icons, product cards
 │   │   ├── bag/        # Bag state hook, bag button, add to bag, bag page view
+│   │   ├── product/    # Product page gallery, purchase controls, recommendations
 │   │   └── home/       # Home page sections
 │   └── lib/            # Site config, catalogue data, formatting, server actions
 ├── AGENTS.md           # Rules for AI agents working on this repo
@@ -177,7 +178,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 
 - [x] Design tokens and fonts from the Oja design
 - [x] Home page
-- [ ] Product page
+- [x] Product page
 - [x] Bag
 - [ ] Checkout page
 - [ ] Neon Postgres with Drizzle
