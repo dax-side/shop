@@ -38,7 +38,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | --- | --- | --- |
 | Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Done |
 | Product page | Image gallery, finish options, quantity, details table, "goes well with" | Planned |
-| Bag | Add, update and remove items with a running total | Planned |
+| Bag | Add, update and remove items with a running total | Done |
 | Checkout | Delivery or pickup, contact and address details, order summary | Planned |
 | Persistence | Products, orders and customers stored in Neon Postgres | Planned |
 | Confirmation emails | Order confirmation sent through Mailgun | Planned |
@@ -86,6 +86,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
 │   │   └── layout.tsx  # Root layout and fonts
 │   ├── components/     # Shared UI: header, footer, logo, icons, product cards
+│   │   ├── bag/        # Bag state hook, bag button, add to bag, bag page view
 │   │   └── home/       # Home page sections
 │   └── lib/            # Site config, catalogue data, formatting, server actions
 ├── AGENTS.md           # Rules for AI agents working on this repo
@@ -155,7 +156,7 @@ Database, auth and email variables will be added here as those features land.
 
 - Secrets live in `.env.local`, which is gitignored. Only `.env.example` with placeholder values is committed.
 - All form input (checkout, newsletter) is validated on the server.
-- Prices and totals are always recomputed on the server; client values are never trusted.
+- Prices and totals are always recomputed on the server; client values are never trusted. The bag in `localStorage` is display-only.
 - Database access goes through Drizzle's query builder, never string-built SQL.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
@@ -177,7 +178,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [x] Design tokens and fonts from the Oja design
 - [x] Home page
 - [ ] Product page
-- [ ] Bag
+- [x] Bag
 - [ ] Checkout page
 - [ ] Neon Postgres with Drizzle
 - [ ] Mailgun order confirmation emails

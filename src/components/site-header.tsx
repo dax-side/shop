@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { BagIcon, SearchIcon } from "./icons";
+import { BagButton } from "./bag/bag-button";
+import { SearchIcon } from "./icons";
 import { Logo } from "./logo";
 
 const nav = [
@@ -41,17 +42,7 @@ export function SiteHeader() {
             <Link href="/#catalogue" aria-label="Search the catalogue" className="hidden md:block">
               <SearchIcon />
             </Link>
-            <Link
-              href="/bag"
-              aria-label="Bag, 0 items"
-              className="flex items-center gap-2 rounded-full border-ink text-xs md:border md:px-3 md:py-1.5"
-            >
-              <BagIcon />
-              <span className="hidden md:inline">Bag</span>
-              <span className="grid size-4 place-items-center rounded-full bg-ink font-mono text-[0.625rem] text-paper">
-                0
-              </span>
-            </Link>
+            <BagButton />
           </div>
         </div>
       </div>
