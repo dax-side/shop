@@ -36,7 +36,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 
 | Feature | Description | Status |
 | --- | --- | --- |
-| Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Planned |
+| Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Done |
 | Product page | Image gallery, finish options, quantity, details table, "goes well with" | Planned |
 | Bag | Add, update and remove items with a running total | Planned |
 | Checkout | Delivery or pickup, contact and address details, order summary | Planned |
@@ -85,8 +85,9 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   │   ├── (shop)/     # Storefront routes sharing the header and footer
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
 │   │   └── layout.tsx  # Root layout and fonts
-│   ├── components/     # Shared UI: header, footer, logo, icons
-│   └── lib/            # Site config and helpers
+│   ├── components/     # Shared UI: header, footer, logo, icons, product cards
+│   │   └── home/       # Home page sections
+│   └── lib/            # Site config, catalogue data, formatting, server actions
 ├── AGENTS.md           # Rules for AI agents working on this repo
 ├── CLAUDE.md           # Points to AGENTS.md
 ├── .env.example        # Environment variable template
@@ -141,6 +142,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `STORE_PHONE` | No | Contact phone number |
 | `STORE_EMAIL` | No | Contact email address |
 | `DELIVERY_DAYS` | No | Delivery time outside Lagos, e.g. `3–5` |
+| `FREE_DELIVERY_THRESHOLD` | No | Order value above which delivery is free, e.g. `₦50,000` |
 | `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items |
 
 Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
@@ -173,7 +175,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 ## What's Next?
 
 - [x] Design tokens and fonts from the Oja design
-- [ ] Home page
+- [x] Home page
 - [ ] Product page
 - [ ] Bag
 - [ ] Checkout page

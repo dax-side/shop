@@ -1,0 +1,210 @@
+export type RoomSlug = "kitchen" | "table" | "bath-linen" | "tools" | "paper-desk";
+
+export type Room = {
+  slug: RoomSlug;
+  name: string;
+  description: string;
+};
+
+export type Finish = {
+  name: string;
+  swatch: string;
+};
+
+export type Product = {
+  slug: string;
+  number: string;
+  name: string;
+  room: RoomSlug;
+  material: string;
+  tagline: string;
+  description: string;
+  price: number;
+  isNew: boolean;
+  tone: string;
+  finishes: Finish[];
+  details: {
+    material: string;
+    size: string;
+    care: string;
+  };
+};
+
+export const rooms: Room[] = [
+  { slug: "kitchen", name: "Kitchen", description: "Pots, boards, storage and the things you cook with" },
+  { slug: "table", name: "Table", description: "Cups, bowls, baskets and serving pieces" },
+  { slug: "bath-linen", name: "Bath & Linen", description: "Towels, cloths and soft goods" },
+  { slug: "tools", name: "Tools", description: "Hooks, brushes and small hardware" },
+  { slug: "paper-desk", name: "Paper & Desk", description: "Notebooks, pens and paper goods" },
+];
+
+export const products: Product[] = [
+  {
+    slug: "stoneware-mug",
+    number: "014",
+    name: "Stoneware mug",
+    room: "table",
+    material: "Ash glaze",
+    tagline: "Wheel-thrown stoneware, ash glaze",
+    description:
+      "A heavy, round mug that holds heat. Thrown on the wheel and dipped in an ash glaze that pools a little darker at the base.",
+    price: 12500,
+    isNew: true,
+    tone: "var(--color-sand-3)",
+    finishes: [],
+    details: {
+      material: "Stoneware",
+      size: "[HEIGHT] × [WIDTH] cm",
+      care: "Dishwasher safe. Avoid sudden temperature changes.",
+    },
+  },
+  {
+    slug: "iroko-serving-board",
+    number: "022",
+    name: "Iroko serving board",
+    room: "kitchen",
+    material: "Oiled iroko wood",
+    tagline: "Solid iroko, finished with food-safe oil",
+    description:
+      "Cut from a single piece of iroko and finished with food-safe oil. Big enough for bread, fruit or a full plate of suya.",
+    price: 28000,
+    isNew: false,
+    tone: "var(--color-sand-1)",
+    finishes: [],
+    details: {
+      material: "Iroko wood",
+      size: "[LENGTH] × [WIDTH] cm",
+      care: "Hand wash and dry upright. Oil when it looks dry.",
+    },
+  },
+  {
+    slug: "enamel-pot-3-litre",
+    number: "031",
+    name: "Enamel pot, 3 litre",
+    room: "kitchen",
+    material: "Enamelled steel",
+    tagline: "Enamelled steel with a fitted lid",
+    description:
+      "A light, bright pot for stews, rice and everything in between. Enamelled steel heats quickly and wipes clean.",
+    price: 46000,
+    isNew: false,
+    tone: "var(--color-sand-3)",
+    finishes: [],
+    details: {
+      material: "Enamelled steel",
+      size: "3 litres",
+      care: "Wash by hand. Avoid metal scourers.",
+    },
+  },
+  {
+    slug: "linen-tea-towels-pair",
+    number: "008",
+    name: "Linen tea towels, pair",
+    room: "bath-linen",
+    material: "Washed linen",
+    tagline: "Washed linen, set of two",
+    description:
+      "Two tea towels in pre-washed linen. They dry fast, leave no lint and get softer every wash.",
+    price: 15000,
+    isNew: false,
+    tone: "var(--color-sand-4)",
+    finishes: [],
+    details: {
+      material: "100% linen",
+      size: "[LENGTH] × [WIDTH] cm",
+      care: "Machine wash warm. Line dry.",
+    },
+  },
+  {
+    slug: "brass-wall-hooks-pair",
+    number: "040",
+    name: "Brass wall hooks, pair",
+    room: "tools",
+    material: "Solid brass",
+    tagline: "Solid brass, screws included",
+    description:
+      "Two simple hooks in solid brass for keys, bags and towels. Left unlacquered, so they darken gently over time.",
+    price: 9500,
+    isNew: false,
+    tone: "var(--color-sand-2)",
+    finishes: [],
+    details: {
+      material: "Solid brass",
+      size: "[HEIGHT] × [DEPTH] cm",
+      care: "Wipe with a dry cloth. Polish if you prefer it bright.",
+    },
+  },
+  {
+    slug: "clay-water-pot",
+    number: "017",
+    name: "Clay water pot",
+    room: "kitchen",
+    material: "Unglazed terracotta",
+    tagline: "Unglazed terracotta, with a wooden lid",
+    description:
+      "Unglazed clay keeps water cool the old way: a little seeps through the wall and evaporates, taking the heat with it. Thrown by hand, fired low and finished with a carved lid. Each one comes out slightly different.",
+    price: 32000,
+    isNew: true,
+    tone: "var(--color-sand-5)",
+    finishes: [
+      { name: "Natural", swatch: "#b8714f" },
+      { name: "Burnished", swatch: "#8c4a2f" },
+      { name: "Smoked", swatch: "#3a2f2a" },
+    ],
+    details: {
+      material: "Terracotta, iroko lid",
+      size: "[CAPACITY] litres · [HEIGHT] × [WIDTH] cm",
+      care: "Rinse with water only. No soap, no dishwasher.",
+    },
+  },
+  {
+    slug: "grid-notebook-a5",
+    number: "052",
+    name: "Grid notebook, A5",
+    room: "paper-desk",
+    material: "Recycled paper",
+    tagline: "Recycled paper, lay-flat binding",
+    description:
+      "An A5 notebook with a faint grid, printed on recycled paper and bound to lie flat. For lists, sums and sketches.",
+    price: 6500,
+    isNew: false,
+    tone: "var(--color-sand-3)",
+    finishes: [],
+    details: {
+      material: "Recycled paper",
+      size: "A5",
+      care: "Keep dry.",
+    },
+  },
+  {
+    slug: "woven-bread-basket",
+    number: "026",
+    name: "Woven bread basket",
+    room: "table",
+    material: "Hand-woven raffia",
+    tagline: "Hand-woven raffia",
+    description:
+      "A shallow basket woven by hand from raffia. Use it for bread, fruit or anything that needs somewhere to sit.",
+    price: 18500,
+    isNew: false,
+    tone: "var(--color-sand-1)",
+    finishes: [],
+    details: {
+      material: "Raffia",
+      size: "[DIAMETER] cm",
+      care: "Shake out crumbs. Wipe with a damp cloth.",
+    },
+  },
+];
+
+export function getRoom(slug: string) {
+  return rooms.find((room) => room.slug === slug);
+}
+
+export function getProducts(room?: RoomSlug) {
+  return room ? products.filter((product) => product.room === room) : products;
+}
+
+export function getProduct(slug: string) {
+  return products.find((product) => product.slug === slug);
+}
