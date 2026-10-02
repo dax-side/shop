@@ -23,5 +23,5 @@ export async function subscribe(_prev: SubscribeState, formData: FormData): Prom
     return { status: "error", message: "Something went wrong. Please try again." };
   }
 
-  return { status: "success", message: "You're on the list. See you Friday." };
+  return { status: "success", message: "You're on the list. We'll be in touch." };
 }

@@ -25,7 +25,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
     { label: "Material", value: product.details.material },
     { label: "Size", value: product.details.size },
     { label: "Care", value: product.details.care },
-    { label: "Delivery", value: "Lagos in 1–2 days, packed in straw. Pickup free." },
+    { label: "Delivery", value: "Lagos in 1–2 days, carefully packed. Pickup free." },
   ];
 
   return (

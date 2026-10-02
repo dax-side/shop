@@ -47,7 +47,7 @@ export async function Catalogue({ room }: { room?: RoomSlug }) {
             ))}
           </div>
         ) : (
-          <p className="mt-5 border-t border-ink pt-6 text-muted">Nothing in this room yet. New stock lands most Fridays.</p>
+          <p className="mt-5 border-t border-ink pt-6 text-muted">Nothing in this room yet. Check back soon.</p>
         )}
       </div>
     </section>
