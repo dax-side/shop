@@ -105,6 +105,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   ├── db/             # Drizzle schema, connection, seed script and seed data
 │   └── lib/            # Site config, queries, pricing, formatting, server actions
 │       └── email/      # Mailgun client and order confirmation template
+├── public/images/      # Optimised product and shop photography (WebP)
 ├── drizzle/            # Generated SQL migrations
 ├── AGENTS.md           # Rules for AI agents working on this repo
 ├── CLAUDE.md           # Points to AGENTS.md
@@ -296,6 +297,41 @@ No license has been chosen yet, so all rights are reserved by the author.
 - [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [Auth.js](https://authjs.dev), [Zod](https://zod.dev)
 - [Neon](https://neon.tech) and [Mailgun](https://www.mailgun.com)
 - README structure based on [15 Essential Sections Every README Needs](https://dev.to/georgekobaidze/15-essential-sections-every-readme-needs-give-your-project-what-it-deserves-fie) by George Kobaidze
+
+### Photography
+
+Product and shop photos are from [Unsplash](https://unsplash.com/?utm_source=oja_shop&utm_medium=referral), used under the [Unsplash License](https://unsplash.com/license). Thanks to:
+
+- [Aaron Burden](https://unsplash.com/@aaronburden?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/fountain-pen-on-spiral-book-xG8IQMqMITM?utm_source=oja_shop&utm_medium=referral)
+- [Agata Ciosek](https://unsplash.com/@agataciosek?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/an-old-white-pot-sitting-in-the-grass-next-to-a-tree-HU7AOjOIHYk?utm_source=oja_shop&utm_medium=referral)
+- [Alex Tyson](https://unsplash.com/@alextyson195?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-close-up-of-a-bunch-of-hooks-on-a-wall-rm7SaIVFhwI?utm_source=oja_shop&utm_medium=referral)
+- [Allec Gomes](https://unsplash.com/@allecgomes?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-brown-vase-sitting-on-top-of-a-table-CDuhbnnvBFA?utm_source=oja_shop&utm_medium=referral)
+- [Andrea Scully](https://unsplash.com/@andreacarole?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wheat-in-close-up-photography-X5xP4JmU5JA?utm_source=oja_shop&utm_medium=referral)
+- [Annie Spratt](https://unsplash.com/@anniespratt?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-ceramic-mug-on-wooden-table-top-n42ogaQn32o?utm_source=oja_shop&utm_medium=referral)
+- [cafeconcetto](https://unsplash.com/@cafeconcetto?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-group-of-stones-on-a-white-surface-PKgE-Tw68RU?utm_source=oja_shop&utm_medium=referral)
+- [Content Pixie](https://unsplash.com/@contentpixie?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-close-up-of-a-vase-14Xl_B4Apk4?utm_source=oja_shop&utm_medium=referral)
+- [Debby Hudson](https://unsplash.com/@hudsoncrafted?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/wheat-grass-and-cake-server-on-gray-textile-bTJe8Wseia0?utm_source=oja_shop&utm_medium=referral), [2](https://unsplash.com/photos/three-apples-sitting-on-top-of-a-piece-of-cloth-F8eK2h1LtAc?utm_source=oja_shop&utm_medium=referral)
+- [Diana Polekhina](https://unsplash.com/@diana_pole?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-notebook-with-pen-on-top-1ixT36dfuSQ?utm_source=oja_shop&utm_medium=referral)
+- [Elist Nguyen](https://unsplash.com/@hieuanhcauam?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/shelves-filled-with-various-ceramic-vases-and-pots-oQdfsQr53KE?utm_source=oja_shop&utm_medium=referral)
+- [Francisco Hernández](https://unsplash.com/@hernandezulloa?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-and-pink-floral-cooking-pot-on-stove-GsgeJvo9MTs?utm_source=oja_shop&utm_medium=referral)
+- [Gleb Paniotov](https://unsplash.com/@paniotovvv?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-towel-hanging-on-a-cabinet-in-a-kitchen-_nWvFy6pZGQ?utm_source=oja_shop&utm_medium=referral)
+- [ilpadre](https://unsplash.com/@ilpadre?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-wall-mounted-hook-with-a-fish-design-on-it--m9xxr5Fi64?utm_source=oja_shop&utm_medium=referral)
+- [Jocelyn Morales](https://unsplash.com/@molnj?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-ceramic-cup-on-white-ceramic-saucer-85u5oGSBJ1s?utm_source=oja_shop&utm_medium=referral)
+- [Katja Vogt](https://unsplash.com/@folkmade?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/two-white-ceramic-mug-CipURjPCXOo?utm_source=oja_shop&utm_medium=referral)
+- [Kelly Sikkema](https://unsplash.com/@kellysikkema?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-notepad-with-a-pen-on-top-of-it-next-to-a-mug-JKFBG03gxMw?utm_source=oja_shop&utm_medium=referral), [2](https://unsplash.com/photos/white-and-gray-checked-board-q3blHqtnhog?utm_source=oja_shop&utm_medium=referral)
+- [Lisa Anna](https://unsplash.com/@lisaanna195?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-coat-rack-with-hooks-and-a-coat-hanging-on-it-OcorWmWvF4w?utm_source=oja_shop&utm_medium=referral)
+- [Mae Mu](https://unsplash.com/@picoftasty?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/breads-on-wicker-basket-Ehtxtp9Ykvo?utm_source=oja_shop&utm_medium=referral), [2](https://unsplash.com/photos/assorted-breads-in-basket-Emhz3miT6mo?utm_source=oja_shop&utm_medium=referral)
+- [Marius](https://unsplash.com/@14sica?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/cooked-potatoes-in-a-rustic-red-enamel-pot-Nz-GsKA4ziI?utm_source=oja_shop&utm_medium=referral)
+- [Mhmd Sedky](https://unsplash.com/@sedky?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-ceramic-vase-on-white-table-cloth-7JqR7Vdv8aQ?utm_source=oja_shop&utm_medium=referral)
+- [micheile henderson](https://unsplash.com/@micheile?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/assorted-textile-N_wGDmRL4hQ?utm_source=oja_shop&utm_medium=referral)
+- [Nadia Storm](https://unsplash.com/@nadiastorm?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/green-grapes-on-brown-wooden-heart-shaped-tray-IAWH_Z98C38?utm_source=oja_shop&utm_medium=referral)
+- [Nikolas Noonan](https://unsplash.com/@nikolasnoonan?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-cooking-pot-Sfcr4Gd-jEk?utm_source=oja_shop&utm_medium=referral)
+- [Roberto Sorin](https://unsplash.com/@roberto_sorin?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-man-is-making-a-vase-out-of-clay-K9BCfDWFiZI?utm_source=oja_shop&utm_medium=referral)
+- [Rumman Amin](https://unsplash.com/@rumanamin?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-wooden-cutting-board-sitting-on-top-of-a-rug-ujPsObMXapE?utm_source=oja_shop&utm_medium=referral)
+- [Samantha Fields](https://unsplash.com/@atlsamantha2020?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-wooden-case-sitting-on-top-of-a-stone-wall-XvjX7OBHOQk?utm_source=oja_shop&utm_medium=referral)
+- [Silke](https://unsplash.com/@_silkisilki?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-towel-on-white-metal-rack-N_7uDqHZxao?utm_source=oja_shop&utm_medium=referral)
+- [Tadeusz Zachwieja](https://unsplash.com/@haiku_ted?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/wooden-cutting-boards-with-natural-grain-patterns-o6FqxW6IAUI?utm_source=oja_shop&utm_medium=referral)
+- [ZACHARY STAINES](https://unsplash.com/@zaccastravels?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wicker-basket-lot-0kvS01RVKQI?utm_source=oja_shop&utm_medium=referral)
 
 ---
 

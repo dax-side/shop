@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { productThumb } from "@/lib/product-images";
 import { getProduct } from "@/lib/products";
 import { ArrowRightIcon } from "../icons";
 import { ProductPhoto } from "../product-photo";
@@ -69,7 +70,10 @@ function FeaturedPhoto({
       <ProductPhoto
         tone={product.tone}
         caption={`${product.name}, ${product.material.toLowerCase()}`}
+        image={productThumb(product.slug)}
         className={photoClassName}
+        sizes="(min-width: 768px) 33vw, 100vw"
+        preload
       />
       <div className="mt-2 flex justify-between font-mono text-[0.6875rem]">
         <span className="group-hover:underline">

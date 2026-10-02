@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { toBagItem, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { productImages } from "@/lib/product-images";
 import { AddToBagButton } from "../bag/add-to-bag-button";
 import { NewBadge, ProductPhoto } from "../product-photo";
 import { QuantityStepper } from "../quantity-stepper";
@@ -13,6 +15,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
   const [finish, setFinish] = useState(product.finishes[0]?.name);
   const [view, setView] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const images = productImages(product.slug);
 
   const caption = [product.name, finish?.toLowerCase(), VIEWS[view]].filter(Boolean).join(", ");
   const addLabel = `Add to bag · ${formatNaira(product.price * quantity)}`;
@@ -36,9 +39,15 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
                 onClick={() => setView(index)}
                 aria-label={`Show ${name} view`}
                 aria-pressed={view === index}
-                className={`block aspect-square w-full border ${view === index ? "border-ink" : "border-transparent"}`}
+                className={`relative block aspect-square w-full overflow-hidden border ${
+                  view === index ? "border-ink" : "border-transparent opacity-70 hover:opacity-100"
+                }`}
                 style={{ background: product.tone }}
-              />
+              >
+                {images[index] && (
+                  <Image src={images[index].src} alt="" fill sizes="56px" className="object-cover" />
+                )}
+              </button>
             </li>
           ))}
         </ul>
@@ -51,10 +60,13 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
           <ProductPhoto
             tone={product.tone}
             caption={caption}
+            image={images[view]}
             counter={`${view + 1} / ${VIEWS.length}`}
             className="aspect-square md:aspect-[4/5]"
+            sizes="(min-width: 768px) 50vw, 100vw"
+            preload={view === 0}
           />
-          <div className="absolute right-3 bottom-8 flex gap-1.5 lg:hidden">
+          <div className="absolute bottom-3 left-3 flex gap-1.5 lg:hidden">
             {VIEWS.map((name, index) => (
               <button
                 key={name}
@@ -62,7 +74,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
                 onClick={() => setView(index)}
                 aria-label={`Show ${name} view`}
                 aria-pressed={view === index}
-                className={`h-1 w-4 ${view === index ? "bg-ink" : "bg-ink/25"}`}
+                className={`h-1 w-4 ${view === index ? "bg-paper" : "bg-paper/50"}`}
               />
             ))}
           </div>

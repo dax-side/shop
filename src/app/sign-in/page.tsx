@@ -6,6 +6,7 @@ import { GoogleButton } from "@/components/auth/google-button";
 import { ArrowLeftIcon } from "@/components/icons";
 import { Logo } from "@/components/logo";
 import { ProductPhoto } from "@/components/product-photo";
+import { shopShelves } from "@/lib/product-images";
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -37,7 +38,14 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
       <aside className="hidden flex-col justify-between bg-ink p-10 text-paper lg:flex">
         <Logo />
         <div>
-          <ProductPhoto tone="#2a2825" caption="Shelves inside the shop" className="aspect-[5/4] [&_span]:text-paper/50" />
+          <ProductPhoto
+            tone="#2a2825"
+            caption="Shelves inside the shop"
+            image={shopShelves}
+            className="aspect-[5/4]"
+            sizes="(min-width: 1024px) 45vw, 100vw"
+            preload
+          />
           <p className="mt-8 max-w-sm font-serif text-4xl leading-tight">
             Save your details, track orders and reorder the things you use up.
           </p>

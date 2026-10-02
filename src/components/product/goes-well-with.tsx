@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRoom, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { productThumb } from "@/lib/product-images";
 import { getProducts } from "@/lib/products";
 import { ProductPhoto } from "../product-photo";
 
@@ -27,7 +28,13 @@ export async function GoesWellWith({ product }: { product: Product }) {
         {picks.map((pick) => (
           <li key={pick.slug} className="w-[45%] shrink-0 snap-start sm:w-auto sm:border-r sm:border-b sm:border-ink sm:p-3">
             <Link href={`/products/${pick.slug}`} className="group block">
-              <ProductPhoto tone={pick.tone} caption={pick.name} className="aspect-square" />
+              <ProductPhoto
+                tone={pick.tone}
+                caption={pick.name}
+                image={productThumb(pick.slug)}
+                className="aspect-square"
+                sizes="(min-width: 640px) 25vw, 45vw"
+              />
               <div className="mt-3 flex flex-col justify-between gap-1 sm:flex-row">
                 <span className="text-sm font-medium group-hover:underline">{pick.name}</span>
                 <span className="font-mono text-xs">{formatNaira(pick.price)}</span>
