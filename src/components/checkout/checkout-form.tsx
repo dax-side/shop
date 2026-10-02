@@ -297,7 +297,15 @@ export function CheckoutForm({
           </div>
           {payButton}
           <p className="mt-3 text-center text-[0.6875rem] text-muted">
-            By placing your order you agree to our terms and returns policy.
+            By placing your order you agree to our{" "}
+            <Link href="/terms" className="underline underline-offset-2">
+              terms of sale
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="underline underline-offset-2">
+              privacy policy
+            </Link>
+            .
           </p>
         </div>
       </aside>

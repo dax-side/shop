@@ -46,6 +46,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun once payment succeeds | Done |
 | Google sign-in | Sign in or create an account with Google, from the sign-in page or at checkout | Done |
 | Account | Order history for signed-in customers; checkout details prefilled | Done |
+| Terms and privacy | Terms of sale and privacy policy pages, filled from the store settings and linked at sign-in, checkout and in the footer | Done |
 
 ---
 

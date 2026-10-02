@@ -98,7 +98,15 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
           </div>
 
           <p className="mt-6 text-xs text-muted">
-            By continuing you agree to our terms and privacy policy.
+            By continuing you agree to our{" "}
+            <Link href="/terms" className="text-ink underline underline-offset-2">
+              terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="text-ink underline underline-offset-2">
+              privacy policy
+            </Link>
+            .
             {callbackUrl === "/checkout" && (
               <>
                 {" "}
