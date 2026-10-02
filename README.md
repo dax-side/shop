@@ -167,7 +167,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [ ] Neon Postgres with Drizzle
 - [ ] Mailgun order confirmation emails
 - [ ] Google sign-in
-- [ ] CI workflow for lint, typecheck and build
+- [x] CI workflow for lint, typecheck and build
 
 ---
 
