@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
 import { CheckoutHeader } from "@/components/checkout/checkout-header";
+import { authConfigured, currentUser } from "@/auth";
 import { getProducts } from "@/lib/products";
 import { pricing, site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Checkout" };
 
 export default async function CheckoutPage() {
-  const products = await getProducts();
+  const [products, user] = await Promise.all([getProducts(), currentUser()]);
 
   return (
     <>
@@ -19,6 +20,8 @@ export default async function CheckoutPage() {
           pricing={pricing}
           deliveryDays={site.deliveryDays}
           paymentProvider={site.paymentProvider}
+          account={user?.email ? { email: user.email, name: user.name ?? "" } : null}
+          googleEnabled={authConfigured()}
         />
       </main>
     </>

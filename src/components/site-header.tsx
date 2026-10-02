@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { BagButton } from "./bag/bag-button";
-import { SearchIcon } from "./icons";
+import { SearchIcon, UserIcon } from "./icons";
 import { Logo } from "./logo";
 
 const nav = [
@@ -41,6 +41,9 @@ export function SiteHeader() {
           <div className="flex items-center gap-4">
             <Link href="/#catalogue" aria-label="Search the catalogue" className="hidden md:block">
               <SearchIcon />
+            </Link>
+            <Link href="/account" aria-label="Your account">
+              <UserIcon />
             </Link>
             <BagButton />
           </div>

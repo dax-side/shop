@@ -1,5 +1,17 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, jsonb, pgEnum, pgTable, serial, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  serial,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import type { Finish, Product } from "../lib/catalogue";
 
 export const roomEnum = pgEnum("room", ["kitchen", "table", "bath-linen", "tools", "paper-desk"]);
@@ -32,8 +44,49 @@ export const products = pgTable("products", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+// Auth.js tables. Property names follow what the Drizzle adapter expects.
+export const users = pgTable("users", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name"),
+  email: text("email").unique(),
+  emailVerified: timestamp("email_verified", { mode: "date", withTimezone: true }),
+  image: text("image"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const accounts = pgTable(
+  "accounts",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => [primaryKey({ columns: [account.provider, account.providerAccountId] })],
+);
+
+export const sessions = pgTable("sessions", {
+  sessionToken: text("session_token").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date", withTimezone: true }).notNull(),
+});
+
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id").references(() => users.id, { onDelete: "set null" }),
   reference: text("reference").notNull().unique(),
   status: orderStatusEnum("status").notNull().default("pending_payment"),
   email: text("email").notNull(),
@@ -50,7 +103,7 @@ export const orders = pgTable("orders", {
   delivery: integer("delivery").notNull(),
   total: integer("total").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+}, (order) => [index("orders_user_id_idx").on(order.userId)]);
 
 export const orderItems = pgTable("order_items", {
   id: serial("id").primaryKey(),
