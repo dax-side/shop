@@ -110,6 +110,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 ├── CLAUDE.md           # Points to AGENTS.md
 ├── .env.example        # Environment variable template
 ├── drizzle.config.ts   # Drizzle Kit config
+├── vercel.json         # Vercel build command
 ├── eslint.config.mjs   # ESLint config
 ├── next.config.ts      # Next.js config
 ├── postcss.config.mjs  # Tailwind via PostCSS
@@ -152,9 +153,24 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | Run ESLint |
 | `npm run typecheck` | Generate route types and run the TypeScript compiler |
 | `npm run db:generate` | Generate a SQL migration after changing `src/db/schema.ts` |
-| `npm run db:migrate` | Apply pending migrations |
+| `npm run db:migrate` | Apply pending migrations (skips with a warning if `DATABASE_URL` is unset) |
 | `npm run db:seed` | Insert or update the catalogue products (safe to re-run) |
 | `npm run db:studio` | Browse the database with Drizzle Studio |
+| `npm run vercel-build` | What Vercel runs: migrate, seed an empty database, then build |
+
+### Deploy to Vercel
+
+Vercel is the only thing to deploy. Neon, Paystack, Mailgun and Google are hosted services connected through environment variables.
+
+1. **Import the repo** at [vercel.com/new](https://vercel.com/new). The Next.js preset and `vercel.json` are picked up automatically.
+2. **Add Neon** from the project's **Storage** tab (Neon integration). It sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` for you.
+3. **Add the other environment variables** under **Settings → Environment Variables**: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `PAYSTACK_SECRET_KEY`, `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_FROM` and the store details. `NEXT_PUBLIC_SITE_URL` and `AUTH_TRUST_HOST` aren't needed on Vercel.
+4. **Deploy.** The build applies migrations, seeds the catalogue if the database is empty, and builds the app.
+5. **Point the services at your domain:**
+   - Paystack webhook: `https://<your-domain>/api/paystack/webhook`
+   - Google OAuth redirect URI: `https://<your-domain>/api/auth/callback/google`, and the domain as a JavaScript origin
+
+Preview deployments work too. Google sign-in only works on domains registered with the OAuth client, so test sign-in on production or a fixed preview domain.
 
 ---
 
