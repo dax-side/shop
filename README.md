@@ -36,7 +36,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 
 | Feature | Description | Status |
 | --- | --- | --- |
-| Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Done |
+| Home page | Hero, shop by room with room photos, catalogue with category filters, "made by hand" workshop and store photos, how it works, newsletter signup | Done |
 | Product page | Image gallery, finish options, quantity, details table, "goes well with" | Done |
 | Bag | Add, update and remove items with a running total | Done |
 | Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
@@ -306,18 +306,23 @@ Product and shop photos are from [Unsplash](https://unsplash.com/?utm_source=oja
 - [Aaron Burden](https://unsplash.com/@aaronburden?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/fountain-pen-on-spiral-book-xG8IQMqMITM?utm_source=oja_shop&utm_medium=referral)
 - [Agata Ciosek](https://unsplash.com/@agataciosek?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/an-old-white-pot-sitting-in-the-grass-next-to-a-tree-HU7AOjOIHYk?utm_source=oja_shop&utm_medium=referral)
 - [Alex Tyson](https://unsplash.com/@alextyson195?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-close-up-of-a-bunch-of-hooks-on-a-wall-rm7SaIVFhwI?utm_source=oja_shop&utm_medium=referral)
+- [Ali Mucci](https://unsplash.com/@alimucci?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-textile-on-brown-wooden-chair-3Sz45ULJmUE?utm_source=oja_shop&utm_medium=referral)
 - [Allec Gomes](https://unsplash.com/@allecgomes?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-brown-vase-sitting-on-top-of-a-table-CDuhbnnvBFA?utm_source=oja_shop&utm_medium=referral)
+- [Anastasiia Grigorev](https://unsplash.com/@nasya_snap?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/person-weaving-wicker-basket-outdoors-rc3_BU_eghc?utm_source=oja_shop&utm_medium=referral)
 - [Andrea Scully](https://unsplash.com/@andreacarole?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wheat-in-close-up-photography-X5xP4JmU5JA?utm_source=oja_shop&utm_medium=referral)
 - [Andrew Valdivia](https://unsplash.com/@donovan_valdivia?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wooden-spoons-in-brown-wooden-cup-4lUI9_v0Sos?utm_source=oja_shop&utm_medium=referral)
 - [Angelo Casto](https://unsplash.com/@jddartphotographer?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/wooden-spoons-and-a-cup-sit-under-light-_GNC1OBpwNs?utm_source=oja_shop&utm_medium=referral)
 - [Annie Spratt](https://unsplash.com/@anniespratt?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-ceramic-mug-on-wooden-table-top-n42ogaQn32o?utm_source=oja_shop&utm_medium=referral)
 - [C. Teacher](https://unsplash.com/@c_teacher?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wooden-brushes-B3Gg6d4vz-Q?utm_source=oja_shop&utm_medium=referral)
 - [cafeconcetto](https://unsplash.com/@cafeconcetto?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-group-of-stones-on-a-white-surface-PKgE-Tw68RU?utm_source=oja_shop&utm_medium=referral)
+- [Clay Banks](https://unsplash.com/@claybanks?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-wooden-table-topped-with-white-plates-and-a-vase-filled-with-flowers-5y71Otj5xek?utm_source=oja_shop&utm_medium=referral)
 - [Content Pixie](https://unsplash.com/@contentpixie?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-close-up-of-a-vase-14Xl_B4Apk4?utm_source=oja_shop&utm_medium=referral)
 - [Crissy Jarvis](https://unsplash.com/@crissyjarvis?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/six-piled-clear-shot-glasses-XLOx2BXzZp4?utm_source=oja_shop&utm_medium=referral)
 - [Debby Hudson](https://unsplash.com/@hudsoncrafted?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/wheat-grass-and-cake-server-on-gray-textile-bTJe8Wseia0?utm_source=oja_shop&utm_medium=referral), [2](https://unsplash.com/photos/three-apples-sitting-on-top-of-a-piece-of-cloth-F8eK2h1LtAc?utm_source=oja_shop&utm_medium=referral)
 - [Decima Athens](https://unsplash.com/@decimaandathens?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-bathroom-sink-with-a-gold-faucet-next-to-it-_m9IR6Wj-_I?utm_source=oja_shop&utm_medium=referral)
 - [Diana Polekhina](https://unsplash.com/@diana_pole?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-notebook-with-pen-on-top-1ixT36dfuSQ?utm_source=oja_shop&utm_medium=referral)
+- [Dominik Scythe](https://unsplash.com/@drscythe?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/person-using-chisel-while-curving-wood-3cIvvzjE6Lk?utm_source=oja_shop&utm_medium=referral)
+- [Earl Wilcox](https://unsplash.com/@earl_plannerzone?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/person-holding-round-clay-pot--aebrWVmr80?utm_source=oja_shop&utm_medium=referral)
 - [Elist Nguyen](https://unsplash.com/@hieuanhcauam?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/shelves-filled-with-various-ceramic-vases-and-pots-oQdfsQr53KE?utm_source=oja_shop&utm_medium=referral)
 - [Eric Prouzet](https://unsplash.com/@eprouzet?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/shallow-focus-photo-of-broom-rZId_qIS8-c?utm_source=oja_shop&utm_medium=referral)
 - [Fenghua](https://unsplash.com/@fenghua1975?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/person-preparing-food-in-a-large-mortar-and-pestle-UjQ6GxRF2qA?utm_source=oja_shop&utm_medium=referral)
@@ -326,6 +331,7 @@ Product and shop photos are from [Unsplash](https://unsplash.com/?utm_source=oja
 - [Gaelle Marcel](https://unsplash.com/@gaellemarcel?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/stainless-steel-spoon-and-fork-CkInCM8e1ig?utm_source=oja_shop&utm_medium=referral)
 - [Giulia Bertelli](https://unsplash.com/@giulia_bertelli?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-pile-of-old-envelopes-sitting-on-top-of-a-bed-l7fpQFnTCNY?utm_source=oja_shop&utm_medium=referral)
 - [Gleb Paniotov](https://unsplash.com/@paniotovvv?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-towel-hanging-on-a-cabinet-in-a-kitchen-_nWvFy6pZGQ?utm_source=oja_shop&utm_medium=referral)
+- [Hayley Maxwell](https://unsplash.com/@hayleymaxwell?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/gold-and-silver-pen-on-brown-envelope-bdvycycdu-M?utm_source=oja_shop&utm_medium=referral)
 - [ilpadre](https://unsplash.com/@ilpadre?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-wall-mounted-hook-with-a-fish-design-on-it--m9xxr5Fi64?utm_source=oja_shop&utm_medium=referral)
 - [Jacob Granneman](https://unsplash.com/@madhatter_granneman?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wooden-brush-on-clear-glass-jar-FrDnoB33yGA?utm_source=oja_shop&utm_medium=referral)
 - [Janosch Lino](https://unsplash.com/@janoschlino?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/three-clear-drinking-glass-on-table-7b1W1mcwekw?utm_source=oja_shop&utm_medium=referral)
@@ -333,6 +339,7 @@ Product and shop photos are from [Unsplash](https://unsplash.com/?utm_source=oja
 - [Jocelyn Morales](https://unsplash.com/@molnj?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-ceramic-cup-on-white-ceramic-saucer-85u5oGSBJ1s?utm_source=oja_shop&utm_medium=referral)
 - [John Onaeko](https://unsplash.com/@iyinoluwaonaeko?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wooden-mortar-and-pestle-oIkYZx3NyhU?utm_source=oja_shop&utm_medium=referral)
 - [Julia Zolotova](https://unsplash.com/@juliazolotova?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/clear-drinking-glass-on-table-KHhhpr8_GAs?utm_source=oja_shop&utm_medium=referral)
+- [Katie Rodriguez](https://unsplash.com/@katertottz?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/minimalist-photography-of-hand-tools-hanged-on-wall-NP9kbCXeVK0?utm_source=oja_shop&utm_medium=referral)
 - [Katja Vogt](https://unsplash.com/@folkmade?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/two-white-ceramic-mug-CipURjPCXOo?utm_source=oja_shop&utm_medium=referral)
 - [Kelly Sikkema](https://unsplash.com/@kellysikkema?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-notepad-with-a-pen-on-top-of-it-next-to-a-mug-JKFBG03gxMw?utm_source=oja_shop&utm_medium=referral), [2](https://unsplash.com/photos/white-and-gray-checked-board-q3blHqtnhog?utm_source=oja_shop&utm_medium=referral)
 - [Lisa Anna](https://unsplash.com/@lisaanna195?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-coat-rack-with-hooks-and-a-coat-hanging-on-it-OcorWmWvF4w?utm_source=oja_shop&utm_medium=referral)
@@ -367,6 +374,8 @@ Product and shop photos are from [Unsplash](https://unsplash.com/?utm_source=oja
 - [Thanos Pal](https://unsplash.com/@thanospal?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-rectangular-box-on-persons-hand-v_Cc1qxKuBs?utm_source=oja_shop&utm_medium=referral)
 - [the blowup](https://unsplash.com/@theblowup?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/white-bath-towel-on-white-ceramic-bathtub-4dUC7Fine5g?utm_source=oja_shop&utm_medium=referral)
 - [Thom Bradley](https://unsplash.com/@thombradley?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/apple-magic-mouse-beside-apple-magic-mouse-on-brown-wooden-table-FQVjx62rzMU?utm_source=oja_shop&utm_medium=referral)
+- [tommao wang](https://unsplash.com/@tommaomaoer?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/ceramic-bowls-on-wooden-display-table-ZxZeIZ_h2jY?utm_source=oja_shop&utm_medium=referral)
+- [Uliana Kopanytsia](https://unsplash.com/@ulian_ka?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/two-clear-glass-jars-on-brown-wooden-floating-shelf-Exf1N6_UTZM?utm_source=oja_shop&utm_medium=referral)
 - [William Boateng](https://unsplash.com/@william_boateng?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/a-close-up-of-a-feather-ZlEMCjRi7SU?utm_source=oja_shop&utm_medium=referral)
 - [ZACHARY STAINES](https://unsplash.com/@zaccastravels?utm_source=oja_shop&utm_medium=referral): [1](https://unsplash.com/photos/brown-wicker-basket-lot-0kvS01RVKQI?utm_source=oja_shop&utm_medium=referral)
 
