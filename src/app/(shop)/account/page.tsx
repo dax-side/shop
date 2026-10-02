@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@/auth";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { SiteFooter } from "@/components/site-footer";
 import { getOrdersForUser, STATUS_LABELS } from "@/lib/account";
-import { signOutOfAccount } from "@/lib/auth-actions";
 import { formatNaira } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Your account", robots: { index: false, follow: false } };
@@ -26,11 +26,7 @@ export default async function AccountPage() {
             <h1 className="display mt-1 text-5xl sm:text-7xl">Hello{user.name ? `, ${user.name.split(" ")[0]}` : ""}</h1>
             <p className="mt-2 text-sm text-muted">{user.email}</p>
           </div>
-          <form action={signOutOfAccount}>
-            <button type="submit" className="h-10 rounded-full border border-ink px-5 text-sm hover:bg-ink hover:text-paper">
-              Sign out
-            </button>
-          </form>
+          <SignOutButton />
         </div>
 
         <h2 className="label mt-10 text-[0.625rem]">Your orders</h2>

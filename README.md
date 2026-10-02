@@ -252,7 +252,7 @@ Without these variables the shop still works for guests; the sign-in page says s
 - Database access goes through Drizzle's query builder, never string-built SQL.
 - Orders are saved in a single transaction; each line stores the price it was sold at.
 - Customer details are HTML-escaped before going into emails, and emails are sent after the response so a Mailgun outage never blocks an order.
-- Sessions are stored in the database (revocable, deleted on sign-out) and the OAuth flow uses PKCE. Sign-in redirects only accept paths on this site.
+- Sessions are stored in the database (revocable, deleted on sign-out). Signing out also clears every cookie the site set and all browser storage, including the bag and the OAuth flow uses PKCE. Sign-in redirects only accept paths on this site.
 - Payments are never trusted from the browser: every Paystack callback and webhook is verified with Paystack's API using the secret key, the amount and currency must match the order, and webhooks must carry a valid HMAC-SHA512 signature. Marking an order paid is idempotent, so the email goes out once.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
