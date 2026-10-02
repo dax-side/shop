@@ -81,7 +81,12 @@ Pages render on the server. The bag lives on the client until checkout, where th
 ```text
 .
 ├── src/
-│   └── app/            # App Router routes, layouts and global styles
+│   ├── app/
+│   │   ├── (shop)/     # Storefront routes sharing the header and footer
+│   │   ├── globals.css # Design tokens (colours, fonts, display type)
+│   │   └── layout.tsx  # Root layout and fonts
+│   ├── components/     # Shared UI: header, footer, logo, icons
+│   └── lib/            # Site config and helpers
 ├── AGENTS.md           # Rules for AI agents working on this repo
 ├── CLAUDE.md           # Points to AGENTS.md
 ├── .env.example        # Environment variable template
@@ -131,6 +136,14 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | Variable | Required | Description |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Public URL of the site, used in emails and auth callbacks |
+| `STORE_ADDRESS` | No | Pickup address shown in the header, footer and emails |
+| `STORE_OPENING_HOURS` | No | Store opening hours |
+| `STORE_PHONE` | No | Contact phone number |
+| `STORE_EMAIL` | No | Contact email address |
+| `DELIVERY_DAYS` | No | Delivery time outside Lagos, e.g. `3–5` |
+| `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items |
+
+Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
 
 Database, auth and email variables will be added here as those features land.
 
@@ -159,7 +172,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 
 ## What's Next?
 
-- [ ] Design tokens and fonts from the Oja design
+- [x] Design tokens and fonts from the Oja design
 - [ ] Home page
 - [ ] Product page
 - [ ] Bag
