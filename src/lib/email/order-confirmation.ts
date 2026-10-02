@@ -131,8 +131,8 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
   </tr>
   <tr>
     <td style="background:${colors.ink};padding:32px;">
-      <p style="margin:0;font-family:${fonts.serif};font-size:24px;line-height:1.3;color:${colors.paper};">Questions? Reply to this email or call ${escape(site.phone)}.</p>
-      <p style="margin:16px 0 0;font-family:${fonts.sans};font-size:13px;line-height:1.6;color:#cfcac1;">${escape(site.name)} · ${escape(site.storeAddress)} · ${escape(site.city)}<br>You're getting this because you placed an order at ${escape(siteUrl)}.</p>
+      <p style="margin:0;font-family:${fonts.serif};font-size:24px;line-height:1.3;color:${colors.paper};">Questions? Reply to this email${site.phone ? ` or call ${escape(site.phone)}` : ""}.</p>
+      <p style="margin:16px 0 0;font-family:${fonts.sans};font-size:13px;line-height:1.6;color:#cfcac1;">${[site.name, site.storeAddress, site.city].filter(Boolean).map((part) => escape(part)).join(" · ")}<br>You're getting this because you placed an order at ${escape(siteUrl)}.</p>
     </td>
   </tr>
 </table>
@@ -163,8 +163,8 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
     "",
     `View your order: ${orderUrl}`,
     "",
-    `Questions? Reply to this email or call ${site.phone}.`,
-    `${site.name} · ${site.storeAddress} · ${site.city}`,
+    `Questions? Reply to this email${site.phone ? ` or call ${site.phone}` : ""}.`,
+    [site.name, site.storeAddress, site.city].filter(Boolean).join(" · "),
   ].join("\n");
 
   return { subject, html, text };

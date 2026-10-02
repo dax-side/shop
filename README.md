@@ -188,12 +188,12 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `STORE_OPENING_HOURS` | No | Store opening hours |
 | `STORE_PHONE` | No | Contact phone number |
 | `STORE_EMAIL` | No | Contact email address |
-| `DELIVERY_DAYS` | No | Delivery time outside Lagos, e.g. `3–5` |
+| `DELIVERY_DAYS` | No | Delivery time outside Lagos. Defaults to `3–5` |
 | `DELIVERY_FEE` | No | Delivery fee in naira. Defaults to `3500` |
 | `FREE_DELIVERY_THRESHOLD` | No | Order value in naira above which delivery is free. Defaults to `50000` |
-| `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items |
+| `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items. Defaults to `14` |
 
-Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
+Address, opening hours, phone and email are optional: any sentence or link that uses one is hidden until it's set, so no placeholder text ever shows.
 
 ### Payments (Paystack)
 

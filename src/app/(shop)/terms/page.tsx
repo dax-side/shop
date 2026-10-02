@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/legal/legal-page";
 import { formatNaira } from "@/lib/format";
-import { pricing, site } from "@/lib/site";
+import { pickupDetails, pricing, site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Terms of sale" };
 
@@ -11,7 +11,14 @@ export default function TermsPage() {
     <LegalPage title="Terms of sale" updated="October 2026">
       <p>
         These terms cover orders placed with {site.name}, {site.city}. By placing an order you agree to them. If
-        anything is unclear, email <a href={`mailto:${site.email}`}>{site.email}</a> before you buy.
+        anything is unclear, contact us before you buy
+        {site.email && (
+          <>
+            {" "}
+            at <a href={`mailto:${site.email}`}>{site.email}</a>
+          </>
+        )}
+        .
       </p>
 
       <h2>Prices and payment</h2>
@@ -29,8 +36,7 @@ export default function TermsPage() {
           {formatNaira(pricing.freeDeliveryThreshold)}.
         </li>
         <li>
-          Pickup is free from {site.storeAddress}, open {site.openingHours}. We&apos;ll email you when your order is
-          ready.
+          Pickup from the shop is free{pickupDetails().slice(0, -1)}. We&apos;ll email you when your order is ready.
         </li>
       </ul>
 
@@ -54,8 +60,14 @@ export default function TermsPage() {
 
       <h2>Contact</h2>
       <p>
-        {site.name}, {site.storeAddress}. Email <a href={`mailto:${site.email}`}>{site.email}</a> or call{" "}
-        {site.phone}.
+        {[site.name, site.storeAddress, site.city].filter(Boolean).join(", ")}.
+        {site.email && (
+          <>
+            {" "}
+            Email <a href={`mailto:${site.email}`}>{site.email}</a>.
+          </>
+        )}
+        {site.phone && <> Call {site.phone}.</>}
       </p>
     </LegalPage>
   );

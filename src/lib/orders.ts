@@ -2,7 +2,7 @@ import "server-only";
 import { asc, eq } from "drizzle-orm";
 import { connection } from "next/server";
 import { getDb, schema } from "@/db";
-import { site } from "./site";
+import { pickupDetails, site } from "./site";
 
 export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -34,7 +34,7 @@ export function nextSteps(method: OrderWithItems["method"]) {
     { title: "We pack it.", body: "Fragile pieces are wrapped with care." },
     method === "delivery"
       ? { title: "It leaves the shop.", body: "You get a second email with the rider's details." }
-      : { title: "It's ready for you.", body: `Collect it from ${site.storeAddress}. Open ${site.openingHours}.` },
+      : { title: "It's ready for you.", body: `Collect it from the shop${pickupDetails()}` },
     {
       title: method === "delivery" ? "It arrives." : "You pick it up.",
       body: `Something wrong? Reply to your confirmation email within ${site.returnWindowDays} days.`,
