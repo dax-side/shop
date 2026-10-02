@@ -13,7 +13,7 @@ export const seedProducts: Product[] = [
       "A heavy, round mug that holds heat. Thrown on the wheel and dipped in an ash glaze that pools a little darker at the base.",
     price: 12500,
     isNew: true,
-    tone: "var(--color-sand-3)",
+    tone: "#e7e3dc",
     finishes: [],
     details: {
       material: "Stoneware",
@@ -32,7 +32,7 @@ export const seedProducts: Product[] = [
       "Cut from a single piece of iroko and finished with food-safe oil. Big enough for bread, fruit or a full plate of suya.",
     price: 28000,
     isNew: false,
-    tone: "var(--color-sand-1)",
+    tone: "#d8cfc0",
     finishes: [],
     details: {
       material: "Iroko wood",
@@ -51,7 +51,7 @@ export const seedProducts: Product[] = [
       "A light, bright pot for stews, rice and everything in between. Enamelled steel heats quickly and wipes clean.",
     price: 46000,
     isNew: false,
-    tone: "var(--color-sand-3)",
+    tone: "#e7e3dc",
     finishes: [],
     details: {
       material: "Enamelled steel",
@@ -70,7 +70,7 @@ export const seedProducts: Product[] = [
       "Two tea towels in pre-washed linen. They dry fast, leave no lint and get softer every wash.",
     price: 15000,
     isNew: false,
-    tone: "var(--color-sand-4)",
+    tone: "#dbd6cd",
     finishes: [],
     details: {
       material: "100% linen",
@@ -89,7 +89,7 @@ export const seedProducts: Product[] = [
       "Two simple hooks in solid brass for keys, bags and towels. Left unlacquered, so they darken gently over time.",
     price: 9500,
     isNew: false,
-    tone: "var(--color-sand-2)",
+    tone: "#e3ded6",
     finishes: [],
     details: {
       material: "Solid brass",
@@ -108,7 +108,7 @@ export const seedProducts: Product[] = [
       "Unglazed clay keeps water cool the old way: a little seeps through the wall and evaporates, taking the heat with it. Thrown by hand, fired low and finished with a carved lid. Each one comes out slightly different.",
     price: 32000,
     isNew: true,
-    tone: "var(--color-sand-5)",
+    tone: "#d3c9b8",
     finishes: [
       { name: "Natural", swatch: "#b8714f" },
       { name: "Burnished", swatch: "#8c4a2f" },
@@ -131,7 +131,7 @@ export const seedProducts: Product[] = [
       "An A5 notebook with a faint grid, printed on recycled paper and bound to lie flat. For lists, sums and sketches.",
     price: 6500,
     isNew: false,
-    tone: "var(--color-sand-3)",
+    tone: "#e7e3dc",
     finishes: [],
     details: {
       material: "Recycled paper",
@@ -150,7 +150,7 @@ export const seedProducts: Product[] = [
       "A shallow basket woven by hand from raffia. Use it for bread, fruit or anything that needs somewhere to sit.",
     price: 18500,
     isNew: false,
-    tone: "var(--color-sand-1)",
+    tone: "#d8cfc0",
     finishes: [],
     details: {
       material: "Raffia",
