@@ -1,3 +1,13 @@
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
+
 # AGENTS.md
 
 Guidance for AI agents working on **Oja Supply Co.**, an online shop for everyday household goods (Lagos, Nigeria). The design lives in `Oja_Supply_Co._Shop_1.pdf`; match it.
@@ -10,10 +20,19 @@ Work in small, incremental steps. Every new feature, refactor or fix gets its ow
 2. Make one focused change.
 3. Run the project's lint, typecheck and tests before committing.
 4. Commit with a single conventional message (see below).
-5. Open a PR for that change, then merge it once checks pass.
+5. Open a PR for that change and merge it yourself once checks pass.
 6. Start the next change from the updated default branch.
 
-Do not open a PR or merge without being asked to work on the task. Never push directly to the default branch once it exists.
+Branch names follow the commit type, e.g. `feat/checkout-page`, `fix/bag-total`. Never push directly to `main`; everything lands through a PR.
+
+## Git identity
+
+All commits are authored by the repo owner, never by an AI. Before committing, make sure the repo-local identity is set:
+
+```bash
+git config user.name "Damola Adegbite"
+git config user.email "101389494+dax-side@users.noreply.github.com"
+```
 
 ## Commit messages
 
@@ -54,6 +73,15 @@ Guidelines:
 - Configuration documents every environment variable, with no real secrets.
 - Skip a section only if it truly does not apply.
 
+## Stack
+
+- Next.js (App Router, `src/` directory) with TypeScript and Tailwind CSS
+- Neon Postgres with Drizzle ORM
+- Auth.js with Google as the provider
+- Mailgun for transactional email
+
+Checks to run before every commit: `npm run lint`, `npm run typecheck`, `npm run build`.
+
 ## Product scope
 
 Built from the design: home (hero, shop by room, catalogue with category filters, how it works, newsletter signup, footer), product page (gallery, finish options, quantity, add to bag, details, "goes well with"), and a bag.
@@ -61,7 +89,7 @@ Built from the design: home (hero, shop by room, catalogue with category filters
 Planned features, each shipped as its own PR:
 
 - Checkout page.
-- Persistence in a database (Supabase or Neon).
+- Persistence in Neon Postgres via Drizzle.
 - Order confirmation emails via Mailgun.
 - Google sign-in via Google Cloud Console.
 
