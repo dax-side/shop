@@ -1,0 +1,301 @@
+"use client";
+
+import Link from "next/link";
+import { startTransition, useActionState, useState, useSyncExternalStore, type FormEvent } from "react";
+import { bagStore, itemKey, type BagItem } from "@/lib/bag-store";
+import { placeOrder, type CheckoutState } from "@/lib/checkout";
+import { formatNaira } from "@/lib/format";
+import { NIGERIAN_STATES } from "@/lib/nigeria";
+import { orderTotals, type FulfilmentMethod, type PricingConfig } from "@/lib/pricing";
+import { useBag } from "../bag/use-bag";
+import { ArrowRightIcon } from "../icons";
+import { Choice, SelectField, Step, TextField } from "./fields";
+
+type CheckoutFormProps = {
+  prices: Record<string, number>;
+  pricing: PricingConfig;
+  deliveryDays: string;
+  paymentProvider: string;
+};
+
+const initialState: CheckoutState = { status: "idle" };
+
+async function submitOrder(prev: CheckoutState, formData: FormData) {
+  const result = await placeOrder(prev, formData);
+  if (result.status === "success") bagStore.clear();
+  return result;
+}
+
+const subscribeNoop = () => () => {};
+
+export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }: CheckoutFormProps) {
+  const bag = useBag();
+  // Show current server prices so the summary matches what will be charged.
+  const items = bag.items.map((item) => ({ ...item, price: prices[item.slug] ?? item.price }));
+  const { count } = bag;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const hydrated = useSyncExternalStore(subscribeNoop, () => true, () => false);
+  const [state, action, pending] = useActionState(submitOrder, initialState);
+  const [method, setMethod] = useState<FulfilmentMethod>("delivery");
+  const [payment, setPayment] = useState("card");
+
+  const totals = orderTotals(subtotal, method, pricing);
+  const errors = state.status === "error" ? state.fieldErrors : {};
+  const deliveryFee = totals.subtotal >= pricing.freeDeliveryThreshold ? "Free" : formatNaira(pricing.deliveryFee);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    formData.set(
+      "bag",
+      JSON.stringify(items.map(({ slug, finish, quantity }) => ({ slug, finish, quantity }))),
+    );
+    startTransition(() => action(formData));
+  }
+
+  if (state.status === "success") return <OrderReceived order={state.order} />;
+
+  if (hydrated && items.length === 0) {
+    return (
+      <div className="py-10">
+        <p className="font-serif text-2xl italic">Your bag is empty.</p>
+        <Link
+          href="/#catalogue"
+          className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm text-paper hover:bg-ink/85"
+        >
+          Shop the catalogue <ArrowRightIcon width={12} height={12} />
+        </Link>
+      </div>
+    );
+  }
+
+  const payButton = (
+    <button
+      type="submit"
+      disabled={pending || !hydrated}
+      className="h-12 w-full rounded-full bg-ink text-sm text-paper hover:bg-ink/85 disabled:opacity-60"
+    >
+      {pending ? "Placing order…" : "Pay and place order"}
+    </button>
+  );
+
+  return (
+    <form onSubmit={handleSubmit} noValidate className="grid gap-10 lg:grid-cols-12 lg:gap-6">
+      <details className="-mx-4 border-y border-ink px-4 lg:hidden">
+        <summary className="flex h-12 cursor-pointer list-none items-center justify-between text-sm">
+          <span>Show order summary ({count}) ⌄</span>
+          <span className="font-mono">{formatNaira(totals.total)}</span>
+        </summary>
+        <BagLines items={items} />
+      </details>
+
+      <div className="lg:col-span-6">
+        {state.status === "error" && (
+          <p role="alert" className="mb-6 border border-accent p-3 text-sm text-accent">
+            {errors.bag ?? errors.method ?? state.message}
+          </p>
+        )}
+
+        <Step number="01" title="Contact">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <TextField
+              name="email"
+              label="Email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              error={errors.email}
+            />
+            <TextField
+              name="phone"
+              label="Phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="080 0000 0000"
+              error={errors.phone}
+            />
+          </div>
+          <p className="mt-2 text-xs text-muted">We send your receipt here, plus a message when your order is on its way.</p>
+        </Step>
+
+        <Step number="02" title="How you get it">
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Choice
+              name="method"
+              value="delivery"
+              checked={method === "delivery"}
+              onChange={() => setMethod("delivery")}
+              title="Delivery"
+              aside={deliveryFee}
+              description={`Lagos in 1–2 days. Elsewhere in ${deliveryDays} days.`}
+            />
+            <Choice
+              name="method"
+              value="pickup"
+              checked={method === "pickup"}
+              onChange={() => setMethod("pickup")}
+              title="Pickup"
+              aside="Free"
+              description="Collect from the shop, usually ready the same day."
+            />
+          </div>
+        </Step>
+
+        <Step number="03" title={method === "delivery" ? "Delivery address" : "Who's collecting"}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <TextField name="firstName" label="First name" autoComplete="given-name" error={errors.firstName} />
+            <TextField name="lastName" label="Last name" autoComplete="family-name" error={errors.lastName} />
+            {method === "delivery" && (
+              <>
+                <TextField
+                  name="street"
+                  label="Street address"
+                  autoComplete="street-address"
+                  placeholder="House number and street"
+                  error={errors.street}
+                  className="sm:col-span-2"
+                />
+                <TextField
+                  name="landmark"
+                  label="Nearest landmark"
+                  optional
+                  placeholder="Helps the rider find you"
+                  error={errors.landmark}
+                  className="sm:col-span-2"
+                />
+                <TextField name="area" label="Area / LGA" placeholder="e.g. Ikeja" error={errors.area} />
+                <SelectField
+                  name="state"
+                  label="State"
+                  options={NIGERIAN_STATES}
+                  defaultValue="Lagos"
+                  error={errors.state}
+                />
+              </>
+            )}
+          </div>
+        </Step>
+
+        <Step number="04" title="Payment">
+          <div className="grid gap-2">
+            <Choice
+              name="payment"
+              value="card"
+              checked={payment === "card"}
+              onChange={setPayment}
+              title="Card"
+              description="Visa, Mastercard, Verve"
+            />
+            <Choice
+              name="payment"
+              value="bank-transfer"
+              checked={payment === "bank-transfer"}
+              onChange={setPayment}
+              title="Bank transfer"
+              description="Pay into a one-time account number"
+            />
+            <Choice
+              name="payment"
+              value="ussd"
+              checked={payment === "ussd"}
+              onChange={setPayment}
+              title="USSD"
+              description="Pay from your phone with a short code"
+            />
+          </div>
+          <p className="mt-2 text-xs text-muted">
+            Payments are handled by {paymentProvider}. We never see or store your card details.
+          </p>
+        </Step>
+
+        <div className="mt-10 border-t border-ink pt-4 lg:hidden">
+          <div className="mb-4 flex justify-between">
+            <span className="font-medium">Total</span>
+            <span className="font-mono text-lg">{formatNaira(totals.total)}</span>
+          </div>
+          {payButton}
+        </div>
+      </div>
+
+      <aside className="hidden self-start border border-ink lg:col-span-5 lg:col-start-8 lg:block">
+        <div className="flex items-end justify-between border-b border-ink p-4">
+          <h2 className="display text-3xl">Your bag</h2>
+          <span className="label text-[0.625rem]">
+            {count} {count === 1 ? "item" : "items"}
+          </span>
+        </div>
+        <div className="px-4">
+          <BagLines items={items} />
+        </div>
+        <dl className="space-y-1 border-t border-ink p-4 text-sm">
+          <div className="flex justify-between">
+            <dt>Subtotal</dt>
+            <dd className="font-mono">{formatNaira(totals.subtotal)}</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt>Delivery</dt>
+            <dd className="font-mono">{totals.delivery === 0 ? "Free" : formatNaira(totals.delivery)}</dd>
+          </div>
+        </dl>
+        <div className="border-t border-ink p-4">
+          <div className="mb-4 flex justify-between">
+            <span className="font-medium">Total</span>
+            <span className="font-mono text-lg">{formatNaira(totals.total)}</span>
+          </div>
+          {payButton}
+          <p className="mt-3 text-center text-[0.6875rem] text-muted">
+            By placing your order you agree to our terms and returns policy.
+          </p>
+        </div>
+      </aside>
+    </form>
+  );
+}
+
+function BagLines({ items }: { items: BagItem[] }) {
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={itemKey(item)} className="flex items-center gap-3 border-b border-line py-3 last:border-b-0">
+          <span className="size-11 shrink-0" style={{ background: item.tone }} />
+          <span className="flex-1">
+            <span className="block text-sm font-medium">{item.name}</span>
+            <span className="font-mono text-[0.625rem] text-muted">
+              {item.finish ? `${item.finish} · ` : ""}Qty {item.quantity}
+            </span>
+          </span>
+          <span className="font-mono text-xs">{formatNaira(item.price * item.quantity)}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function OrderReceived({ order }: { order: Extract<CheckoutState, { status: "success" }>["order"] }) {
+  return (
+    <div className="max-w-2xl py-4" role="status">
+      <h2 className="display text-5xl sm:text-7xl">Order received.</h2>
+      <p className="mt-4 font-serif text-2xl italic">Thanks, {order.firstName}. We&apos;re packing it now.</p>
+      <dl className="mt-8 grid gap-3 border-y border-ink py-4 text-sm sm:grid-cols-3">
+        <div>
+          <dt className="label text-[0.625rem] text-muted">Reference</dt>
+          <dd className="font-mono">{order.reference}</dd>
+        </div>
+        <div>
+          <dt className="label text-[0.625rem] text-muted">Total</dt>
+          <dd className="font-mono">{formatNaira(order.total)}</dd>
+        </div>
+        <div>
+          <dt className="label text-[0.625rem] text-muted">{order.method === "delivery" ? "Delivery" : "Pickup"}</dt>
+          <dd>{order.method === "delivery" ? "Arrives in 1–2 days in Lagos" : "Usually ready the same day"}</dd>
+        </div>
+      </dl>
+      <Link
+        href="/#catalogue"
+        className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm text-paper hover:bg-ink/85"
+      >
+        Keep shopping <ArrowRightIcon width={12} height={12} />
+      </Link>
+    </div>
+  );
+}

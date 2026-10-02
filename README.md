@@ -39,7 +39,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Home page | Hero, shop by room, catalogue with category filters, how it works, newsletter signup | Done |
 | Product page | Image gallery, finish options, quantity, details table, "goes well with" | Done |
 | Bag | Add, update and remove items with a running total | Done |
-| Checkout | Delivery or pickup, contact and address details, order summary | Planned |
+| Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
 | Persistence | Products, orders and customers stored in Neon Postgres | Planned |
 | Confirmation emails | Order confirmation sent through Mailgun | Planned |
 | Google sign-in | Sign in with a Google account | Planned |
@@ -56,6 +56,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Database | [Neon](https://neon.tech) Postgres with [Drizzle ORM](https://orm.drizzle.team) |
 | Auth | [Auth.js](https://authjs.dev) with Google |
 | Email | [Mailgun](https://www.mailgun.com) |
+| Validation | [Zod](https://zod.dev) |
 | Linting | ESLint |
 
 ---
@@ -83,10 +84,12 @@ Pages render on the server. The bag lives on the client until checkout, where th
 ├── src/
 │   ├── app/
 │   │   ├── (shop)/     # Storefront routes sharing the header and footer
+│   │   ├── checkout/   # Checkout route with its own header
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
 │   │   └── layout.tsx  # Root layout and fonts
 │   ├── components/     # Shared UI: header, footer, logo, icons, product cards
 │   │   ├── bag/        # Bag state hook, bag button, add to bag, bag page view
+│   │   ├── checkout/   # Checkout header, form fields, checkout form
 │   │   ├── product/    # Product page gallery, purchase controls, recommendations
 │   │   └── home/       # Home page sections
 │   └── lib/            # Site config, catalogue data, formatting, server actions
@@ -144,7 +147,9 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `STORE_PHONE` | No | Contact phone number |
 | `STORE_EMAIL` | No | Contact email address |
 | `DELIVERY_DAYS` | No | Delivery time outside Lagos, e.g. `3–5` |
-| `FREE_DELIVERY_THRESHOLD` | No | Order value above which delivery is free, e.g. `₦50,000` |
+| `DELIVERY_FEE` | No | Delivery fee in naira. Defaults to `3500` |
+| `FREE_DELIVERY_THRESHOLD` | No | Order value in naira above which delivery is free. Defaults to `50000` |
+| `PAYMENT_PROVIDER` | No | Payment provider name shown at checkout |
 | `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items |
 
 Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
@@ -180,7 +185,10 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [x] Home page
 - [x] Product page
 - [x] Bag
-- [ ] Checkout page
+- [x] Checkout page
+- [ ] Online payment through a provider such as Paystack or Flutterwave
+- [ ] Discount codes
+- [ ] Catalogue search
 - [ ] Neon Postgres with Drizzle
 - [ ] Mailgun order confirmation emails
 - [ ] Google sign-in

@@ -1,10 +1,11 @@
-import { site } from "@/lib/site";
+import { formatNaira } from "@/lib/format";
+import { pricing, site } from "@/lib/site";
 
 export function HowItWorks() {
   const steps = [
     {
       title: "Delivery",
-      body: `Lagos orders arrive in 1–2 days. Elsewhere in Nigeria, ${site.deliveryDays} days. Free over ${site.freeDeliveryThreshold}.`,
+      body: `Lagos orders arrive in 1–2 days. Elsewhere in Nigeria, ${site.deliveryDays} days. Free over ${formatNaira(pricing.freeDeliveryThreshold)}.`,
     },
     {
       title: "Pickup",
