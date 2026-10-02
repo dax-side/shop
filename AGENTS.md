@@ -82,6 +82,8 @@ Guidelines:
 
 Checks to run before every commit: `npm run lint`, `npm run typecheck`, `npm run build`.
 
+Database changes: edit `src/db/schema.ts`, run `npm run db:generate`, and commit the new file in `drizzle/` with the change. CI fails if the schema and migrations drift apart.
+
 ## Product scope
 
 Built from the design: home (hero, shop by room, catalogue with category filters, how it works, newsletter signup, footer), product page (gallery, finish options, quantity, add to bag, details, "goes well with"), and a bag.
