@@ -1,0 +1,87 @@
+# AGENTS.md
+
+Guidance for AI agents working on **Oja Supply Co.**, an online shop for everyday household goods (Lagos, Nigeria). The design lives in `Oja_Supply_Co._Shop_1.pdf`; match it.
+
+## Workflow
+
+Work in small, incremental steps. Every new feature, refactor or fix gets its own branch, commit, PR and merge. Never batch unrelated changes.
+
+1. Branch from the latest default branch.
+2. Make one focused change.
+3. Run the project's lint, typecheck and tests before committing.
+4. Commit with a single conventional message (see below).
+5. Open a PR for that change, then merge it once checks pass.
+6. Start the next change from the updated default branch.
+
+Do not open a PR or merge without being asked to work on the task. Never push directly to the default branch once it exists.
+
+## Commit messages
+
+Format: `type: short message`
+
+Allowed types: `feat`, `fix`, `chore`, `ci`, `refactor`.
+
+- No scope. Write `feat: add checkout page`, not `feat(checkout): ...`.
+- Lowercase, imperative, no trailing period, ideally under 60 characters.
+- One logical change per commit.
+- No `Co-Authored-By` lines, no session links and no other AI attribution in commits or PR descriptions.
+
+## README
+
+Keep `README.md` current with every change that affects setup, features, configuration or structure. It must follow this section order, with a `---` rule between sections:
+
+1. Title and Introduction
+2. Table of Contents
+3. About
+4. Features
+5. Tech Stack
+6. Architecture
+7. Project Structure
+8. Getting Started
+9. Configuration
+10. Security
+11. How to Contribute?
+12. What's Next?
+13. License
+14. Acknowledgements
+15. Author
+
+Guidelines:
+
+- Use Markdown properly (headings, tables, code blocks), not plain text.
+- Features stay high level; implementation detail belongs in Architecture or Configuration.
+- Getting Started steps must actually work. Test them.
+- Configuration documents every environment variable, with no real secrets.
+- Skip a section only if it truly does not apply.
+
+## Product scope
+
+Built from the design: home (hero, shop by room, catalogue with category filters, how it works, newsletter signup, footer), product page (gallery, finish options, quantity, add to bag, details, "goes well with"), and a bag.
+
+Planned features, each shipped as its own PR:
+
+- Checkout page.
+- Persistence in a database (Supabase or Neon).
+- Order confirmation emails via Mailgun.
+- Google sign-in via Google Cloud Console.
+
+## Design rules
+
+- Prices are in Naira (`₦`), formatted like `₦32,000`.
+- Palette is warm off-white background with near-black text and a single red accent for "NEW" tags.
+- Type: heavy condensed uppercase headings, italic serif for taglines, monospace for small labels and product numbers, clean sans for body.
+- Placeholders in the design such as `[STORE ADDRESS]`, `[DELIVERY DAYS]`, `[RETURN WINDOW]`, `[PHONE]` and `[EMAIL]` must come from config or content, not be hardcoded.
+- Layouts must work on mobile as well as desktop.
+
+## Security
+
+- Never commit secrets. Keep keys in `.env` (gitignored) and maintain a `.env.example` with placeholder values.
+- Validate and sanitise all input on the server, including checkout and newsletter forms.
+- Never trust prices or totals from the client; recompute them on the server.
+- Use parameterised queries or the database client's query builder only.
+
+## Code style
+
+- Match the surrounding code: naming, comment density and idiom.
+- Prefer small, readable components and functions.
+- Do not add dependencies without a clear reason, and mention new ones in the PR.
