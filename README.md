@@ -40,7 +40,8 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Product page | Image gallery, finish options, quantity, details table, "goes well with" | Done |
 | Bag | Add, update and remove items with a running total | Done |
 | Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
-| Persistence | Products, orders and customers stored in Neon Postgres | Planned |
+| Persistence | Products, orders, order lines and newsletter subscribers stored in Neon Postgres | Done |
+| Order page | Confirmation page for each order, linked from checkout | Done |
 | Confirmation emails | Order confirmation sent through Mailgun | Planned |
 | Google sign-in | Sign in with a Google account | Planned |
 
@@ -68,7 +69,7 @@ Browser
   │
   ▼
 Next.js app (server components, route handlers, server actions)
-  ├── Neon Postgres ── products, orders, customers (via Drizzle)
+  ├── Neon Postgres ── products, orders, order items, subscribers (via Drizzle)
   ├── Auth.js ──────── Google OAuth (Google Cloud Console)
   └── Mailgun ──────── order confirmation emails
 ```
@@ -92,10 +93,13 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   │   ├── checkout/   # Checkout header, form fields, checkout form
 │   │   ├── product/    # Product page gallery, purchase controls, recommendations
 │   │   └── home/       # Home page sections
-│   └── lib/            # Site config, catalogue data, formatting, server actions
+│   ├── db/             # Drizzle schema, connection, seed script and seed data
+│   └── lib/            # Site config, queries, pricing, formatting, server actions
+├── drizzle/            # Generated SQL migrations
 ├── AGENTS.md           # Rules for AI agents working on this repo
 ├── CLAUDE.md           # Points to AGENTS.md
 ├── .env.example        # Environment variable template
+├── drizzle.config.ts   # Drizzle Kit config
 ├── eslint.config.mjs   # ESLint config
 ├── next.config.ts      # Next.js config
 ├── postcss.config.mjs  # Tailwind via PostCSS
@@ -110,6 +114,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 
 - Node.js 20.9 or newer
 - npm
+- A Postgres database: a free [Neon](https://neon.tech) project, or Postgres running locally
 
 ### Setup
 
@@ -117,9 +122,13 @@ Pages render on the server. The bag lives on the client until checkout, where th
 git clone https://github.com/dax-side/shop.git
 cd shop
 npm install
-cp .env.example .env.local
+cp .env.example .env.local   # then set DATABASE_URL
+npm run db:migrate           # create the tables
+npm run db:seed              # load the catalogue
 npm run dev
 ```
+
+To get a Neon connection string: create a project at [console.neon.tech](https://console.neon.tech), open **Connect**, and copy the pooled connection string into `DATABASE_URL`.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -132,6 +141,10 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run start` | Serve the production build |
 | `npm run lint` | Run ESLint |
 | `npm run typecheck` | Generate route types and run the TypeScript compiler |
+| `npm run db:generate` | Generate a SQL migration after changing `src/db/schema.ts` |
+| `npm run db:migrate` | Apply pending migrations |
+| `npm run db:seed` | Insert or update the catalogue products (safe to re-run) |
+| `npm run db:studio` | Browse the database with Drizzle Studio |
 
 ---
 
@@ -142,6 +155,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | Variable | Required | Description |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Public URL of the site, used in emails and auth callbacks |
+| `DATABASE_URL` | Yes | Postgres connection string, e.g. your Neon pooled URL with `sslmode=require` |
 | `STORE_ADDRESS` | No | Pickup address shown in the header, footer and emails |
 | `STORE_OPENING_HOURS` | No | Store opening hours |
 | `STORE_PHONE` | No | Contact phone number |
@@ -154,7 +168,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
 
 Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
 
-Database, auth and email variables will be added here as those features land.
+Auth and email variables will be added here as those features land.
 
 ---
 
@@ -164,6 +178,8 @@ Database, auth and email variables will be added here as those features land.
 - All form input (checkout, newsletter) is validated on the server.
 - Prices and totals are always recomputed on the server; client values are never trusted. The bag in `localStorage` is display-only.
 - Database access goes through Drizzle's query builder, never string-built SQL.
+- Orders are saved in a single transaction; each line stores the price it was sold at.
+- Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
 

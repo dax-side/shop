@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { getProducts, rooms, type RoomSlug } from "@/lib/catalogue";
+import { rooms, type RoomSlug } from "@/lib/catalogue";
+import { getProducts } from "@/lib/products";
 import { ProductCard } from "../product-card";
 
-export function Catalogue({ room }: { room?: RoomSlug }) {
-  const items = getProducts(room);
+export async function Catalogue({ room }: { room?: RoomSlug }) {
+  const items = await getProducts(room);
   const filters = [{ slug: undefined, name: "All" }, ...rooms];
 
   return (

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { getRoom, products, type Product } from "@/lib/catalogue";
+import { getRoom, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { getProducts } from "@/lib/products";
 import { ProductPhoto } from "../product-photo";
 
-export function GoesWellWith({ product }: { product: Product }) {
-  const others = products.filter((p) => p.slug !== product.slug);
+export async function GoesWellWith({ product }: { product: Product }) {
+  const others = (await getProducts()).filter((p) => p.slug !== product.slug);
   const picks = [...others.filter((p) => p.room === product.room), ...others.filter((p) => p.room !== product.room)].slice(
     0,
     4,

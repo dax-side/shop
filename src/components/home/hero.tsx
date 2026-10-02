@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { getProduct, type Product } from "@/lib/catalogue";
+import type { Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { getProduct } from "@/lib/products";
 import { ArrowRightIcon } from "../icons";
 import { ProductPhoto } from "../product-photo";
 
-export function Hero() {
-  const main = getProduct("clay-water-pot")!;
-  const side = getProduct("stoneware-mug")!;
+export async function Hero() {
+  const [main, side] = await Promise.all([getProduct("clay-water-pot"), getProduct("stoneware-mug")]);
 
   return (
     <section id="about" className="container-page pt-6 pb-16 sm:pt-8 sm:pb-20">
@@ -46,8 +46,10 @@ export function Hero() {
           </div>
         </div>
 
-        <FeaturedPhoto product={main} className="md:col-span-4" photoClassName="aspect-[4/5]" />
-        <FeaturedPhoto product={side} className="hidden md:col-span-4 md:block md:self-end" photoClassName="aspect-square" />
+        {main && <FeaturedPhoto product={main} className="md:col-span-4" photoClassName="aspect-[4/5]" />}
+        {side && (
+          <FeaturedPhoto product={side} className="hidden md:col-span-4 md:block md:self-end" photoClassName="aspect-square" />
+        )}
       </div>
     </section>
   );
