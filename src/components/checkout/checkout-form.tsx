@@ -8,6 +8,7 @@ import { placeOrder, type CheckoutState } from "@/lib/checkout";
 import { formatNaira } from "@/lib/format";
 import { NIGERIAN_STATES } from "@/lib/nigeria";
 import { orderTotals, type FulfilmentMethod, type PricingConfig } from "@/lib/pricing";
+import { GoogleButton } from "../auth/google-button";
 import { useBag } from "../bag/use-bag";
 import { ArrowRightIcon } from "../icons";
 import { Choice, SelectField, Step, TextField } from "./fields";
@@ -17,6 +18,8 @@ type CheckoutFormProps = {
   pricing: PricingConfig;
   deliveryDays: string;
   paymentProvider: string;
+  account: { email: string; name: string } | null;
+  googleEnabled: boolean;
 };
 
 const initialState: CheckoutState = { status: "idle" };
@@ -29,7 +32,16 @@ async function submitOrder(prev: CheckoutState, formData: FormData) {
 
 const subscribeNoop = () => () => {};
 
-export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }: CheckoutFormProps) {
+export function CheckoutForm({
+  prices,
+  pricing,
+  deliveryDays,
+  paymentProvider,
+  account,
+  googleEnabled,
+}: CheckoutFormProps) {
+  const [firstName = "", ...rest] = account?.name.split(" ") ?? [];
+  const lastName = rest.join(" ");
   const bag = useBag();
   // Show current server prices so the summary matches what will be charged.
   const items = bag.items.map((item) => ({ ...item, price: prices[item.slug] ?? item.price }));
@@ -109,6 +121,20 @@ export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }:
         )}
 
         <Step number="01" title="Contact">
+          {account ? (
+            <p className="mb-4 text-sm">
+              Signed in as <span className="font-medium">{account.email}</span>.
+            </p>
+          ) : (
+            googleEnabled && (
+              <>
+                <GoogleButton callbackUrl="/checkout" label="Continue with Google" />
+                <p className="label my-4 flex items-center gap-3 text-[0.625rem] text-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+                  Or as a guest
+                </p>
+              </>
+            )
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField
               name="email"
@@ -116,6 +142,7 @@ export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }:
               type="email"
               autoComplete="email"
               placeholder="you@example.com"
+              defaultValue={account?.email}
               error={errors.email}
             />
             <TextField
@@ -155,8 +182,20 @@ export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }:
 
         <Step number="03" title={method === "delivery" ? "Delivery address" : "Who's collecting"}>
           <div className="grid gap-4 sm:grid-cols-2">
-            <TextField name="firstName" label="First name" autoComplete="given-name" error={errors.firstName} />
-            <TextField name="lastName" label="Last name" autoComplete="family-name" error={errors.lastName} />
+            <TextField
+              name="firstName"
+              label="First name"
+              autoComplete="given-name"
+              defaultValue={firstName}
+              error={errors.firstName}
+            />
+            <TextField
+              name="lastName"
+              label="Last name"
+              autoComplete="family-name"
+              defaultValue={lastName}
+              error={errors.lastName}
+            />
             {method === "delivery" && (
               <>
                 <TextField

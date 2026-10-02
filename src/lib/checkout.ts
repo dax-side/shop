@@ -3,6 +3,7 @@
 import { randomInt } from "node:crypto";
 import { after } from "next/server";
 import { z } from "zod";
+import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { MAX_QUANTITY } from "./bag-store";
 import { sendOrderConfirmation } from "./email/send-order-confirmation";
@@ -130,6 +131,7 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
 
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0);
   const totals = orderTotals(subtotal, method, pricing);
+  const user = await currentUser();
   const shipping = method === "delivery" ? (address.data as z.infer<typeof addressSchema>) : null;
 
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -140,6 +142,7 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
           .insert(schema.orders)
           .values({
             reference,
+            userId: user?.id ?? null,
             email: contact.data.email,
             phone: contact.data.phone,
             firstName: address.data.firstName,

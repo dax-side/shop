@@ -43,7 +43,8 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Persistence | Products, orders, order lines and newsletter subscribers stored in Neon Postgres | Done |
 | Order page | Confirmation page for each order, linked from checkout | Done |
 | Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun after each order | Done |
-| Google sign-in | Sign in with a Google account | Planned |
+| Google sign-in | Sign in or create an account with Google, from the sign-in page or at checkout | Done |
+| Account | Order history for signed-in customers; checkout details prefilled | Done |
 
 ---
 
@@ -55,7 +56,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
 | Database | [Neon](https://neon.tech) Postgres with [Drizzle ORM](https://orm.drizzle.team) |
-| Auth | [Auth.js](https://authjs.dev) with Google |
+| Auth | [Auth.js v5](https://authjs.dev) with Google and the Drizzle adapter (database sessions) |
 | Email | [Mailgun](https://www.mailgun.com) |
 | Validation | [Zod](https://zod.dev) |
 | Linting | ESLint |
@@ -85,10 +86,14 @@ Pages render on the server. The bag lives on the client until checkout, where th
 ├── src/
 │   ├── app/
 │   │   ├── (shop)/     # Storefront routes sharing the header and footer
+│   │   ├── api/auth/   # Auth.js route handlers
 │   │   ├── checkout/   # Checkout route with its own header
+│   │   ├── sign-in/    # Sign in / create account page
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
 │   │   └── layout.tsx  # Root layout and fonts
+│   ├── auth.ts         # Auth.js config and session helpers
 │   ├── components/     # Shared UI: header, footer, logo, icons, product cards
+│   │   ├── auth/       # Google sign-in button
 │   │   ├── bag/        # Bag state hook, bag button, add to bag, bag page view
 │   │   ├── checkout/   # Checkout header, form fields, checkout form
 │   │   ├── product/    # Product page gallery, purchase controls, recommendations
@@ -180,7 +185,25 @@ Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when
 
 Replies to confirmation emails go to `STORE_EMAIL` when it is set. Without the Mailgun variables, orders still go through and the email is skipped with a warning in the logs.
 
-Auth variables will be added here when that feature lands.
+### Google sign-in (Auth.js)
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `AUTH_SECRET` | For sign-in | Random secret for signing sessions. Generate with `npx auth secret` or `openssl rand -base64 32` |
+| `AUTH_GOOGLE_ID` | For sign-in | OAuth client ID from Google Cloud Console |
+| `AUTH_GOOGLE_SECRET` | For sign-in | OAuth client secret from Google Cloud Console |
+| `AUTH_TRUST_HOST` | Off Vercel | Set to `true` when running `next start` yourself or behind a proxy |
+
+To create the Google OAuth client:
+
+1. In [Google Cloud Console](https://console.cloud.google.com), create or pick a project.
+2. Go to **APIs & Services → OAuth consent screen**, choose **External**, and fill in the app name, support email and authorised domain.
+3. Go to **APIs & Services → Credentials → Create credentials → OAuth client ID**, type **Web application**.
+4. Add authorised JavaScript origins: `http://localhost:3000` and your production URL.
+5. Add authorised redirect URIs: `http://localhost:3000/api/auth/callback/google` and `https://<your-domain>/api/auth/callback/google`.
+6. Copy the client ID and secret into `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`.
+
+Without these variables the shop still works for guests; the sign-in page says sign-in isn't set up.
 
 ---
 
@@ -192,6 +215,7 @@ Auth variables will be added here when that feature lands.
 - Database access goes through Drizzle's query builder, never string-built SQL.
 - Orders are saved in a single transaction; each line stores the price it was sold at.
 - Customer details are HTML-escaped before going into emails, and emails are sent after the response so a Mailgun outage never blocks an order.
+- Sessions are stored in the database (revocable, deleted on sign-out) and the OAuth flow uses PKCE. Sign-in redirects only accept paths on this site.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
