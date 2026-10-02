@@ -49,8 +49,15 @@ export default function PrivacyPage() {
 
       <h2>Your rights</h2>
       <p>
-        You can ask to see, correct or delete the personal data we hold about you. Email{" "}
-        <a href={`mailto:${site.email}`}>{site.email}</a> and we&apos;ll reply within 30 days.
+        You can ask to see, correct or delete the personal data we hold about you.{" "}
+        {site.email ? (
+          <>
+            Email <a href={`mailto:${site.email}`}>{site.email}</a>
+          </>
+        ) : (
+          "Reply to any order email"
+        )}{" "}
+        and we&apos;ll respond within 30 days.
       </p>
     </LegalPage>
   );

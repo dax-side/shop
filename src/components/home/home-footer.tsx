@@ -10,8 +10,8 @@ export function HomeFooter() {
     { href: "/#how-it-works", label: "Visit the store" },
     { href: "/terms", label: "Terms of sale" },
     { href: "/privacy", label: "Privacy" },
-    { href: `mailto:${site.email}`, label: site.email },
-    { href: `tel:${site.phone}`, label: site.phone },
+    ...(site.email ? [{ href: `mailto:${site.email}`, label: site.email }] : []),
+    ...(site.phone ? [{ href: `tel:${site.phone}`, label: site.phone }] : []),
   ];
 
   return (

@@ -1,5 +1,5 @@
 import { formatNaira } from "@/lib/format";
-import { pricing, site } from "@/lib/site";
+import { pickupDetails, pricing, site } from "@/lib/site";
 
 export function HowItWorks() {
   const steps = [
@@ -9,7 +9,7 @@ export function HowItWorks() {
     },
     {
       title: "Pickup",
-      body: `Order online and collect from the shop at ${site.storeAddress}. Open ${site.openingHours}.`,
+      body: `Order online and collect from the shop${pickupDetails()}`,
     },
     {
       title: "Returns",
