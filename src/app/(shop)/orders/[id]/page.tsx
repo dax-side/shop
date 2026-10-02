@@ -3,8 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { formatNaira } from "@/lib/format";
-import { getOrder, PAYMENT_LABELS } from "@/lib/orders";
-import { site } from "@/lib/site";
+import { getOrder, nextSteps, PAYMENT_LABELS } from "@/lib/orders";
 
 // Order pages contain personal details; keep them out of search results.
 export const metadata: Metadata = { title: "Your order", robots: { index: false, follow: false } };
@@ -15,20 +14,7 @@ export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
   const order = await getOrder((await params).id);
   if (!order) notFound();
 
-  const steps = [
-    { title: "We pack it.", body: "Fragile pieces go in straw and card, no plastic." },
-    {
-      title: order.method === "delivery" ? "It leaves the shop." : "It's ready for you.",
-      body:
-        order.method === "delivery"
-          ? "You get a second email with the rider's details."
-          : `Collect it from ${site.storeAddress}. Open ${site.openingHours}.`,
-    },
-    {
-      title: order.method === "delivery" ? "It arrives." : "You pick it up.",
-      body: `Something wrong? Get in touch within ${site.returnWindowDays} days.`,
-    },
-  ];
+  const steps = nextSteps(order.method);
 
   return (
     <>

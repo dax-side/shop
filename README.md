@@ -42,7 +42,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
 | Persistence | Products, orders, order lines and newsletter subscribers stored in Neon Postgres | Done |
 | Order page | Confirmation page for each order, linked from checkout | Done |
-| Confirmation emails | Order confirmation sent through Mailgun | Planned |
+| Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun after each order | Done |
 | Google sign-in | Sign in with a Google account | Planned |
 
 ---
@@ -95,6 +95,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   │   └── home/       # Home page sections
 │   ├── db/             # Drizzle schema, connection, seed script and seed data
 │   └── lib/            # Site config, queries, pricing, formatting, server actions
+│       └── email/      # Mailgun client and order confirmation template
 ├── drizzle/            # Generated SQL migrations
 ├── AGENTS.md           # Rules for AI agents working on this repo
 ├── CLAUDE.md           # Points to AGENTS.md
@@ -168,7 +169,18 @@ Copy `.env.example` to `.env.local` and fill in the values.
 
 Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
 
-Auth and email variables will be added here as those features land.
+### Email (Mailgun)
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `MAILGUN_API_KEY` | For email | Mailgun private API key |
+| `MAILGUN_DOMAIN` | For email | Your verified sending domain, e.g. `mg.yourdomain.com` |
+| `MAILGUN_FROM` | For email | Sender, e.g. `Oja Supply Co. <orders@mg.yourdomain.com>` |
+| `MAILGUN_API_URL` | No | `https://api.eu.mailgun.net` for EU-region domains. Defaults to the US endpoint |
+
+Replies to confirmation emails go to `STORE_EMAIL` when it is set. Without the Mailgun variables, orders still go through and the email is skipped with a warning in the logs.
+
+Auth variables will be added here when that feature lands.
 
 ---
 
@@ -179,6 +191,7 @@ Auth and email variables will be added here as those features land.
 - Prices and totals are always recomputed on the server; client values are never trusted. The bag in `localStorage` is display-only.
 - Database access goes through Drizzle's query builder, never string-built SQL.
 - Orders are saved in a single transaction; each line stores the price it was sold at.
+- Customer details are HTML-escaped before going into emails, and emails are sent after the response so a Mailgun outage never blocks an order.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
@@ -220,7 +233,7 @@ No license has been chosen yet, so all rights are reserved by the author.
 
 ## Acknowledgements
 
-- [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [Auth.js](https://authjs.dev)
+- [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [Auth.js](https://authjs.dev), [Zod](https://zod.dev)
 - [Neon](https://neon.tech) and [Mailgun](https://www.mailgun.com)
 - README structure based on [15 Essential Sections Every README Needs](https://dev.to/georgekobaidze/15-essential-sections-every-readme-needs-give-your-project-what-it-deserves-fie) by George Kobaidze
 

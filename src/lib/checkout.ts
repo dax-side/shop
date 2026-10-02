@@ -1,9 +1,11 @@
 "use server";
 
 import { randomInt } from "node:crypto";
+import { after } from "next/server";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
 import { MAX_QUANTITY } from "./bag-store";
+import { sendOrderConfirmation } from "./email/send-order-confirmation";
 import { NIGERIAN_STATES, normalisePhone } from "./nigeria";
 import { orderTotals } from "./pricing";
 import { getProductsForOrder } from "./products";
@@ -167,6 +169,10 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
         );
         return order.id;
       });
+      // Send the receipt after responding so checkout isn't slowed down by Mailgun.
+      after(() =>
+        sendOrderConfirmation(orderId).catch((error) => console.error(`Confirmation email failed for ${reference}`, error)),
+      );
       return { status: "success", orderId, reference };
     } catch (error) {
       // Retry on a reference collision (unique violation); give up on anything else.
