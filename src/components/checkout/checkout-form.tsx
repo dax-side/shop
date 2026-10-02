@@ -7,10 +7,12 @@ import { bagStore, itemKey, type BagItem } from "@/lib/bag-store";
 import { placeOrder, type CheckoutState } from "@/lib/checkout";
 import { formatNaira } from "@/lib/format";
 import { NIGERIAN_STATES } from "@/lib/nigeria";
+import { productThumb } from "@/lib/product-images";
 import { orderTotals, type FulfilmentMethod, type PricingConfig } from "@/lib/pricing";
 import { GoogleButton } from "../auth/google-button";
 import { useBag } from "../bag/use-bag";
 import { ArrowRightIcon } from "../icons";
+import { ProductThumb } from "../product-photo";
 import { Choice, SelectField, Step, TextField } from "./fields";
 
 type CheckoutFormProps = {
@@ -308,7 +310,7 @@ function BagLines({ items }: { items: BagItem[] }) {
     <ul>
       {items.map((item) => (
         <li key={itemKey(item)} className="flex items-center gap-3 border-b border-line py-3 last:border-b-0">
-          <span className="size-11 shrink-0" style={{ background: item.tone }} />
+          <ProductThumb image={productThumb(item.slug)} tone={item.tone} className="size-11" />
           <span className="flex-1">
             <span className="block text-sm font-medium">{item.name}</span>
             <span className="font-mono text-[0.625rem] text-muted">

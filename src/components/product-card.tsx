@@ -1,13 +1,21 @@
 import Link from "next/link";
 import { getRoom, toBagItem, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
+import { productThumb } from "@/lib/product-images";
 import { AddToBagButton } from "./bag/add-to-bag-button";
 import { ProductPhoto } from "./product-photo";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group relative flex h-full flex-col p-2.5 sm:p-3">
-      <ProductPhoto tone={product.tone} caption={product.name} isNew={product.isNew} className="aspect-square" />
+      <ProductPhoto
+        tone={product.tone}
+        caption={product.name}
+        image={productThumb(product.slug)}
+        isNew={product.isNew}
+        className="aspect-square"
+        sizes="(min-width: 1024px) 25vw, 50vw"
+      />
       <p className="mt-3 font-mono text-[0.625rem] text-muted">
         No. {product.number} · {getRoom(product.room)?.name}
       </p>

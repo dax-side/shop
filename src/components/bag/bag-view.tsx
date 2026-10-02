@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { bagStore, itemKey } from "@/lib/bag-store";
 import { formatNaira } from "@/lib/format";
+import { productThumb } from "@/lib/product-images";
 import { ArrowRightIcon } from "../icons";
+import { ProductThumb } from "../product-photo";
 import { QuantityStepper } from "../quantity-stepper";
 import { useBag } from "./use-bag";
 
@@ -36,12 +38,9 @@ export function BagView() {
               const key = itemKey(item);
               return (
                 <li key={key} className="flex gap-4 border-b border-line py-4">
-                  <Link
-                    href={`/products/${item.slug}`}
-                    className="size-16 shrink-0 sm:size-20"
-                    style={{ background: item.tone }}
-                    aria-label={item.name}
-                  />
+                  <Link href={`/products/${item.slug}`} aria-label={item.name}>
+                    <ProductThumb image={productThumb(item.slug)} tone={item.tone} className="size-16 sm:size-20" />
+                  </Link>
                   <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                       <Link href={`/products/${item.slug}`} className="text-sm font-medium hover:underline">

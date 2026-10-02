@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ProductThumb } from "@/components/product-photo";
 import { SiteFooter } from "@/components/site-footer";
 import { formatNaira } from "@/lib/format";
 import { getOrder, nextSteps, PAYMENT_LABELS } from "@/lib/orders";
 import { payForOrder } from "@/lib/payment-actions";
+import { productThumbByNumber } from "@/lib/product-images";
 
 // Order pages contain personal details; keep them out of search results.
 export const metadata: Metadata = { title: "Your order", robots: { index: false, follow: false } };
@@ -91,7 +93,7 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/or
           <ul className="mt-3">
             {order.items.map((item) => (
               <li key={item.id} className="flex items-center gap-4 border-b border-line py-3">
-                <span className="size-14 shrink-0" style={{ background: item.tone }} />
+                <ProductThumb image={productThumbByNumber(item.number)} tone={item.tone} className="size-14" />
                 <span className="flex-1">
                   <span className="block font-medium">{item.name}</span>
                   <span className="font-mono text-[0.6875rem] text-muted">
