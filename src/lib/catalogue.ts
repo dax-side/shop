@@ -208,3 +208,14 @@ export function getProducts(room?: RoomSlug) {
 export function getProduct(slug: string) {
   return products.find((product) => product.slug === slug);
 }
+
+export function toBagItem(product: Product, finish = product.finishes[0]?.name) {
+  return {
+    slug: product.slug,
+    name: product.name,
+    number: product.number,
+    price: product.price,
+    tone: product.tone,
+    finish,
+  };
+}
