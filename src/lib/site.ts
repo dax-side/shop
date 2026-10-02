@@ -8,5 +8,6 @@ export const site = {
   phone: process.env.STORE_PHONE || "[PHONE]",
   email: process.env.STORE_EMAIL || "[EMAIL]",
   deliveryDays: process.env.DELIVERY_DAYS || "[DELIVERY DAYS]",
+  freeDeliveryThreshold: process.env.FREE_DELIVERY_THRESHOLD || "[FREE DELIVERY THRESHOLD]",
   returnWindowDays: process.env.RETURN_WINDOW_DAYS || "[RETURN WINDOW]",
 };
