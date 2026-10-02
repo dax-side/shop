@@ -31,7 +31,7 @@ export const PAYMENT_LABELS: Record<OrderWithItems["paymentMethod"], string> = {
 
 export function nextSteps(method: OrderWithItems["method"]) {
   return [
-    { title: "We pack it.", body: "Fragile pieces go in straw and card, no plastic." },
+    { title: "We pack it.", body: "Fragile pieces are wrapped with care." },
     method === "delivery"
       ? { title: "It leaves the shop.", body: "You get a second email with the rider's details." }
       : { title: "It's ready for you.", body: `Collect it from ${site.storeAddress}. Open ${site.openingHours}.` },

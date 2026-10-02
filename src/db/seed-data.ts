@@ -17,7 +17,7 @@ export const seedProducts: Product[] = [
     finishes: [],
     details: {
       material: "Stoneware",
-      size: "[HEIGHT] × [WIDTH] cm",
+      size: "9 × 8.5 cm, 350 ml",
       care: "Dishwasher safe. Avoid sudden temperature changes.",
     },
   },
@@ -36,7 +36,7 @@ export const seedProducts: Product[] = [
     finishes: [],
     details: {
       material: "Iroko wood",
-      size: "[LENGTH] × [WIDTH] cm",
+      size: "45 × 20 cm",
       care: "Hand wash and dry upright. Oil when it looks dry.",
     },
   },
@@ -74,7 +74,7 @@ export const seedProducts: Product[] = [
     finishes: [],
     details: {
       material: "100% linen",
-      size: "[LENGTH] × [WIDTH] cm",
+      size: "70 × 50 cm each",
       care: "Machine wash warm. Line dry.",
     },
   },
@@ -93,7 +93,7 @@ export const seedProducts: Product[] = [
     finishes: [],
     details: {
       material: "Solid brass",
-      size: "[HEIGHT] × [DEPTH] cm",
+      size: "6 cm tall, 4 cm deep",
       care: "Wipe with a dry cloth. Polish if you prefer it bright.",
     },
   },
@@ -116,7 +116,7 @@ export const seedProducts: Product[] = [
     ],
     details: {
       material: "Terracotta, iroko lid",
-      size: "[CAPACITY] litres · [HEIGHT] × [WIDTH] cm",
+      size: "5 litres · 32 × 24 cm",
       care: "Rinse with water only. No soap, no dishwasher.",
     },
   },
@@ -154,7 +154,7 @@ export const seedProducts: Product[] = [
     finishes: [],
     details: {
       material: "Raffia",
-      size: "[DIAMETER] cm",
+      size: "30 cm across",
       care: "Shake out crumbs. Wipe with a damp cloth.",
     },
   },

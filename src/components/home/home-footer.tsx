@@ -16,7 +16,7 @@ export function HomeFooter() {
     <footer className="overflow-hidden">
       <div className="container-page grid grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-12">
         <div className="col-span-2 md:col-span-6 lg:col-span-5">
-          <p className="font-serif text-3xl leading-tight">New stock lands most Fridays. Get a short note when it does.</p>
+          <p className="font-serif text-3xl leading-tight">Get a short note when new stock lands.</p>
           <NewsletterForm />
         </div>
 
