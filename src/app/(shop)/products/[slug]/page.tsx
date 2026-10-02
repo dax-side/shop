@@ -4,19 +4,16 @@ import { notFound } from "next/navigation";
 import { GoesWellWith } from "@/components/product/goes-well-with";
 import { ProductView } from "@/components/product/product-view";
 import { SiteFooter } from "@/components/site-footer";
-import { getProduct, getRoom, products } from "@/lib/catalogue";
-
-export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
-}
+import { getRoom } from "@/lib/catalogue";
+import { getProduct } from "@/lib/products";
 
 export async function generateMetadata({ params }: PageProps<"/products/[slug]">): Promise<Metadata> {
-  const product = getProduct((await params).slug);
+  const product = await getProduct((await params).slug);
   return product ? { title: product.name, description: product.description } : {};
 }
 
 export default async function ProductPage({ params }: PageProps<"/products/[slug]">) {
-  const product = getProduct((await params).slug);
+  const product = await getProduct((await params).slug);
   if (!product) notFound();
 
   const room = getRoom(product.room)!;

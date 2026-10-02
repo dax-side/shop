@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useActionState, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { startTransition, useActionState, useEffect, useState, useSyncExternalStore, type FormEvent } from "react";
 import { bagStore, itemKey, type BagItem } from "@/lib/bag-store";
 import { placeOrder, type CheckoutState } from "@/lib/checkout";
 import { formatNaira } from "@/lib/format";
@@ -38,6 +39,11 @@ export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }:
   const [state, action, pending] = useActionState(submitOrder, initialState);
   const [method, setMethod] = useState<FulfilmentMethod>("delivery");
   const [payment, setPayment] = useState("card");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.status === "success") router.replace(`/orders/${state.orderId}`);
+  }, [state, router]);
 
   const totals = orderTotals(subtotal, method, pricing);
   const errors = state.status === "error" ? state.fieldErrors : {};
@@ -53,7 +59,13 @@ export function CheckoutForm({ prices, pricing, deliveryDays, paymentProvider }:
     startTransition(() => action(formData));
   }
 
-  if (state.status === "success") return <OrderReceived order={state.order} />;
+  if (state.status === "success") {
+    return (
+      <p role="status" className="py-10 font-serif text-2xl italic">
+        Order {state.reference} placed. Taking you to your order…
+      </p>
+    );
+  }
 
   if (hydrated && items.length === 0) {
     return (
@@ -268,34 +280,5 @@ function BagLines({ items }: { items: BagItem[] }) {
         </li>
       ))}
     </ul>
-  );
-}
-
-function OrderReceived({ order }: { order: Extract<CheckoutState, { status: "success" }>["order"] }) {
-  return (
-    <div className="max-w-2xl py-4" role="status">
-      <h2 className="display text-5xl sm:text-7xl">Order received.</h2>
-      <p className="mt-4 font-serif text-2xl italic">Thanks, {order.firstName}. We&apos;re packing it now.</p>
-      <dl className="mt-8 grid gap-3 border-y border-ink py-4 text-sm sm:grid-cols-3">
-        <div>
-          <dt className="label text-[0.625rem] text-muted">Reference</dt>
-          <dd className="font-mono">{order.reference}</dd>
-        </div>
-        <div>
-          <dt className="label text-[0.625rem] text-muted">Total</dt>
-          <dd className="font-mono">{formatNaira(order.total)}</dd>
-        </div>
-        <div>
-          <dt className="label text-[0.625rem] text-muted">{order.method === "delivery" ? "Delivery" : "Pickup"}</dt>
-          <dd>{order.method === "delivery" ? "Arrives in 1–2 days in Lagos" : "Usually ready the same day"}</dd>
-        </div>
-      </dl>
-      <Link
-        href="/#catalogue"
-        className="mt-8 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm text-paper hover:bg-ink/85"
-      >
-        Keep shopping <ArrowRightIcon width={12} height={12} />
-      </Link>
-    </div>
   );
 }

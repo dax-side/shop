@@ -1,10 +1,12 @@
 "use server";
 
+import { randomInt } from "node:crypto";
 import { z } from "zod";
+import { getDb, schema } from "@/db";
 import { MAX_QUANTITY } from "./bag-store";
-import { getProduct } from "./catalogue";
 import { NIGERIAN_STATES, normalisePhone } from "./nigeria";
 import { orderTotals } from "./pricing";
+import { getProductsForOrder } from "./products";
 import { pricing } from "./site";
 
 const PAYMENT_METHODS = ["card", "bank-transfer", "ussd"] as const;
@@ -55,20 +57,10 @@ export type CheckoutField =
   | "bag"
   | "method";
 
-export type PlacedOrder = {
-  reference: string;
-  email: string;
-  firstName: string;
-  method: "delivery" | "pickup";
-  subtotal: number;
-  delivery: number;
-  total: number;
-};
-
 export type CheckoutState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors: Partial<Record<CheckoutField, string>> }
-  | { status: "success"; order: PlacedOrder };
+  | { status: "success"; orderId: string; reference: string };
 
 function fieldErrors(error: z.ZodError) {
   const errors: Partial<Record<CheckoutField, string>> = {};
@@ -77,6 +69,14 @@ function fieldErrors(error: z.ZodError) {
     if (field && !errors[field]) errors[field] = issue.message;
   }
   return errors;
+}
+
+// Short, human-friendly order reference without look-alike characters.
+const REFERENCE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+function newReference() {
+  let code = "";
+  for (let i = 0; i < 6; i++) code += REFERENCE_ALPHABET[randomInt(REFERENCE_ALPHABET.length)];
+  return `OJA-${code}`;
 }
 
 function failure(errors: Partial<Record<CheckoutField, string>>): CheckoutState {
@@ -107,10 +107,16 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
   };
   if (!bag.success || !contact.success || !address.success) return failure(errors);
 
-  // Price every line from the catalogue; the client's prices are never used.
-  const lines = [];
+  // Price every line from the database; the client's prices are never used.
+  const catalogue = await getProductsForOrder(bag.data.map((item) => item.slug));
+  const lines: {
+    product: (typeof catalogue)[number];
+    finish?: string;
+    quantity: number;
+    lineTotal: number;
+  }[] = [];
   for (const item of bag.data) {
-    const product = getProduct(item.slug);
+    const product = catalogue.find((p) => p.slug === item.slug);
     const finishValid = product?.finishes.length
       ? product.finishes.some((f) => f.name === item.finish)
       : item.finish === undefined;
@@ -122,15 +128,54 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
 
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0);
   const totals = orderTotals(subtotal, method, pricing);
+  const shipping = method === "delivery" ? (address.data as z.infer<typeof addressSchema>) : null;
 
-  return {
-    status: "success",
-    order: {
-      reference: `OJA-${Date.now().toString(36).toUpperCase()}`,
-      email: contact.data.email,
-      firstName: address.data.firstName,
-      method,
-      ...totals,
-    },
-  };
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const reference = newReference();
+    try {
+      const orderId = await getDb().transaction(async (tx) => {
+        const [order] = await tx
+          .insert(schema.orders)
+          .values({
+            reference,
+            email: contact.data.email,
+            phone: contact.data.phone,
+            firstName: address.data.firstName,
+            lastName: address.data.lastName,
+            method,
+            street: shipping?.street,
+            landmark: shipping?.landmark || null,
+            area: shipping?.area,
+            state: shipping?.state,
+            paymentMethod: contact.data.payment,
+            ...totals,
+          })
+          .returning({ id: schema.orders.id });
+
+        await tx.insert(schema.orderItems).values(
+          lines.map((line) => ({
+            orderId: order.id,
+            productId: line.product.id,
+            name: line.product.name,
+            number: line.product.number,
+            tone: line.product.tone,
+            finish: line.finish,
+            unitPrice: line.product.price,
+            quantity: line.quantity,
+            lineTotal: line.lineTotal,
+          })),
+        );
+        return order.id;
+      });
+      return { status: "success", orderId, reference };
+    } catch (error) {
+      // Retry on a reference collision (unique violation); give up on anything else.
+      const { code, cause } = error as { code?: string; cause?: { code?: string } };
+      if ((code ?? cause?.code) === "23505") continue;
+      console.error("placeOrder failed", error);
+      break;
+    }
+  }
+
+  return { status: "error", message: "We couldn't place your order. Please try again.", fieldErrors: {} };
 }

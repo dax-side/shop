@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
 import { CheckoutHeader } from "@/components/checkout/checkout-header";
-import { products } from "@/lib/catalogue";
+import { getProducts } from "@/lib/products";
 import { pricing, site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Checkout" };
 
-export default function CheckoutPage() {
+export default async function CheckoutPage() {
+  const products = await getProducts();
+
   return (
     <>
       <CheckoutHeader />
