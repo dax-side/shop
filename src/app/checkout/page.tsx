@@ -19,7 +19,6 @@ export default async function CheckoutPage() {
           prices={Object.fromEntries(products.map((product) => [product.slug, product.price]))}
           pricing={pricing}
           deliveryDays={site.deliveryDays}
-          paymentProvider={site.paymentProvider}
           account={user?.email ? { email: user.email, name: user.name ?? "" } : null}
           googleEnabled={authConfigured()}
         />

@@ -107,7 +107,7 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px;border-bottom:1px solid ${colors.ink};">
         <tr><td style="padding:4px 0;font-family:${fonts.sans};font-size:15px;color:${colors.ink};">Subtotal</td><td align="right" style="font-family:${fonts.mono};font-size:14px;color:${colors.ink};">${formatNaira(order.subtotal)}</td></tr>
         <tr><td style="padding:4px 0;font-family:${fonts.sans};font-size:15px;color:${colors.ink};">${order.method === "delivery" ? "Delivery" : "Pickup"}</td><td align="right" style="font-family:${fonts.mono};font-size:14px;color:${colors.ink};">${delivery}</td></tr>
-        <tr><td style="padding:8px 0 16px;font-family:${fonts.sans};font-size:17px;font-weight:700;color:${colors.ink};">Total</td><td align="right" style="padding:8px 0 16px;font-family:${fonts.mono};font-size:17px;font-weight:700;color:${colors.ink};">${formatNaira(order.total)}</td></tr>
+        <tr><td style="padding:8px 0 16px;font-family:${fonts.sans};font-size:17px;font-weight:700;color:${colors.ink};">Total paid</td><td align="right" style="padding:8px 0 16px;font-family:${fonts.mono};font-size:17px;font-weight:700;color:${colors.ink};">${formatNaira(order.total)}</td></tr>
       </table>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;"><tr>
         <td valign="top" width="50%" style="padding-right:12px;">
@@ -154,7 +154,7 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
     "",
     `Subtotal: ${formatNaira(order.subtotal)}`,
     `${order.method === "delivery" ? "Delivery" : "Pickup"}: ${delivery}`,
-    `Total: ${formatNaira(order.total)}`,
+    `Total paid: ${formatNaira(order.total)}`,
     "",
     `${order.method === "delivery" ? "Delivering to" : "Collecting"}:`,
     ...address,

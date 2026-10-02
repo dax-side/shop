@@ -17,7 +17,6 @@ type CheckoutFormProps = {
   prices: Record<string, number>;
   pricing: PricingConfig;
   deliveryDays: string;
-  paymentProvider: string;
   account: { email: string; name: string } | null;
   googleEnabled: boolean;
 };
@@ -36,7 +35,6 @@ export function CheckoutForm({
   prices,
   pricing,
   deliveryDays,
-  paymentProvider,
   account,
   googleEnabled,
 }: CheckoutFormProps) {
@@ -54,7 +52,9 @@ export function CheckoutForm({
   const router = useRouter();
 
   useEffect(() => {
-    if (state.status === "success") router.replace(`/orders/${state.orderId}`);
+    if (state.status !== "success") return;
+    if (state.paymentUrl) window.location.assign(state.paymentUrl);
+    else router.replace(`/orders/${state.orderId}`);
   }, [state, router]);
 
   const totals = orderTotals(subtotal, method, pricing);
@@ -74,7 +74,7 @@ export function CheckoutForm({
   if (state.status === "success") {
     return (
       <p role="status" className="py-10 font-serif text-2xl italic">
-        Order {state.reference} placed. Taking you to your order…
+        Order {state.reference} saved. {state.paymentUrl ? "Taking you to Paystack to pay…" : "Taking you to your order…"}
       </p>
     );
   }
@@ -255,7 +255,7 @@ export function CheckoutForm({
             />
           </div>
           <p className="mt-2 text-xs text-muted">
-            Payments are handled by {paymentProvider}. We never see or store your card details.
+            Payments are handled securely by Paystack. We never see or store your card details.
           </p>
         </Step>
 

@@ -4,7 +4,7 @@ import { connection } from "next/server";
 import { getDb, schema } from "@/db";
 import { site } from "./site";
 
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function findOrder(id: string) {
   if (!UUID_PATTERN.test(id)) return undefined;
