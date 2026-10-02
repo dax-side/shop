@@ -42,7 +42,8 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
 | Persistence | Products, orders, order lines and newsletter subscribers stored in Neon Postgres | Done |
 | Order page | Confirmation page for each order, linked from checkout | Done |
-| Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun after each order | Done |
+| Payments | Card, bank transfer and USSD through Paystack, confirmed by callback and webhook; failed payments can be retried from the order page | Done |
+| Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun once payment succeeds | Done |
 | Google sign-in | Sign in or create an account with Google, from the sign-in page or at checkout | Done |
 | Account | Order history for signed-in customers; checkout details prefilled | Done |
 
@@ -57,6 +58,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Styling | Tailwind CSS 4 |
 | Database | [Neon](https://neon.tech) Postgres with [Drizzle ORM](https://orm.drizzle.team) |
 | Auth | [Auth.js v5](https://authjs.dev) with Google and the Drizzle adapter (database sessions) |
+| Payments | [Paystack](https://paystack.com) |
 | Email | [Mailgun](https://www.mailgun.com) |
 | Validation | [Zod](https://zod.dev) |
 | Linting | ESLint |
@@ -71,11 +73,12 @@ Browser
   ▼
 Next.js app (server components, route handlers, server actions)
   ├── Neon Postgres ── products, orders, order items, subscribers (via Drizzle)
+  ├── Paystack ─────── payments (redirect checkout, callback and webhook)
   ├── Auth.js ──────── Google OAuth (Google Cloud Console)
   └── Mailgun ──────── order confirmation emails
 ```
 
-Pages render on the server. The bag lives on the client until checkout, where the server recomputes totals from database prices before creating the order and sending the confirmation email.
+Pages render on the server. The bag lives on the client until checkout, where the server recomputes totals from database prices and saves the order as awaiting payment. The customer is sent to Paystack; when they come back (or when Paystack's webhook arrives, whichever is first) the server verifies the transaction with Paystack, checks the amount, marks the order paid and sends the confirmation email.
 
 ---
 
@@ -87,6 +90,7 @@ Pages render on the server. The bag lives on the client until checkout, where th
 │   ├── app/
 │   │   ├── (shop)/     # Storefront routes sharing the header and footer
 │   │   ├── api/auth/   # Auth.js route handlers
+│   │   ├── api/paystack/ # Paystack callback and webhook
 │   │   ├── checkout/   # Checkout route with its own header
 │   │   ├── sign-in/    # Sign in / create account page
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
@@ -160,7 +164,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Yes | Public URL of the site, used in emails and auth callbacks |
+| `NEXT_PUBLIC_SITE_URL` | Off Vercel | Public URL of the site, used in emails and payment callbacks. On Vercel it defaults to the deployment's domain |
 | `DATABASE_URL` | Yes | Postgres connection string, e.g. your Neon pooled URL with `sslmode=require` |
 | `STORE_ADDRESS` | No | Pickup address shown in the header, footer and emails |
 | `STORE_OPENING_HOURS` | No | Store opening hours |
@@ -169,10 +173,25 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `DELIVERY_DAYS` | No | Delivery time outside Lagos, e.g. `3–5` |
 | `DELIVERY_FEE` | No | Delivery fee in naira. Defaults to `3500` |
 | `FREE_DELIVERY_THRESHOLD` | No | Order value in naira above which delivery is free. Defaults to `50000` |
-| `PAYMENT_PROVIDER` | No | Payment provider name shown at checkout |
 | `RETURN_WINDOW_DAYS` | No | Number of days customers have to return items |
 
 Store details fall back to bracketed placeholders such as `[STORE ADDRESS]` when unset, matching the design.
+
+### Payments (Paystack)
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `PAYSTACK_SECRET_KEY` | For payments | Secret key from the Paystack dashboard. Use the `sk_test_…` key for test mode |
+| `PAYSTACK_API_URL` | No | Override the API base URL, only for testing against a mock |
+
+Paystack setup:
+
+1. In the [Paystack dashboard](https://dashboard.paystack.com), switch to **Test Mode** and open **Settings → API Keys & Webhooks**.
+2. Copy the **Test Secret Key** into `PAYSTACK_SECRET_KEY`.
+3. Set the **Test Webhook URL** to `https://<your-domain>/api/paystack/webhook`.
+4. Pay with one of Paystack's [test cards](https://paystack.com/docs/payments/test-payments/), e.g. `4084 0840 8408 4081`, CVV `408`, any future expiry, PIN `0000`, OTP `123456`.
+
+The callback URL is sent with each transaction, so it needs no dashboard setting. For live payments, repeat with the live key and live webhook URL. Without `PAYSTACK_SECRET_KEY`, orders are saved as awaiting payment and the order page says payments aren't available.
 
 ### Email (Mailgun)
 
@@ -216,6 +235,7 @@ Without these variables the shop still works for guests; the sign-in page says s
 - Orders are saved in a single transaction; each line stores the price it was sold at.
 - Customer details are HTML-escaped before going into emails, and emails are sent after the response so a Mailgun outage never blocks an order.
 - Sessions are stored in the database (revocable, deleted on sign-out) and the OAuth flow uses PKCE. Sign-in redirects only accept paths on this site.
+- Payments are never trusted from the browser: every Paystack callback and webhook is verified with Paystack's API using the secret key, the amount and currency must match the order, and webhooks must carry a valid HMAC-SHA512 signature. Marking an order paid is idempotent, so the email goes out once.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
@@ -239,7 +259,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [x] Product page
 - [x] Bag
 - [x] Checkout page
-- [ ] Online payment through a provider such as Paystack or Flutterwave
+- [x] Online payment through Paystack
 - [ ] Discount codes
 - [ ] Catalogue search
 - [ ] Neon Postgres with Drizzle

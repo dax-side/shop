@@ -4,17 +4,27 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { formatNaira } from "@/lib/format";
 import { getOrder, nextSteps, PAYMENT_LABELS } from "@/lib/orders";
+import { payForOrder } from "@/lib/payment-actions";
 
 // Order pages contain personal details; keep them out of search results.
 export const metadata: Metadata = { title: "Your order", robots: { index: false, follow: false } };
 
 const dateFormat = new Intl.DateTimeFormat("en-NG", { day: "numeric", month: "short", year: "numeric" });
 
-export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
-  const order = await getOrder((await params).id);
+const paymentMessages: Record<string, string> = {
+  failed: "Your payment didn't go through, so you haven't been charged. You can try again below.",
+  unavailable: "We couldn't reach Paystack just now. Please try again in a moment.",
+};
+
+export default async function OrderPage({ params, searchParams }: PageProps<"/orders/[id]">) {
+  const [{ id }, { payment }] = await Promise.all([params, searchParams]);
+  const order = await getOrder(id);
   if (!order) notFound();
 
   const steps = nextSteps(order.method);
+  const awaitingPayment = order.status === "pending_payment";
+  const cancelled = order.status === "cancelled";
+  const paymentMessage = awaitingPayment && typeof payment === "string" ? paymentMessages[payment] : undefined;
 
   return (
     <>
@@ -27,16 +37,55 @@ export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
         </div>
 
         <section className="container-page max-w-3xl py-10 sm:py-14">
-          <h1 className="display text-6xl sm:text-8xl">
-            Order
-            <br />
-            confirmed.
-          </h1>
-          <p className="mt-5 font-serif text-2xl italic">Thanks, {order.firstName}. We&apos;re packing it now.</p>
-          <p className="mt-3 max-w-xl">
-            Here&apos;s what you ordered. We&apos;ll email you again
-            {order.method === "delivery" ? " with tracking once it leaves the shop." : " when it's ready to collect."}
-          </p>
+          {awaitingPayment ? (
+            <>
+              <h1 className="display text-6xl sm:text-8xl">
+                Almost
+                <br />
+                done.
+              </h1>
+              <p className="mt-5 font-serif text-2xl italic">Your order is saved, {order.firstName}.</p>
+              <p className="mt-3 max-w-xl">
+                Pay {formatNaira(order.total)} with Paystack to confirm it. We&apos;ll email your receipt as soon as it
+                goes through.
+              </p>
+              {paymentMessage && (
+                <p role="alert" className="mt-6 max-w-xl border border-accent p-3 text-sm text-accent">
+                  {paymentMessage}
+                </p>
+              )}
+              <form action={payForOrder.bind(null, order.id)} className="mt-6">
+                <button
+                  type="submit"
+                  className="h-12 rounded-full bg-ink px-8 text-sm text-paper hover:bg-ink/85"
+                >
+                  Pay {formatNaira(order.total)} now
+                </button>
+              </form>
+            </>
+          ) : cancelled ? (
+            <>
+              <h1 className="display text-6xl sm:text-8xl">
+                Order
+                <br />
+                cancelled.
+              </h1>
+              <p className="mt-5 max-w-xl">This order was cancelled. Get in touch if you think that&apos;s a mistake.</p>
+            </>
+          ) : (
+            <>
+              <h1 className="display text-6xl sm:text-8xl">
+                Order
+                <br />
+                confirmed.
+              </h1>
+              <p className="mt-5 font-serif text-2xl italic">Thanks, {order.firstName}. We&apos;re packing it now.</p>
+              <p className="mt-3 max-w-xl">
+                Here&apos;s what you ordered. We&apos;ll email you again
+                {order.method === "delivery" ? " with tracking once it leaves the shop." : " when it's ready to collect."}
+              </p>
+            </>
+          )}
 
           <h2 className="label mt-10 text-[0.625rem]">In your order</h2>
           <ul className="mt-3">
@@ -65,7 +114,7 @@ export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
               <dd className="font-mono">{order.delivery === 0 ? "Free" : formatNaira(order.delivery)}</dd>
             </div>
             <div className="flex justify-between pt-1 text-lg font-medium">
-              <dt>Total</dt>
+              <dt>{awaitingPayment ? "Total to pay" : "Total paid"}</dt>
               <dd className="font-mono">{formatNaira(order.total)}</dd>
             </div>
           </dl>
@@ -88,7 +137,7 @@ export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
               </p>
             </div>
             <div>
-              <h2 className="label text-[0.625rem]">Paying with</h2>
+              <h2 className="label text-[0.625rem]">{awaitingPayment ? "Paying with" : "Paid with"}</h2>
               <p className="mt-2 leading-snug">
                 {PAYMENT_LABELS[order.paymentMethod]}
                 <br />
@@ -98,27 +147,29 @@ export default async function OrderPage({ params }: PageProps<"/orders/[id]">) {
           </div>
         </section>
 
-        <section className="border-t border-ink">
-          <div className="container-page max-w-3xl py-10">
-            <h2 className="label text-[0.625rem]">What happens next</h2>
-            <ol className="mt-4 space-y-3">
-              {steps.map((step, index) => (
-                <li key={step.title} className="grid grid-cols-[3rem_1fr]">
-                  <span className="font-mono text-xs">{String(index + 1).padStart(2, "0")}</span>
-                  <p>
-                    <strong className="font-medium">{step.title}</strong> {step.body}
-                  </p>
-                </li>
-              ))}
-            </ol>
-            <Link
-              href="/#catalogue"
-              className="mt-8 inline-flex h-11 items-center rounded-full bg-ink px-5 text-sm text-paper hover:bg-ink/85"
-            >
-              Keep shopping
-            </Link>
-          </div>
-        </section>
+        {!cancelled && (
+          <section className="border-t border-ink">
+            <div className="container-page max-w-3xl py-10">
+              <h2 className="label text-[0.625rem]">What happens next</h2>
+              <ol className="mt-4 space-y-3">
+                {steps.map((step, index) => (
+                  <li key={step.title} className="grid grid-cols-[3rem_1fr]">
+                    <span className="font-mono text-xs">{String(index + 1).padStart(2, "0")}</span>
+                    <p>
+                      <strong className="font-medium">{step.title}</strong> {step.body}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+              <Link
+                href="/#catalogue"
+                className="mt-8 inline-flex h-11 items-center rounded-full bg-ink px-5 text-sm text-paper hover:bg-ink/85"
+              >
+                Keep shopping
+              </Link>
+            </div>
+          </section>
+        )}
       </main>
       <SiteFooter />
     </>

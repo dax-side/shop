@@ -99,6 +99,9 @@ export const orders = pgTable("orders", {
   area: text("area"),
   state: text("state"),
   paymentMethod: paymentMethodEnum("payment_method").notNull(),
+  // Paystack reference of the successful payment.
+  paymentReference: text("payment_reference").unique(),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
   subtotal: integer("subtotal").notNull(),
   delivery: integer("delivery").notNull(),
   total: integer("total").notNull(),

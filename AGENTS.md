@@ -78,6 +78,7 @@ Guidelines:
 - Next.js (App Router, `src/` directory) with TypeScript and Tailwind CSS
 - Neon Postgres with Drizzle ORM
 - Auth.js with Google as the provider
+- Paystack for payments (test mode with `sk_test_` keys)
 - Mailgun for transactional email
 
 Checks to run before every commit: `npm run lint`, `npm run typecheck`, `npm run build`.

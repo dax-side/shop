@@ -9,7 +9,6 @@ export const site = {
   email: process.env.STORE_EMAIL || "[EMAIL]",
   deliveryDays: process.env.DELIVERY_DAYS || "[DELIVERY DAYS]",
   returnWindowDays: process.env.RETURN_WINDOW_DAYS || "[RETURN WINDOW]",
-  paymentProvider: process.env.PAYMENT_PROVIDER || "[PAYMENT PROVIDER]",
 };
 
 function amount(value: string | undefined, fallback: number) {
@@ -22,3 +21,12 @@ export const pricing = {
   deliveryFee: amount(process.env.DELIVERY_FEE, 3500),
   freeDeliveryThreshold: amount(process.env.FREE_DELIVERY_THRESHOLD, 50000),
 };
+
+// Absolute URL of the site, for payment callbacks and email links. On Vercel this falls back
+// to the production domain (or the preview URL) when NEXT_PUBLIC_SITE_URL isn't set.
+export function siteUrl() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  const vercelHost =
+    process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL;
+  return vercelHost ? `https://${vercelHost}` : "http://localhost:3000";
+}

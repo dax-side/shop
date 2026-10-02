@@ -1,13 +1,13 @@
 "use server";
 
 import { randomInt } from "node:crypto";
-import { after } from "next/server";
 import { z } from "zod";
 import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { MAX_QUANTITY } from "./bag-store";
-import { sendOrderConfirmation } from "./email/send-order-confirmation";
 import { NIGERIAN_STATES, normalisePhone } from "./nigeria";
+import { startPayment } from "./payments";
+import { paystackConfigured } from "./paystack";
 import { orderTotals } from "./pricing";
 import { getProductsForOrder } from "./products";
 import { pricing } from "./site";
@@ -63,7 +63,7 @@ export type CheckoutField =
 export type CheckoutState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors: Partial<Record<CheckoutField, string>> }
-  | { status: "success"; orderId: string; reference: string };
+  | { status: "success"; orderId: string; reference: string; paymentUrl?: string };
 
 function fieldErrors(error: z.ZodError) {
   const errors: Partial<Record<CheckoutField, string>> = {};
@@ -172,11 +172,23 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
         );
         return order.id;
       });
-      // Send the receipt after responding so checkout isn't slowed down by Mailgun.
-      after(() =>
-        sendOrderConfirmation(orderId).catch((error) => console.error(`Confirmation email failed for ${reference}`, error)),
-      );
-      return { status: "success", orderId, reference };
+      // The confirmation email goes out once Paystack confirms the payment.
+      let paymentUrl: string | undefined;
+      if (paystackConfigured()) {
+        try {
+          paymentUrl = await startPayment({
+            id: orderId,
+            reference,
+            email: contact.data.email,
+            total: totals.total,
+            paymentMethod: contact.data.payment,
+          });
+        } catch (error) {
+          // The order is saved; the customer can retry payment from the order page.
+          console.error(`Could not start payment for ${reference}`, error);
+        }
+      }
+      return { status: "success", orderId, reference, paymentUrl };
     } catch (error) {
       // Retry on a reference collision (unique violation); give up on anything else.
       const { code, cause } = error as { code?: string; cause?: { code?: string } };

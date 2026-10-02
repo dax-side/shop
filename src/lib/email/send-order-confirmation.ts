@@ -1,5 +1,6 @@
 import "server-only";
 import { findOrder } from "../orders";
+import { siteUrl } from "../site";
 import { mailgunConfigured, sendEmail } from "./mailgun";
 import { orderConfirmationEmail } from "./order-confirmation";
 
@@ -12,8 +13,7 @@ export async function sendOrderConfirmation(orderId: string) {
   const order = await findOrder(orderId);
   if (!order) return;
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const { subject, html, text } = orderConfirmationEmail(order, new URL(`/orders/${order.id}`, siteUrl).toString());
+  const { subject, html, text } = orderConfirmationEmail(order, new URL(`/orders/${order.id}`, siteUrl()).toString());
 
   await sendEmail({
     to: order.email,
