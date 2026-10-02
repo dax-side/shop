@@ -189,3 +189,22 @@ export const shopShelves: ProductImage = {
   src: "/images/shop-shelves.webp",
   alt: "Wooden shelves lined with ceramic vases and pots",
 };
+
+export const roomImages: Record<string, ProductImage> = {
+  kitchen: { src: "/images/rooms/kitchen.webp", alt: "Glass jars on a wooden kitchen shelf" },
+  table: { src: "/images/rooms/table.webp", alt: "Wooden table set with white plates and flowers" },
+  "bath-linen": { src: "/images/rooms/bath-linen.webp", alt: "White linen on a wooden chair" },
+  tools: { src: "/images/rooms/tools.webp", alt: "Hand tools hanging on a pale wall" },
+  "paper-desk": { src: "/images/rooms/paper-desk.webp", alt: "Pens resting on a brown envelope" },
+};
+
+export const makingImages: (ProductImage & { label: string })[] = [
+  { label: "Clay", src: "/images/making/clay.webp", alt: "Hands shaping a round clay pot" },
+  { label: "Fibre", src: "/images/making/weaving.webp", alt: "Hands weaving a wicker basket in the sun" },
+  { label: "Wood", src: "/images/making/wood.webp", alt: "Chisel carving into a piece of wood" },
+];
+
+export const storeImage: ProductImage = {
+  src: "/images/store.webp",
+  alt: "Ceramic bowls and vases on a wooden display table in a sunlit shop",
+};
