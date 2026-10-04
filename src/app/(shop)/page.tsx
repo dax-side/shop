@@ -7,15 +7,16 @@ import { ShopByRoom } from "@/components/home/shop-by-room";
 import { getRoom } from "@/lib/catalogue";
 
 export default async function Home({ searchParams }: PageProps<"/">) {
-  const { room } = await searchParams;
+  const { room, show } = await searchParams;
   const activeRoom = typeof room === "string" ? getRoom(room)?.slug : undefined;
+  const visible = typeof show === "string" ? Number.parseInt(show, 10) : NaN;
 
   return (
     <>
       <main>
         <Hero />
         <ShopByRoom />
-        <Catalogue room={activeRoom} />
+        <Catalogue room={activeRoom} show={visible} />
         <MadeByHand />
         <HowItWorks />
       </main>
