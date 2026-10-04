@@ -43,11 +43,8 @@ export function onSignIn(listener: (session: AppSession) => void) {
 
 // Handles the redirect back from the website. It can arrive two ways (the auth session's result,
 // or a deep link into the /auth route), so the first one wins and the other is ignored.
-export function completeSignIn(url: string): Promise<AppSession> | null {
-  const { queryParams } = Linking.parse(url);
-  const code = typeof queryParams?.code === "string" ? queryParams.code : null;
-  const state = typeof queryParams?.state === "string" ? queryParams.state : null;
-  if (!code || !pending || state !== pending.state) return exchange;
+export function completeSignIn(code: unknown, state: unknown): Promise<AppSession> | null {
+  if (typeof code !== "string" || !pending || state !== pending.state) return exchange;
 
   const { verifier } = pending;
   pending = null;
@@ -75,7 +72,10 @@ export async function startSignIn(): Promise<AppSession | null> {
 
   const url = `${API_URL}/app-sign-in?${new URLSearchParams({ redirect_uri: redirectUri, code_challenge: challenge, state })}`;
   const result = await WebBrowser.openAuthSessionAsync(url, redirectUri);
-  if (result.type === "success") return (completeSignIn(result.url) ?? exchange) as Promise<AppSession> | null;
+  if (result.type === "success") {
+    const { queryParams } = Linking.parse(result.url);
+    return completeSignIn(queryParams?.code, queryParams?.state);
+  }
   // On Android the browser can report "dismiss" just before the deep link lands in /auth.
   return exchange;
 }
