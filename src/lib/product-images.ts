@@ -2,9 +2,15 @@
 
 export type ProductImage = { src: string; alt: string };
 
-const VIEWS = ["front", "side", "detail", "in-use"] as const;
+// Each product has as many photos as it has alt texts. The first four use these file names
+// (front.webp, side.webp…); any more are photo-5.webp, photo-6.webp and so on.
+const VIEWS = ["front", "side", "detail", "in-use"];
+const VIEW_LABELS = ["front", "side", "detail", "in use"];
 
-const PRODUCTS: Record<string, { number: string; alts: [string, string, string, string] }> = {
+const fileName = (index: number) => VIEWS[index] ?? `photo-${index + 1}`;
+export const viewLabel = (index: number) => VIEW_LABELS[index] ?? `photo ${index + 1}`;
+
+const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
   "wooden-spoon-set": {
     number: "023",
     alts: [
@@ -172,7 +178,7 @@ const PRODUCTS: Record<string, { number: string; alts: [string, string, string, 
 export function productImages(slug: string): ProductImage[] {
   const product = PRODUCTS[slug];
   if (!product) return [];
-  return VIEWS.map((view, i) => ({ src: `/images/products/${slug}/${view}.webp`, alt: product.alts[i] }));
+  return product.alts.map((alt, i) => ({ src: `/images/products/${slug}/${fileName(i)}.webp`, alt }));
 }
 
 export function productThumb(slug: string): ProductImage | undefined {

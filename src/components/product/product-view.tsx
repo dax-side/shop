@@ -4,12 +4,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { toBagItem, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
-import { productImages } from "@/lib/product-images";
+import { productImages, viewLabel } from "@/lib/product-images";
 import { AddToBagButton } from "../bag/add-to-bag-button";
 import { NewBadge, ProductPhoto } from "../product-photo";
 import { QuantityStepper } from "../quantity-stepper";
 
-const VIEWS = ["front", "side", "detail", "in use"];
 
 export function ProductView({ product, roomName }: { product: Product; roomName: string }) {
   const [finish, setFinish] = useState(product.finishes[0]?.name);
@@ -17,7 +16,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
   const [quantity, setQuantity] = useState(1);
   const images = productImages(product.slug);
 
-  const caption = [product.name, finish?.toLowerCase(), VIEWS[view]].filter(Boolean).join(", ");
+  const caption = [product.name, finish?.toLowerCase(), viewLabel(view)].filter(Boolean).join(", ");
   const addLabel = `Add to bag · ${formatNaira(product.price * quantity)}`;
   const bagItem = toBagItem(product, finish);
 
@@ -32,21 +31,19 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
     <div className="grid gap-6 md:grid-cols-12 md:gap-8">
       <div className="-mx-4 -mt-4 flex gap-3 sm:mx-0 sm:mt-0 md:col-span-6">
         <ul className="hidden w-14 shrink-0 flex-col gap-2 lg:flex">
-          {VIEWS.map((name, index) => (
-            <li key={name}>
+          {images.map((image, index) => (
+            <li key={image.src}>
               <button
                 type="button"
                 onClick={() => setView(index)}
-                aria-label={`Show ${name} view`}
+                aria-label={`Show ${viewLabel(index)} view`}
                 aria-pressed={view === index}
                 className={`relative block aspect-square w-full overflow-hidden border ${
                   view === index ? "border-ink" : "border-transparent opacity-70 hover:opacity-100"
                 }`}
                 style={{ background: product.tone }}
               >
-                {images[index] && (
-                  <Image src={images[index].src} alt="" fill sizes="56px" className="object-cover" />
-                )}
+                <Image src={image.src} alt="" fill sizes="56px" className="object-cover" />
               </button>
             </li>
           ))}
@@ -61,18 +58,18 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
             tone={product.tone}
             caption={caption}
             image={images[view]}
-            counter={`${view + 1} / ${VIEWS.length}`}
+            counter={`${view + 1} / ${images.length}`}
             className="aspect-square md:aspect-[4/5]"
             sizes="(min-width: 768px) 50vw, 100vw"
             preload={view === 0}
           />
           <div className="absolute bottom-3 left-3 flex gap-1.5 lg:hidden">
-            {VIEWS.map((name, index) => (
+            {images.map((image, index) => (
               <button
-                key={name}
+                key={image.src}
                 type="button"
                 onClick={() => setView(index)}
-                aria-label={`Show ${name} view`}
+                aria-label={`Show ${viewLabel(index)} view`}
                 aria-pressed={view === index}
                 className={`h-1 w-4 ${view === index ? "bg-paper" : "bg-paper/50"}`}
               />
