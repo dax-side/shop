@@ -263,6 +263,24 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Wooden pegs on a washing line",
     ],
   },
+  "graphite-pencils-set-of-6": {
+    number: "050",
+    alts: [
+      "A row of sharpened pencils",
+      "Close-up of a sharpened pencil tip",
+      "Pencils standing in a wooden holder",
+      "Pencil drawing a line on paper",
+    ],
+  },
+  "spiral-sketchbook-a4": {
+    number: "053",
+    alts: [
+      "Spiral sketchbook with pens and pencils",
+      "Two spiral sketchbooks stacked",
+      "Botanical drawings in a sketchbook",
+      "Sketchbook open on a checked cloth",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
