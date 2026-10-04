@@ -794,6 +794,123 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Brown padlock",
     ],
   },
+  "fountain-pen": {
+    number: "117",
+    alts: [
+      "Silver click pen on white paper",
+      "Gold and black tube on brown surface",
+      "Black and gold fountain pen",
+      "A black and gold pen rests on an open notebook",
+    ],
+  },
+  "ink-bottle": {
+    number: "118",
+    alts: [
+      "Black and silver pocket knife",
+      "White and yellow click pen beside black glass bottle",
+      "Black and gray swan table decor",
+      "A row of different colored nail polish bottles",
+    ],
+  },
+  "leather-journal": {
+    number: "119",
+    alts: [
+      "A notebook with a pen on top of it",
+      "Red leather long wallet on white table",
+      "A green notebook sitting on top of a wooden table",
+      "A couple of books sitting on top of a wooden table",
+    ],
+  },
+  "brass-desk-lamp": {
+    number: "120",
+    alts: [
+      "Two modern lamps with blue and green shades",
+      "A green desk lamp in a library",
+      "A white lamp sits on a wooden nightstand",
+      "A vintage brass desk lamp illuminates a library",
+    ],
+  },
+  "brass-letter-opener": {
+    number: "121",
+    alts: [
+      "A pen, a book, and a pair of scissors on a table",
+      "A dagger with a gold-inlaid blade and an ornate ivory handle on grey",
+      "Magnifying glass examines small paper with text",
+      "A pen and some papers on a table",
+    ],
+  },
+  "metal-stapler": {
+    number: "122",
+    alts: [
+      "Orange stapler opened",
+      "Yellow and gray stapler on white table",
+      "A black stapler rests on a desk with papers",
+      "White and red metal tool",
+    ],
+  },
+  "brass-paper-clips": {
+    number: "123",
+    alts: [
+      "Yellow paper clip on red textile",
+      "Brown paper clips on white surface",
+      "A group of scissors",
+      "Gray paper clip",
+    ],
+  },
+  "wooden-ruler": {
+    number: "124",
+    alts: [
+      "Brown wooden ruler",
+      "Brown wooden frame with white background",
+      "Brown wooden triangle ruler",
+      "A bunch of tools that are sitting on a table",
+    ],
+  },
+  "brass-pencil-sharpener": {
+    number: "125",
+    alts: [
+      "A close up of a piece of food on a table",
+      "Black and gray plastic container",
+      "Blue pencil sharpener on white surface",
+      "A group of pencils and sharpeners on a table",
+    ],
+  },
+  "ceramic-pen-pot": {
+    number: "126",
+    alts: [
+      "A metal cup filled with assorted pens and pencils",
+      "Beige pen holder with colorful pens and stylus on desk",
+      "White ceramic mug on brown wooden table",
+      "A bamboo pencil holder with pens and markers",
+    ],
+  },
+  "wax-seal-kit": {
+    number: "128",
+    alts: [
+      "Round brown stamp",
+      "A white envelope with a wax stamp and a wax seal",
+      "White envelope with brown stamp",
+      "A wax stamp sitting on top of a piece of paper",
+    ],
+  },
+  "postcards-set-of-10": {
+    number: "129",
+    alts: [
+      "Vintage postcard with \"post card\" and \"canada\" stamp",
+      "White and brown house photos",
+      "A pile of old envelopes sitting on top of each other",
+      "White post card",
+    ],
+  },
+  "desk-calendar": {
+    number: "130",
+    alts: [
+      "A desk calendar sitting on top of a wooden table",
+      "A calendar sitting on top of a wooden table",
+      "White braille paper on brown wooden table",
+      "A calendar with the word jan on it",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
