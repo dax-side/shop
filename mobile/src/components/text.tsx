@@ -9,7 +9,7 @@ export function Display({ style, color, size = 44, children, ...props }: Props) 
   return (
     <Text
       {...props}
-      style={[{ fontFamily: "Display", fontSize: size, lineHeight: size * 0.92, color: color ?? colors.ink, textTransform: "uppercase" }, style]}
+      style={[{ fontFamily: "ArchivoDisplay", fontSize: size, lineHeight: size * 0.92, color: color ?? colors.ink, textTransform: "uppercase" }, style]}
     >
       {children}
     </Text>
@@ -22,7 +22,7 @@ export function Label({ style, color, size = 11, children, ...props }: Props) {
   return (
     <Text
       {...props}
-      style={[{ fontFamily: "Mono", fontSize: size, letterSpacing: 0.6, color: color ?? colors.ink, textTransform: "uppercase" }, style]}
+      style={[{ fontFamily: "JetBrainsMono", fontSize: size, letterSpacing: 0.6, color: color ?? colors.ink, textTransform: "uppercase" }, style]}
     >
       {children}
     </Text>
@@ -33,24 +33,30 @@ export function Label({ style, color, size = 11, children, ...props }: Props) {
 export function Mono({ style, color, size = 13, children, ...props }: Props) {
   const { colors } = useTheme();
   return (
-    <Text {...props} style={[{ fontFamily: "Mono", fontSize: size, color: color ?? colors.ink }, style]}>
+    <Text {...props} style={[{ fontFamily: "JetBrainsMono", fontSize: size, color: color ?? colors.ink }, style]}>
       {children}
     </Text>
   );
 }
 
-// Italic serif taglines.
-export function Serif({ style, color, size = 22, children, ...props }: Props) {
+// Serif for taglines (italic) and the sign-in headline (upright).
+export function Serif({ style, color, size = 22, italic = true, children, ...props }: Props & { italic?: boolean }) {
   const { colors } = useTheme();
   return (
-    <Text {...props} style={[{ fontFamily: "Serif", fontSize: size, lineHeight: size * 1.15, color: color ?? colors.ink }, style]}>
+    <Text
+      {...props}
+      style={[
+        { fontFamily: italic ? "InstrumentSerifItalic" : "InstrumentSerif", fontSize: size, lineHeight: size * 1.15, color: color ?? colors.ink },
+        style,
+      ]}
+    >
       {children}
     </Text>
   );
 }
 
 type BodyProps = Props & { weight?: "regular" | "medium" | "semibold" };
-const bodyFonts = { regular: "Sans", medium: "SansMedium", semibold: "SansSemiBold" };
+const bodyFonts = { regular: "Archivo", medium: "ArchivoMedium", semibold: "ArchivoSemiBold" };
 
 // Clean sans body copy.
 export function Body({ style, color, size = 15, weight = "regular", children, ...props }: BodyProps) {
