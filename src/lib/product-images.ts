@@ -659,6 +659,141 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Man taking photo in front of round mirror",
     ],
   },
+  "claw-hammer": {
+    number: "102",
+    alts: [
+      "Black handle on brown wooden table",
+      "Black and silver claw hammer",
+      "Black and silver claw hammer",
+      "Black and orange handle black handle",
+    ],
+  },
+  "screwdriver-set": {
+    number: "103",
+    alts: [
+      "A group of black and silver pens",
+      "A black and silver pen",
+      "Bosch screwdriver set with various bits",
+      "Silver and gold screw driver",
+    ],
+  },
+  "tape-measure": {
+    number: "104",
+    alts: [
+      "A close up of a tape measure on a white background",
+      "Yellow and black measuring tape",
+      "A person holding a tape measure in their hand",
+      "Gray and yellow measures",
+    ],
+  },
+  "garden-trowel": {
+    number: "105",
+    alts: [
+      "Silver and brown steel hand tool",
+      "A couple of metal objects with a metal object on top of them",
+      "A hand rake sits in a green garden with plants",
+      "Hands in gloves planting small seedlings in dark soil",
+    ],
+  },
+  "pruning-shears": {
+    number: "106",
+    alts: [
+      "Blue and silver pliers on black and gray surface",
+      "A person holding a pair of pliers to a plant",
+      "A person holding a pair of scissors in front of a plant",
+      "A man is trimming a tree with a pair of pliers",
+    ],
+  },
+  "leather-work-gloves": {
+    number: "107",
+    alts: [
+      "A pair of brown leather gloves on a white background",
+      "A pair of yellow gloves sitting on top of a table",
+      "A pair of gloves sitting on top of a trash can",
+      "Person wearing brown leather gloves",
+    ],
+  },
+  "wooden-step-stool": {
+    number: "108",
+    alts: [
+      "White ceramic mug on brown wooden table",
+      "A small wooden table sitting on top of a sidewalk",
+      "A handcrafted wooden stool with a minimalist design",
+      "Green potted plant on brown wooden table",
+    ],
+  },
+  "dustpan-and-brush": {
+    number: "109",
+    alts: [
+      "Dustpan and ladles hanging on a wall",
+      "Ornate brass dustpan and brush hanging on white wall",
+      "A broom leaning against a pole on a sidewalk",
+      "Red dustpan and broom leaning against wall",
+    ],
+  },
+  "galvanised-bucket": {
+    number: "110",
+    alts: [
+      "A metal bucket hanging from a metal hook",
+      "Gray steel bucket on brown wooden table",
+      "Gray steel bucket on brown wooden bucket",
+      "A bunch of buckets filled with lots of flowers",
+    ],
+  },
+  "steel-scissors": {
+    number: "111",
+    alts: [
+      "A pair of scissors sitting on top of a white table",
+      "Black handled scissors wallpaper",
+      "A pair of scissors sitting on top of a table",
+      "Gray steel scissors",
+    ],
+  },
+  "jute-twine": {
+    number: "112",
+    alts: [
+      "Brown rope tied on brown wooden post",
+      "A ball of brown twine held in an open palm against a white background",
+      "A close up of a bunch of rope",
+      "Close-up of light brown, messy, tangled hair strands",
+    ],
+  },
+  "hurricane-lantern": {
+    number: "113",
+    alts: [
+      "An old fashioned lantern hanging on a wall",
+      "Black kerosene lamp",
+      "Lighted lantern lamp",
+      "Turned-on lantern on brown wooden table",
+    ],
+  },
+  "hand-saw": {
+    number: "114",
+    alts: [
+      "Grayscale photo handsaw",
+      "Person in white shirt holding brown wooden table",
+      "A person cutting a piece of wood with a pair of scissors",
+      "A person holding a pair of scissors in their hand",
+    ],
+  },
+  "spirit-level": {
+    number: "115",
+    alts: [
+      "White spirit level on brown table",
+      "White and green electronic device",
+      "Orange pen beside blue tape dispenser",
+      "A construction worker holding a long red spirit level against a wooden wall frame",
+    ],
+  },
+  "brass-padlock": {
+    number: "116",
+    alts: [
+      "Gold padlock on white surface",
+      "Brown padlock on brown wooden fence",
+      "Gold padlock on white surface",
+      "Brown padlock",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
