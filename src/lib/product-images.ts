@@ -533,6 +533,132 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "White flower in clear glass vase",
     ],
   },
+  "cotton-bathrobe": {
+    number: "088",
+    alts: [
+      "Woman wearing a white bathrobe standing against wooden wall",
+      "A woman in a bathrobe talking on a cell phone",
+      "A man sitting on a bench",
+      "Close-up of a grey fabric belt tied in a knot",
+    ],
+  },
+  "cotton-bath-mat": {
+    number: "089",
+    alts: [
+      "A bathroom rug on the floor in front of a door",
+      "A close up view of a white blanket",
+      "A bathroom with a sink and a mirror",
+      "A clawfoot bathtub filled with bubbles and candles",
+    ],
+  },
+  "wooden-bath-brush": {
+    number: "090",
+    alts: [
+      "White ceramic teapot on white textile",
+      "Brown wooden spoon on white textile",
+      "A hair brush sitting on top of a white table",
+      "White and brown wooden heart shaped decor",
+    ],
+  },
+  "linen-pillowcases-pair": {
+    number: "091",
+    alts: [
+      "White bed pillow on bed",
+      "White bed pillow against white wall",
+      "A stack of pillows sitting on top of a wooden table",
+      "Blue and white throw pillow",
+    ],
+  },
+  "cotton-bed-sheet": {
+    number: "092",
+    alts: [
+      "White bedspread",
+      "A bed with a white cover and pillows on top of it",
+      "White textile",
+      "White textile in close up photography",
+    ],
+  },
+  "woven-throw": {
+    number: "093",
+    alts: [
+      "White and blue knit textile",
+      "Man in black shirt reading book on black couch",
+      "Person holding black and white textile",
+      "A close up of a blanket with a knot on it",
+    ],
+  },
+  "raw-shea-butter": {
+    number: "094",
+    alts: [
+      "A bowl of food that is on a table",
+      "A spoon in a bowl with a liquid inside of it",
+      "Jar of butter with spoon",
+      "Scoop of ice cream",
+    ],
+  },
+  "wooden-comb": {
+    number: "095",
+    alts: [
+      "A couple of wooden combs sitting on top of a white sheet",
+      "A collection of wooden combs and combs on a white surface",
+      "A couple of wooden combs sitting on top of a blue cloth",
+      "Green leaves on brown wooden chopping board",
+    ],
+  },
+  "ceramic-soap-dish": {
+    number: "096",
+    alts: [
+      "A piece of soap sitting on top of a wooden plate",
+      "Green and white round plastic container",
+      "White square container on white table",
+      "White plastic egg tray on white table",
+    ],
+  },
+  "bamboo-toothbrushes-4": {
+    number: "097",
+    alts: [
+      "Brown wooden sticks in gray ceramic bowl",
+      "Blue and white toothbrush in clear glass jar",
+      "A wooden toothbrush holder with a toothbrush in it",
+      "Two toothbrush in mason jar",
+    ],
+  },
+  "cotton-face-cloths-3": {
+    number: "098",
+    alts: [
+      "Folded towels near potted plants",
+      "Gray textile in shallow focus shot",
+      "A bunch of white towels stacked on top of each other",
+      "A couple of cloths that are sitting on a table",
+    ],
+  },
+  "linen-shower-curtain": {
+    number: "099",
+    alts: [
+      "Beige curtain",
+      "A close up of a piece of cloth on a table",
+      "A white wall with a brown line",
+      "White and gray plaid curtain",
+    ],
+  },
+  "glass-soap-dispenser": {
+    number: "100",
+    alts: [
+      "Ribbed glass soap dispenser with gold pump on a windowsill",
+      "A bathroom sink with a soap dispenser and a soap dish",
+      "A bottle of soap sitting on a bathroom counter",
+      "Modern bathroom sink with soap dispenser and towel",
+    ],
+  },
+  "rattan-mirror": {
+    number: "101",
+    alts: [
+      "Brown spiral metal on white concrete floor",
+      "A mirror and a lamp on a table",
+      "Diagram",
+      "Man taking photo in front of round mirror",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
