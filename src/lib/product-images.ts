@@ -191,6 +191,33 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Glass storage jars with wooden lids beside a tea towel",
     ],
   },
+  "ceramic-serving-bowl": {
+    number: "011",
+    alts: [
+      "White stoneware serving bowl",
+      "Two speckled stoneware bowls stacked",
+      "A stack of speckled stoneware bowls",
+      "Glazed stoneware bowls seen from above",
+    ],
+  },
+  "linen-napkins-set-of-4": {
+    number: "012",
+    alts: [
+      "Folded linen napkins on a wooden table",
+      "Hemstitched edge of a linen napkin",
+      "Cutlery laid on a folded linen napkin",
+      "Table set with plates and linen napkins",
+    ],
+  },
+  "woven-table-mats-set-of-4": {
+    number: "013",
+    alts: [
+      "Round woven table mat",
+      "Close-up of a woven table mat",
+      "Wooden spoon and chopsticks on a woven mat",
+      "Breakfast plate on a round woven mat",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
