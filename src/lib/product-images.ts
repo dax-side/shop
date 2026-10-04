@@ -281,6 +281,132 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Sketchbook open on a checked cloth",
     ],
   },
+  "enamel-kettle": {
+    number: "060",
+    alts: [
+      "Green and black kettle on brown wooden table",
+      "A red tea pot sitting on top of a table",
+      "A cream enamel kettle with a green rim on a blue portable stove",
+      "A red teapot with a black handle on a yellow background",
+    ],
+  },
+  "chef-knife-20cm": {
+    number: "061",
+    alts: [
+      "A couple of knives sitting next to each other on a table",
+      "A couple of knives sitting next to each other",
+      "Sliced vegetables and meat on chopping board",
+      "A knife and potatoes on a cutting board",
+    ],
+  },
+  "wooden-rolling-pin": {
+    number: "062",
+    alts: [
+      "Brown wooden smoking pipe on white and blue textile",
+      "White round ornament on brown wooden surface",
+      "Brown bread on brown wooden chopping board",
+      "Child cutting gingerbread dough with cookie cutters",
+    ],
+  },
+  "ceramic-teapot": {
+    number: "063",
+    alts: [
+      "A white tea pot sitting on top of a table",
+      "Black and red ceramic kettle",
+      "Brown teapot on gray surface",
+      "Brown ceramic teapot on brown wooden table",
+    ],
+  },
+  "glass-water-jug": {
+    number: "064",
+    alts: [
+      "An elegant, diamond-patterned glass pitcher",
+      "Clear glass pitcher beside clear drinking glass on table",
+      "A glass pitcher and a glass pitcher on a wooden surface",
+      "Man pouring water in glass",
+    ],
+  },
+  "steel-colander": {
+    number: "065",
+    alts: [
+      "A white colander filled with grapes on top of a wooden tray",
+      "A bowl of asparagus sitting on a counter",
+      "Brown round fruits on stainless steel basket",
+      "A bowl of food",
+    ],
+  },
+  "box-grater": {
+    number: "066",
+    alts: [
+      "Black and white rectangular box",
+      "A metal tin, a small grater, a glass bowl, a ring, and pearls",
+      "Close-up of a metal cheese grater surface",
+      "A person cutting a piece of bread",
+    ],
+  },
+  "cast-iron-dutch-oven": {
+    number: "067",
+    alts: [
+      "A red pot sitting on top of a table",
+      "Black cast iron pot with lid on stovetop",
+      "Red and blue plastic containers on brown wooden table",
+      "A pot is sitting on top of a stove",
+    ],
+  },
+  "wooden-chopping-board": {
+    number: "068",
+    alts: [
+      "Brown wooden tray on brown wooden table",
+      "A knife and a board on a wooden surface",
+      "Brown wooden chopping board beside green vegetable",
+      "Cheese and ham on chopping board",
+    ],
+  },
+  "ceramic-oil-bottle": {
+    number: "069",
+    alts: [
+      "Gray certamic pot",
+      "Three white enamel jars",
+      "A group of brown vases sitting on top of a table",
+      "A ceramic vase with a brown top on a white surface",
+    ],
+  },
+  "spice-tins-set-of-6": {
+    number: "070",
+    alts: [
+      "Stainless steel round bowl with food",
+      "A bowl of food",
+      "Various colorful spices arranged in metal bowls on a tray",
+      "Assorted spices in clear glass containers",
+    ],
+  },
+  "measuring-cups": {
+    number: "071",
+    alts: [
+      "A group of four metal pots hanging from hooks",
+      "Stainless steel cup with coffee",
+      "A basket of eggs and a bottle of tea on a table",
+      "Measuring cup on white paper",
+    ],
+  },
+  "clay-cooking-pot": {
+    number: "072",
+    alts: [
+      "A pot is cooking over fire",
+      "A pile of clay pots sitting next to each other",
+      "Woman cooking over a clay stove outdoors",
+      "Stacks of charred clay pots with lids on a tiled kitchen shelf",
+    ],
+  },
+  "wooden-spatula-set": {
+    number: "073",
+    alts: [
+      "Brown wooden spoon on white surface",
+      "Brown wooden spoons in brown wooden cup",
+      "Brown wooden handled fork and knife on brown wooden chopping board",
+      "Stainless steel spoon and fork",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
