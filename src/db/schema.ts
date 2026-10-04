@@ -10,6 +10,7 @@ import {
   serial,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 import type { Finish, Product } from "../lib/catalogue";
@@ -17,6 +18,8 @@ import type { Finish, Product } from "../lib/catalogue";
 export const roomEnum = pgEnum("room", ["kitchen", "table", "bath-linen", "tools", "paper-desk"]);
 export const fulfilmentEnum = pgEnum("fulfilment", ["delivery", "pickup"]);
 export const paymentMethodEnum = pgEnum("payment_method", ["card", "bank-transfer", "ussd"]);
+// Which client last added an item: the website or the mobile app.
+export const clientEnum = pgEnum("client", ["web", "app"]);
 export const orderStatusEnum = pgEnum("order_status", [
   "pending_payment",
   "paid",
@@ -125,6 +128,36 @@ export const orderItems = pgTable("order_items", {
   quantity: integer("quantity").notNull(),
   lineTotal: integer("line_total").notNull(),
 });
+
+// A signed-in user's bag, shared by the website and the app. `version` goes up on every change so
+// clients can wait for the next change instead of re-fetching the whole cart.
+export const carts = pgTable("carts", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  version: integer("version").notNull().default(0),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const cartItems = pgTable(
+  "cart_items",
+  {
+    id: serial("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    productId: integer("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    // Empty string when the product has no finishes, so the unique index treats it as a value.
+    finish: text("finish").notNull().default(""),
+    quantity: integer("quantity").notNull(),
+    // Client and time of the most recent add, for "Added on website · just now".
+    addedFrom: clientEnum("added_from").notNull(),
+    addedAt: timestamp("added_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (item) => [uniqueIndex("cart_items_user_product_finish_idx").on(item.userId, item.productId, item.finish)],
+);
 
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
