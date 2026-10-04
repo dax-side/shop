@@ -1,2 +1,3 @@
-# The Expo app is not part of the website build.
-mobile
+# The Expo app is not part of the website build. Anchored to the root so
+# src/app/api/mobile (the app's API routes) still deploys.
+/mobile
