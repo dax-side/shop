@@ -28,7 +28,7 @@
 
 Oja Supply Co. is a storefront for household goods picked to be used every day, not kept for best. Shoppers browse a catalogue grouped by room (Kitchen, Table, Bath & Linen, Tools, Paper & Desk), view product details and finishes, add items to a bag, and check out for delivery across Nigeria or pickup from the store in Lagos.
 
-Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, and customers can sign in with Google.
+Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, and customers can sign in with Google. The same account works on the website and in the mobile app: the bag is stored with the account, so an item added on one shows up on the other within about a second.
 
 ---
 
@@ -46,6 +46,9 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Confirmation emails | Branded order confirmation (HTML and plain text) sent through Mailgun once payment succeeds | Done |
 | Google sign-in | Sign in or create an account with Google, from the sign-in page or at checkout | Done |
 | Account | Order history for signed-in customers; checkout details prefilled | Done |
+| Shared bag | A signed-in customer's bag is stored with their account and kept in sync live between the website and the app; a guest bag is merged in on sign-in | Done |
+| App API | JSON endpoints for products, bag, saved items, orders and account, used by the website and the mobile app | Done |
+| App sign-in | The app signs in through the website with the same Google account, and can open checkout on the website already signed in | Done |
 | Terms and privacy | Terms of sale and privacy policy pages, filled from the store settings and linked at sign-in, checkout and in the footer | Done |
 
 ---
@@ -69,17 +72,41 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 ## Architecture
 
 ```text
-Browser
-  │
-  ▼
-Next.js app (server components, route handlers, server actions)
-  ├── Neon Postgres ── products, orders, order items, subscribers (via Drizzle)
+Browser (cookie)          Mobile app (Bearer token)
+  │                          │
+  ▼                          ▼
+Next.js app (server components, route handlers, server actions, /api)
+  ├── Neon Postgres ── products, orders, carts, saved items, sessions (via Drizzle)
   ├── Paystack ─────── payments (redirect checkout, callback and webhook)
   ├── Auth.js ──────── Google OAuth (Google Cloud Console)
   └── Mailgun ──────── order confirmation emails
 ```
 
-Pages render on the server. The bag lives on the client until checkout, where the server recomputes totals from database prices and saves the order as awaiting payment. The customer is sent to Paystack; when they come back (or when Paystack's webhook arrives, whichever is first) the server verifies the transaction with Paystack, checks the amount, marks the order paid and sends the confirmation email.
+Pages render on the server. A guest's bag lives in the browser until checkout, where the server recomputes totals from database prices and saves the order as awaiting payment. The customer is sent to Paystack; when they come back (or when Paystack's webhook arrives, whichever is first) the server verifies the transaction with Paystack, checks the amount, marks the order paid and sends the confirmation email.
+
+### One backend for the website and the app
+
+Both clients call the same `/api` routes. The website sends its Auth.js session cookie; the app sends `Authorization: Bearer <token>`. Both are rows in the same `sessions` table, so `getRequestUser()` resolves either one to the same user.
+
+A signed-in customer's bag is stored in `cart_items`, and `carts.version` goes up on every change. Each client keeps a request open to `/api/cart/changes?version=N`; the server checks for a newer version every 0.7 seconds and answers as soon as there is one (or after 25 seconds with no change, and the client asks again). That is how an item added on the website appears in the app about a second later, without websockets.
+
+**App sign-in.** The app opens `/app-sign-in` in the phone's browser with a PKCE challenge. The customer signs in with Google on the website (or is already signed in), confirms, and the website redirects back to the app with a one-time code. The app exchanges the code and its PKCE verifier at `/api/mobile/auth/token` for its own session token, stored in the phone's secure storage.
+
+**Checkout from the app.** The app asks `/api/mobile/web-session` for a one-time link (valid for a minute) that opens the website's checkout already signed in to the same account, with the same bag. Paystack and the confirmation email work exactly as on the website, and the bag empties on both once the order is placed.
+
+| Endpoint | Methods | Purpose |
+| --- | --- | --- |
+| `/api/products`, `/api/products/[slug]` | GET | Catalogue (filter with `?room=`, search with `?q=`) and product details, with resized image URLs |
+| `/api/cart` | GET, DELETE | The account bag (or empty it) |
+| `/api/cart/items` | POST, PATCH, DELETE | Add lines (one or `{ items: [...] }`), set a quantity, remove a line |
+| `/api/cart/changes` | GET | Long-poll for the next bag change |
+| `/api/saved`, `/api/saved/[slug]` | GET, PUT, DELETE | Saved products |
+| `/api/orders` | GET | Order history with items |
+| `/api/me` | GET, DELETE | Account, where it is signed in, counts; delete the account |
+| `/api/me/addresses` | GET | Delivery addresses from past orders |
+| `/api/mobile/auth/token` | POST | Swap a one-time sign-in code and PKCE verifier for an app token |
+| `/api/mobile/session` | DELETE | Sign the app out |
+| `/api/mobile/web-session` | POST | One-time link that opens the website signed in |
 
 ---
 
@@ -90,8 +117,13 @@ Pages render on the server. The bag lives on the client until checkout, where th
 ├── src/
 │   ├── app/
 │   │   ├── (shop)/     # Storefront routes sharing the header and footer
-│   │   ├── api/auth/   # Auth.js route handlers
-│   │   ├── api/paystack/ # Paystack callback and webhook
+│   │   ├── api/        # JSON API shared by the website and the app
+│   │   │   ├── auth/       # Auth.js route handlers
+│   │   │   ├── cart/       # Account bag and live changes
+│   │   │   ├── mobile/     # App sign-in, sign-out and checkout links
+│   │   │   ├── paystack/   # Paystack callback and webhook
+│   │   │   └── …           # products, saved, orders, me
+│   │   ├── app-sign-in/ # Confirms signing the app in with the website account
 │   │   ├── checkout/   # Checkout route with its own header
 │   │   ├── sign-in/    # Sign in / create account page
 │   │   ├── globals.css # Design tokens (colours, fonts, display type)
@@ -254,6 +286,10 @@ Without these variables the shop still works for guests; the sign-in page says s
 - Customer details are HTML-escaped before going into emails, and emails are sent after the response so a Mailgun outage never blocks an order.
 - Sessions are stored in the database (revocable, deleted on sign-out). Signing out also clears every cookie the site set and all browser storage, including the bag and the OAuth flow uses PKCE. Sign-in redirects only accept paths on this site.
 - Payments are never trusted from the browser: every Paystack callback and webhook is verified with Paystack's API using the secret key, the amount and currency must match the order, and webhooks must carry a valid HMAC-SHA512 signature. Marking an order paid is idempotent, so the email goes out once.
+- The app API accepts a Bearer token or the website's cookie and nothing else. App tokens are random 256-bit values stored as database sessions, so they can be revoked, and signing the app out deletes its session.
+- App sign-in uses PKCE: the website only redirects to the app's own scheme (or Expo Go and localhost during development), the one-time code expires after five minutes, is stored hashed, works once, and is useless without the verifier that never leaves the phone. A wrong verifier burns the code.
+- Checkout links from the app are one-time, hashed, expire after a minute and only redirect to paths on this site.
+- Cross-origin calls are allowed on the API routes the app uses, without credentials, so other sites can't use a visitor's cookie. Mutating endpoints only accept JSON, and deleting an account needs an explicit confirmation.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
 
 To report a vulnerability, contact the author privately rather than opening a public issue.
@@ -278,12 +314,15 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [x] Bag
 - [x] Checkout page
 - [x] Online payment through Paystack
-- [ ] Discount codes
-- [ ] Catalogue search
-- [ ] Neon Postgres with Drizzle
-- [ ] Mailgun order confirmation emails
-- [ ] Google sign-in
+- [x] Neon Postgres with Drizzle
+- [x] Mailgun order confirmation emails
+- [x] Google sign-in
 - [x] CI workflow for lint, typecheck and build
+- [x] Bag stored with the account and synced live
+- [x] API for the mobile app
+- [ ] Mobile app (Expo)
+- [ ] Discount codes
+- [ ] Catalogue search on the website
 
 ---
 
