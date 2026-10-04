@@ -85,7 +85,41 @@ export const sessions = pgTable("sessions", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date", withTimezone: true }).notNull(),
+  // Shown on the account screen as "Signed in on". Auth.js leaves these to their defaults.
+  client: clientEnum("client").notNull().default("web"),
+  device: text("device"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+// One-time codes for handing a website sign-in to the app (PKCE), or the app's session to the
+// website (checkout). Only a SHA-256 hash of each code is stored.
+export const handoffPurposeEnum = pgEnum("handoff_purpose", ["app_sign_in", "web_session"]);
+export const handoffCodes = pgTable("handoff_codes", {
+  codeHash: text("code_hash").primaryKey(),
+  purpose: handoffPurposeEnum("purpose").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  codeChallenge: text("code_challenge"),
+  redirectUri: text("redirect_uri"),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+});
+
+export const savedItems = pgTable(
+  "saved_items",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    productId: integer("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (saved) => [primaryKey({ columns: [saved.userId, saved.productId] })],
+);
 
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
