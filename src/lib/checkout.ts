@@ -5,6 +5,7 @@ import { z } from "zod";
 import { currentUser } from "@/auth";
 import { getDb, schema } from "@/db";
 import { MAX_QUANTITY } from "./bag-store";
+import { clearCart } from "./cart";
 import { NIGERIAN_STATES, normalisePhone } from "./nigeria";
 import { startPayment } from "./payments";
 import { paystackConfigured } from "./paystack";
@@ -172,6 +173,10 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
         );
         return order.id;
       });
+      // The bag became this order, so empty the account's bag on every device.
+      if (user?.id) {
+        await clearCart(user.id).catch((error) => console.error(`Could not clear cart after ${reference}`, error));
+      }
       // The confirmation email goes out once Paystack confirms the payment.
       let paymentUrl: string | undefined;
       if (paystackConfigured()) {
