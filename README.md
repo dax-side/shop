@@ -1,8 +1,8 @@
 # Oja Supply Co.
 
-**Everyday goods, made to last.** An online shop for kitchen, table and house things from small workshops in Lagos and beyond.
+**Everyday goods, made to last.** An online shop and mobile app for kitchen, table and house things from small workshops in Lagos and beyond.
 
-![Next.js](https://img.shields.io/badge/Next.js-16-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8) ![Status](https://img.shields.io/badge/status-in_development-orange)
+![Next.js](https://img.shields.io/badge/Next.js-16-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8) ![Expo](https://img.shields.io/badge/Expo-SDK_57-000020) ![Status](https://img.shields.io/badge/status-in_development-orange)
 
 ---
 
@@ -49,6 +49,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Shared bag | A signed-in customer's bag is stored with their account and kept in sync live between the website and the app; a guest bag is merged in on sign-in | Done |
 | App API | JSON endpoints for products, bag, saved items, orders and account, used by the website and the mobile app | Done |
 | App sign-in | The app signs in through the website with the same Google account, and can open checkout on the website already signed in | Done |
+| Mobile app | iOS and Android app (Expo): sign in, catalogue with room filters and search, product photos and finishes, saved items, the shared bag with a banner when something is added on the website, orders, saved addresses, signed-in devices, light and dark themes | Done |
 | Terms and privacy | Terms of sale and privacy policy pages, filled from the store settings and linked at sign-in, checkout and in the footer | Done |
 
 ---
@@ -65,6 +66,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Payments | [Paystack](https://paystack.com) |
 | Email | [Mailgun](https://www.mailgun.com) |
 | Validation | [Zod](https://zod.dev) |
+| Mobile app | [Expo](https://expo.dev) SDK 57 (React Native, Expo Router), expo-secure-store, expo-web-browser, expo-image |
 | Linting | ESLint |
 
 ---
@@ -91,6 +93,8 @@ Both clients call the same `/api` routes. The website sends its Auth.js session 
 A signed-in customer's bag is stored in `cart_items`, and `carts.version` goes up on every change. Each client keeps a request open to `/api/cart/changes?version=N`; the server checks for a newer version every 0.7 seconds and answers as soon as there is one (or after 25 seconds with no change, and the client asks again). That is how an item added on the website appears in the app about a second later, without websockets.
 
 **App sign-in.** The app opens `/app-sign-in` in the phone's browser with a PKCE challenge. The customer signs in with Google on the website (or is already signed in), confirms, and the website redirects back to the app with a one-time code. The app exchanges the code and its PKCE verifier at `/api/mobile/auth/token` for its own session token, stored in the phone's secure storage.
+
+**The app.** `mobile/` is an Expo app that only talks to the website's `/api` routes (`EXPO_PUBLIC_API_URL`, the live site by default). After sign-in it keeps its token in the phone's keychain (SecureStore) and sends it as a Bearer header. Its bag screen is the account cart: a `CartProvider` keeps a long-poll open while the app is in the foreground, pauses it in the background and reloads on return. When a newer cart arrives with lines added on the website, the app shows a banner ("Stoneware mug added on the website · View bag") and marks those lines "Added on website" in the bag. Quantity and remove changes show straight away and are then replaced by the server's answer.
 
 **Checkout from the app.** The app asks `/api/mobile/web-session` for a one-time link (valid for a minute) that opens the website's checkout already signed in to the same account, with the same bag. Paystack and the confirmation email work exactly as on the website, and the bag empties on both once the order is placed.
 
@@ -138,6 +142,13 @@ A signed-in customer's bag is stored in `cart_items`, and `carts.version` goes u
 │   ├── db/             # Drizzle schema, connection, seed script and seed data
 │   └── lib/            # Site config, queries, pricing, formatting, server actions
 │       └── email/      # Mailgun client and order confirmation template
+├── mobile/             # Expo app (own package.json)
+│   ├── src/app/        # Screens (Expo Router): sign-in, tabs (shop, saved, bag, account), product, orders…
+│   ├── src/components/ # Text styles, buttons, tab bar, product grid, gallery, stepper
+│   ├── src/state/      # Session, live bag, saved items, toasts, settings
+│   ├── src/lib/        # API client, PKCE sign-in, checkout link, storage, formatting
+│   ├── src/theme/      # Colours (light and dark) and fonts
+│   └── assets/         # App icon, splash and the website's fonts as static files
 ├── public/images/      # Optimised product and shop photography (WebP)
 ├── drizzle/            # Generated SQL migrations
 ├── AGENTS.md           # Rules for AI agents working on this repo
@@ -191,6 +202,34 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run db:seed` | Insert or update the catalogue products (safe to re-run) |
 | `npm run db:studio` | Browse the database with Drizzle Studio |
 | `npm run vercel-build` | What Vercel runs: migrate, add any new catalogue products, then build |
+
+### Run the mobile app on your phone
+
+The app runs in [Expo Go](https://expo.dev/go), so there is nothing to build or install from a store besides Expo Go itself. By default it uses the live website, so you sign in with the same Google account you use there.
+
+1. Install **Expo Go** on the phone ([Android](https://play.google.com/store/apps/details?id=host.exp.exponent), [iOS](https://apps.apple.com/app/expo-go/id982107779)).
+2. Start the app from your computer:
+
+   ```bash
+   cd mobile
+   npm install
+   npx expo start            # phone and computer on the same Wi-Fi
+   npx expo start --tunnel   # or this, if they are on different networks
+   ```
+
+3. Scan the QR code: with the Expo Go app on Android, or the Camera app on iOS.
+4. Tap **Continue with Google**. The website opens in the phone's browser: sign in with your Google account and tap **Continue to the app**. You land back in the app, signed in.
+
+To check that the bag is shared, sign in to the website on a computer with the same account and add something to the bag. Within about a second the app shows "… added on the website" and the item appears in its Bag tab, marked **Added on website**. Changing a quantity in the app updates the website's bag icon the same way.
+
+| Command (in `mobile/`) | What it does |
+| --- | --- |
+| `npx expo start` | Start the dev server for Expo Go (`--tunnel` for other networks, `--web` for a browser) |
+| `npm run lint` | Run ESLint (Expo config) |
+| `npm run typecheck` | Run the TypeScript compiler |
+| `npx expo export --platform android` | Bundle the app as CI does |
+
+To point the app at a website running on your computer, set `EXPO_PUBLIC_API_URL` in `mobile/.env` to your computer's LAN address (for example `http://192.168.1.20:3000`). Google sign-in on the website only works on domains registered with the OAuth client, so the live site is the easiest to test against.
 
 ### Deploy to Vercel
 
@@ -274,6 +313,16 @@ To create the Google OAuth client:
 
 Without these variables the shop still works for guests; the sign-in page says sign-in isn't set up.
 
+The mobile app needs no extra Google setup: it signs in through the website's Google sign-in.
+
+### Mobile app
+
+Copy `mobile/.env.example` to `mobile/.env` if you want to change it.
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `EXPO_PUBLIC_API_URL` | No | Website the app talks to. Defaults to `https://shop-six-red.vercel.app`. Public: it is built into the app, so never put secrets in `EXPO_PUBLIC_` variables |
+
 ---
 
 ## Security
@@ -288,6 +337,7 @@ Without these variables the shop still works for guests; the sign-in page says s
 - Payments are never trusted from the browser: every Paystack callback and webhook is verified with Paystack's API using the secret key, the amount and currency must match the order, and webhooks must carry a valid HMAC-SHA512 signature. Marking an order paid is idempotent, so the email goes out once.
 - The app API accepts a Bearer token or the website's cookie and nothing else. App tokens are random 256-bit values stored as database sessions, so they can be revoked, and signing the app out deletes its session.
 - App sign-in uses PKCE: the website only redirects to the app's own scheme (or Expo Go and localhost during development), the one-time code expires after five minutes, is stored hashed, works once, and is useless without the verifier that never leaves the phone. A wrong verifier burns the code.
+- The app stores its token in the iOS keychain or Android keystore (SecureStore), never in plain storage, and never sees the Google password or Google tokens: sign-in happens on the website in the system browser.
 - Checkout links from the app are one-time, hashed, expire after a minute and only redirect to paths on this site.
 - Cross-origin calls are allowed on the API routes the app uses, without credentials, so other sites can't use a visitor's cookie. Mutating endpoints only accept JSON, and deleting an account needs an explicit confirmation.
 - Order pages are addressed by a random UUID, are not indexed by search engines, and return 404 for malformed or unknown IDs.
@@ -300,7 +350,7 @@ To report a vulnerability, contact the author privately rather than opening a pu
 
 1. Fork the repo and create a branch from `main`, named after the change type, e.g. `feat/checkout-page`.
 2. Keep each change small and focused.
-3. Run `npm run lint`, `npm run typecheck` and `npm run build` before pushing.
+3. Run `npm run lint`, `npm run typecheck` and `npm run build` before pushing. For changes in `mobile/`, run `npm run lint` and `npm run typecheck` in that folder.
 4. Use commit messages in the form `type: short message`, where type is one of `feat`, `fix`, `chore`, `ci`, `refactor`. No scope.
 5. Open a pull request against `main` describing what changed and why.
 
@@ -320,7 +370,9 @@ To report a vulnerability, contact the author privately rather than opening a pu
 - [x] CI workflow for lint, typecheck and build
 - [x] Bag stored with the account and synced live
 - [x] API for the mobile app
-- [ ] Mobile app (Expo)
+- [x] Mobile app (Expo) with shared sign-in and a live-synced bag
+- [ ] Store builds of the app with EAS (own `ojasupply://` scheme instead of Expo Go)
+- [ ] Push notifications for order updates
 - [ ] Discount codes
 - [ ] Catalogue search on the website
 
@@ -334,7 +386,7 @@ No license has been chosen yet, so all rights are reserved by the author.
 
 ## Acknowledgements
 
-- [Next.js](https://nextjs.org), [Tailwind CSS](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [Auth.js](https://authjs.dev), [Zod](https://zod.dev)
+- [Next.js](https://nextjs.org), [Expo](https://expo.dev), [Tailwind CSS](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [Auth.js](https://authjs.dev), [Zod](https://zod.dev)
 - [Neon](https://neon.tech) and [Mailgun](https://www.mailgun.com)
 - README structure based on [15 Essential Sections Every README Needs](https://dev.to/georgekobaidze/15-essential-sections-every-readme-needs-give-your-project-what-it-deserves-fie) by George Kobaidze
 
