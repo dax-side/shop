@@ -173,6 +173,24 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Fresh loaves in a woven basket",
     ],
   },
+  "cast-iron-skillet": {
+    number: "024",
+    alts: [
+      "Cast iron skillet with a slotted spatula and a green tea towel",
+      "Empty cast iron pan on a wooden board",
+      "Sautéed vegetables in a cast iron pan",
+      "Flatbread cooking in a cast iron skillet",
+    ],
+  },
+  "glass-storage-jars-set-of-3": {
+    number: "033",
+    alts: [
+      "Clip-top glass jars filled with pasta, grains and spices",
+      "Clip-top jars of lentils and grains stacked on a shelf",
+      "Glass jars of pasta lined up on a counter",
+      "Glass storage jars with wooden lids beside a tea towel",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
