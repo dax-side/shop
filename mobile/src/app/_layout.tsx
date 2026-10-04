@@ -55,6 +55,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
         <Stack.Protected guard={status === "signedIn"}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="product/[slug]" />
         </Stack.Protected>
         <Stack.Protected guard={status === "signedOut"}>
           <Stack.Screen name="sign-in" />
