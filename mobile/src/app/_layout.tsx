@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CartProvider } from "@/state/cart";
+import { SavedProvider } from "@/state/saved";
 import { SessionProvider, useSession } from "@/state/session";
 import { SettingsProvider } from "@/state/settings";
 import { ToastProvider } from "@/state/toast";
@@ -25,7 +26,9 @@ export default function RootLayout() {
           <SessionProvider>
             <ToastProvider>
               <CartProvider>
-                <RootNavigator ready={fontsLoaded || !!fontError} />
+                <SavedProvider>
+                  <RootNavigator ready={fontsLoaded || !!fontError} />
+                </SavedProvider>
               </CartProvider>
             </ToastProvider>
           </SessionProvider>
