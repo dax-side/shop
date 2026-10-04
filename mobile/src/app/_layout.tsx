@@ -56,6 +56,9 @@ function RootNavigator({ ready }: { ready: boolean }) {
         <Stack.Protected guard={status === "signedIn"}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="product/[slug]" />
+          <Stack.Screen name="orders" />
+          <Stack.Screen name="addresses" />
+          <Stack.Screen name="delete-account" />
         </Stack.Protected>
         <Stack.Protected guard={status === "signedOut"}>
           <Stack.Screen name="sign-in" />
