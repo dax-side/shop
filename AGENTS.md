@@ -90,6 +90,8 @@ Database changes: edit `src/db/schema.ts`, run `npm run db:generate`, and commit
 
 Built from the design: home (hero, shop by room, catalogue with category filters, how it works, newsletter signup, footer), product page (gallery, finish options, quantity, add to bag, details, "goes well with"), and a bag.
 
+The mobile app follows the app pages of the design (`Oja_Supply_Co._Shop-selection.pdf`, pages 6-10): sign-in, catalogue, product, bag (synced with the website) and account.
+
 Planned features, each shipped as its own PR:
 
 - Checkout page.
