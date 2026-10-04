@@ -245,6 +245,24 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Loofah gourds growing on the vine",
     ],
   },
+  "galvanised-watering-can": {
+    number: "046",
+    alts: [
+      "Galvanised watering can on garden soil",
+      "Metal watering can on rough ground",
+      "Three metal watering cans on a workbench",
+      "Watering flowers with a galvanised can",
+    ],
+  },
+  "wooden-clothes-pegs": {
+    number: "048",
+    alts: [
+      "Two wooden clothes pegs",
+      "A pile of wooden clothes pegs",
+      "Wooden pegs laid out in rows",
+      "Wooden pegs on a washing line",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
