@@ -407,6 +407,132 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Stainless steel spoon and fork",
     ],
   },
+  "enamel-mugs-set-of-2": {
+    number: "074",
+    alts: [
+      "A white cup sitting on top of a wooden table",
+      "A white mug with a silver rim sitting next to a bunch of white flowers",
+      "White ceramic mug on gray and white textile",
+      "Selective focus photography black and white mug",
+    ],
+  },
+  "dinner-plates-set-of-4": {
+    number: "075",
+    alts: [
+      "A white plate with a brown rim on a white surface",
+      "White round plate on white table",
+      "Assorted-color ceramic plates and saucers",
+      "White ceramic round plate lot",
+    ],
+  },
+  "wooden-salad-servers": {
+    number: "076",
+    alts: [
+      "Brown wooden spoons",
+      "A couple of wooden sculptures sitting next to each other",
+      "Arugula salad with roasted butternut squash and walnuts",
+      "A wooden bowl and chopsticks on a window sill",
+    ],
+  },
+  "brass-candle-holder": {
+    number: "077",
+    alts: [
+      "A single white candle sitting on top of a table",
+      "Silver candlestick with white candle",
+      "Gold and white candle holder",
+      "Gold and white candle holder",
+    ],
+  },
+  "linen-tablecloth": {
+    number: "078",
+    alts: [
+      "A close up of a bed with a white sheet",
+      "A white plate sitting on top of a white table",
+      "A plate of tomatoes on a striped tablecloth",
+      "Brown wooden table with brown wicker basket and pitcher",
+    ],
+  },
+  "stoneware-cups-set-of-4": {
+    number: "079",
+    alts: [
+      "White ceramic cup",
+      "Rustic ceramic cup with red glaze on a wooden surface",
+      "A couple of white bowls sitting on top of a table",
+      "Handcrafted ceramic cup with unique brown and cream glaze",
+    ],
+  },
+  "woven-fruit-basket": {
+    number: "080",
+    alts: [
+      "A wicker basket filled with bananas, apples, and oranges",
+      "Orange fruits on brown woven basket",
+      "Orange fruits on black metal fruit basket",
+      "Red apples in brown woven basket",
+    ],
+  },
+  "ceramic-bud-vase": {
+    number: "081",
+    alts: [
+      "A white vase sitting on top of a white table",
+      "A couple of vases sitting on top of a table",
+      "A couple of vases sitting on top of a table",
+      "A white vase sitting on top of a white table",
+    ],
+  },
+  "wooden-serving-tray": {
+    number: "082",
+    alts: [
+      "White ceramic mug on brown wooden serving tray",
+      "Two long oval wooden serving trays on a white background",
+      "Tea set with teapot and four cups on wooden tray",
+      "Chocolate cookies with hazelnuts and a honey pot",
+    ],
+  },
+  "wooden-bowls-set-of-2": {
+    number: "083",
+    alts: [
+      "A group of wooden bowls and plates on a table",
+      "Brown and blue ceramic bowl",
+      "Many wooden bowls and plates are stacked together",
+      "Brown wooden round bowl on white table",
+    ],
+  },
+  "wooden-pepper-mill": {
+    number: "084",
+    alts: [
+      "A wooden pepper mill and pepper grinder on a table",
+      "Brown wooden chess piece on blue textile",
+      "Brown condiment mixer",
+      "A wooden pepper mill and salt mill on a table",
+    ],
+  },
+  "brass-cutlery-set": {
+    number: "085",
+    alts: [
+      "Golden cutlery set on a dark background",
+      "Golden cutlery set arranged on a dark background",
+      "A group of spoons on a plate",
+      "A set of five pink and gold utensils",
+    ],
+  },
+  "coasters-set-of-6": {
+    number: "086",
+    alts: [
+      "A stack of round wooden coasters in a metal holder",
+      "Black and white round patch on brown wooden table",
+      "Woven coaster on a patterned surface with eye designs",
+      "Clear drinking glass on brown wooden table",
+    ],
+  },
+  "glass-carafe": {
+    number: "087",
+    alts: [
+      "A couple of empty glasses",
+      "Two clear drinking glasses beside bottle",
+      "A bottle of water next to a glass of water",
+      "White flower in clear glass vase",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
