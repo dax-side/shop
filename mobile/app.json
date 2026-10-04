@@ -48,6 +48,17 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "612cb203-082c-47d6-a48d-5e71fe5efbc4"
+      }
+    },
+    "owner": "dax-side",
+    "runtimeVersion": "exposdk:57.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/612cb203-082c-47d6-a48d-5e71fe5efbc4"
     }
   }
 }
