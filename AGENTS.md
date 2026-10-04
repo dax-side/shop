@@ -14,13 +14,13 @@ Guidance for AI agents working on **Oja Supply Co.**, an online shop for everyda
 
 ## Workflow
 
-Work in small, incremental steps. Every new feature, refactor or fix gets its own branch, commit, PR and merge. Never batch unrelated changes.
+Work in small, incremental steps. Every new feature, refactor or fix gets its own branch, PR and merge. Never batch unrelated changes.
 
 1. Branch from the latest default branch.
-2. Make one focused change.
-3. Run the project's lint, typecheck and tests before committing.
-4. Commit with a single conventional message (see below).
-5. Open a PR for that change and merge it yourself once checks pass.
+2. Build the feature in small steps and **commit each change as you go**: one commit per change (a table, an endpoint, a screen, a fix), not one big commit at the end.
+3. Run the project's lint, typecheck and tests before each commit.
+4. Give every commit a conventional message (see below).
+5. Open a PR for the feature and merge it yourself once checks pass. Use **rebase merge** so every commit lands on `main` as written. Never squash.
 6. Start the next change from the updated default branch.
 
 Branch names follow the commit type, e.g. `feat/checkout-page`, `fix/bag-total`. Never push directly to `main`; everything lands through a PR.
@@ -80,8 +80,9 @@ Guidelines:
 - Auth.js with Google as the provider
 - Paystack for payments (test mode with `sk_test_` keys)
 - Mailgun for transactional email
+- Mobile app in `mobile/`: Expo (React Native, expo-router) with its own `package.json`. It talks to the website's `/api` routes; it never reads the database directly.
 
-Checks to run before every commit: `npm run lint`, `npm run typecheck`, `npm run build`.
+Checks to run before every commit: `npm run lint`, `npm run typecheck`, `npm run build`. For changes in `mobile/`, run `npm run lint` and `npm run typecheck` inside `mobile/`.
 
 Database changes: edit `src/db/schema.ts`, run `npm run db:generate`, and commit the new file in `drizzle/` with the change. CI fails if the schema and migrations drift apart.
 
@@ -95,6 +96,12 @@ Planned features, each shipped as its own PR:
 - Persistence in Neon Postgres via Drizzle.
 - Order confirmation emails via Mailgun.
 - Google sign-in via Google Cloud Console.
+
+## Website and app share one backend
+
+- Both clients use the same `/api` endpoints. The website authenticates with its Auth.js session cookie, the app with a `Bearer` token; both resolve to the same user through `getRequestUser()`.
+- A signed-in user's bag lives in the database, so it is the same on the website and in the app. Changes reach the other client through the long-poll endpoint `/api/cart/changes`.
+- Never trust the client: prices, totals and ownership checks happen on the server for both clients.
 
 ## Design rules
 
