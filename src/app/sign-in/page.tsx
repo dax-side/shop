@@ -79,7 +79,9 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
           </nav>
 
           <h1 className="display mt-6 text-5xl sm:text-6xl">{text.title}</h1>
-          <p className="mt-2 text-muted">{text.intro}</p>
+          <p className="mt-2 text-muted">
+            {callbackUrl.startsWith("/app-sign-in") ? "Sign in to continue to the Oja app." : text.intro}
+          </p>
 
           {params.error && (
             <p role="alert" className="mt-6 border border-accent p-3 text-sm text-accent">
