@@ -218,6 +218,33 @@ const PRODUCTS: Record<string, { number: string; alts: string[] }> = {
       "Breakfast plate on a round woven mat",
     ],
   },
+  "waffle-hand-towel": {
+    number: "006",
+    alts: [
+      "Cream waffle towel draped over a basket",
+      "Close-up of waffle weave cotton",
+      "Stack of mustard waffle towels",
+      "Waffle hand towel hanging beside a bathroom sink",
+    ],
+  },
+  "woven-laundry-basket": {
+    number: "007",
+    alts: [
+      "Woven seagrass basket with handles",
+      "Close-up of a lidded woven basket",
+      "Woven basket full of soft towels",
+      "Woven basket next to a white chair",
+    ],
+  },
+  "natural-loofah-sponge": {
+    number: "004",
+    alts: [
+      "Natural loofah slices stacked on white",
+      "Close-up of loofah fibres",
+      "Natural loofah sponges beside a woven basket",
+      "Loofah gourds growing on the vine",
+    ],
+  },
 };
 
 export function productImages(slug: string): ProductImage[] {
