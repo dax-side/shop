@@ -1331,8 +1331,8 @@ export const seedProducts: Product[] = [
     isNew: true,
     tone: "#dbd6cd",
     finishes: [
-      { name: "Silver", swatch: "#b9b7b2" },
-      { name: "Black", swatch: "#262422" },
+      { name: "Blue", swatch: "#2f4a6b" },
+      { name: "Red", swatch: "#b5322a" },
     ],
     details: { material: "Steel, glass", size: "25 cm tall", care: "Trim the wick. Use outdoors or with ventilation." },
   },
