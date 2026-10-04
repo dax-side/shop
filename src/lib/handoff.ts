@@ -19,6 +19,9 @@ export function isAllowedAppRedirect(value: unknown): value is string {
   }
 }
 
+// Where a web-session link may land: a path on this website, never another site.
+export const isSafeNextPath = (value: string) => /^\/(?![/\\])[\w\-./?=&%#]*$/.test(value);
+
 // PKCE S256 challenges are 43 base64url characters.
 export const isCodeChallenge = (value: unknown): value is string =>
   typeof value === "string" && /^[A-Za-z0-9_-]{43}$/.test(value);
