@@ -220,6 +220,15 @@ The app runs in [Expo Go](https://expo.dev/go), so there is nothing to build or 
 3. Scan the QR code: with the Expo Go app on Android, or the Camera app on iOS.
 4. Tap **Continue with Google**. The website opens in the phone's browser: sign in with your Google account and tap **Continue to the app**. You land back in the app, signed in.
 
+**Without a computer:** the latest build is published with EAS Update. Scan the QR code for this link with Expo Go (Android) or the Camera app (iPhone): `exp://u.expo.dev/612cb203-082c-47d6-a48d-5e71fe5efbc4/group/<update-group-id>`. The group ID is printed by the publish command below and listed on the project's [EAS dashboard](https://expo.dev/accounts/dax-side/projects/oja-supply/updates). To publish a new build (needs an Expo access token in `EXPO_TOKEN`, or `npx eas-cli login`):
+
+```bash
+cd mobile
+npx eas-cli@latest update --branch preview --environment preview --message "What changed"
+```
+
+`runtimeVersion` is set to `exposdk:57.0.0` so the update opens in Expo Go. Change it before making store builds.
+
 To check that the bag is shared, sign in to the website on a computer with the same account and add something to the bag. Within about a second the app shows "… added on the website" and the item appears in its Bag tab, marked **Added on website**. Changing a quantity in the app updates the website's bag icon the same way.
 
 | Command (in `mobile/`) | What it does |
