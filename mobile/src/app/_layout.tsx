@@ -42,7 +42,7 @@ function RootNavigator({ ready }: { ready: boolean }) {
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.paper } }}>
         <Stack.Protected guard={status === "signedIn"}>
-          <Stack.Screen name="index" />
+          <Stack.Screen name="(tabs)" />
         </Stack.Protected>
         <Stack.Protected guard={status === "signedOut"}>
           <Stack.Screen name="sign-in" />
