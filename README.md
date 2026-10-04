@@ -217,6 +217,20 @@ The app runs in [Expo Go](https://expo.dev/go), so there is nothing to build or 
    npx expo start --tunnel   # or this, if they are on different networks
    ```
 
+   If `--tunnel` fails with `failed to start tunnel` / `session closed` (Expo's tunnel uses ngrok's free service, and WSL also hides your LAN address from the phone), use a free Cloudflare tunnel instead:
+
+   ```bash
+   # terminal 1 (inside mobile/): prints https://<random>.trycloudflare.com
+   curl -L -o cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+   chmod +x cloudflared
+   ./cloudflared tunnel --url http://localhost:8081
+
+   # terminal 2 (inside mobile/)
+   EXPO_PACKAGER_PROXY_URL=https://<random>.trycloudflare.com npx expo start
+   ```
+
+   If the QR code still shows a local address, type `exp://<random>.trycloudflare.com` under **Enter URL manually** in Expo Go.
+
 3. Scan the QR code: with the Expo Go app on Android, or the Camera app on iOS.
 4. Tap **Continue with Google**. The website opens in the phone's browser: sign in with your Google account and tap **Continue to the app**. You land back in the app, signed in.
 
