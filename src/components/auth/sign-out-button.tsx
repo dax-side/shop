@@ -6,7 +6,7 @@ import { signOutOfAccount } from "@/lib/auth-actions";
 // Signing out wipes everything the site stored in this browser (bag and any other saved data);
 // the server action removes the cookies.
 function clearBrowserData() {
-  bagStore.clear();
+  bagStore.signOut();
   try {
     localStorage.clear();
     sessionStorage.clear();
