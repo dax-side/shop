@@ -5,7 +5,10 @@ import * as WebBrowser from "expo-web-browser";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { CartProvider } from "@/state/cart";
 import { SessionProvider, useSession } from "@/state/session";
+import { SettingsProvider } from "@/state/settings";
+import { ToastProvider } from "@/state/toast";
 import { fontFiles } from "@/theme/fonts";
 import { ThemeProvider, useTheme } from "@/theme/theme";
 
@@ -18,9 +21,15 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <SessionProvider>
-          <RootNavigator ready={fontsLoaded || !!fontError} />
-        </SessionProvider>
+        <SettingsProvider>
+          <SessionProvider>
+            <ToastProvider>
+              <CartProvider>
+                <RootNavigator ready={fontsLoaded || !!fontError} />
+              </CartProvider>
+            </ToastProvider>
+          </SessionProvider>
+        </SettingsProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
