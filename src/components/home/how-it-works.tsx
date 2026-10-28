@@ -5,7 +5,7 @@ export function HowItWorks() {
   const steps = [
     {
       title: "Delivery",
-      body: `Lagos orders arrive in 1–2 days. Elsewhere in Nigeria, ${site.deliveryDays} days. Free over ${formatNaira(pricing.freeDeliveryThreshold)}.`,
+      body: `Lagos orders arrive in ${site.lagosDeliveryDays} days. Elsewhere in Nigeria, ${site.deliveryDays} days. Free over ${formatNaira(pricing.freeDeliveryThreshold)}.`,
     },
     {
       title: "Pickup",

@@ -10,7 +10,15 @@ import { NewBadge, ProductPhoto } from "../product-photo";
 import { QuantityStepper } from "../quantity-stepper";
 
 
-export function ProductView({ product, roomName }: { product: Product; roomName: string }) {
+export function ProductView({
+  product,
+  roomName,
+  lagosDeliveryDays,
+}: {
+  product: Product;
+  roomName: string;
+  lagosDeliveryDays: string;
+}) {
   const [finish, setFinish] = useState(product.finishes[0]?.name);
   const [view, setView] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -24,7 +32,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
     { label: "Material", value: product.details.material },
     { label: "Size", value: product.details.size },
     { label: "Care", value: product.details.care },
-    { label: "Delivery", value: "Lagos in 1–2 days, carefully packed. Pickup free." },
+    { label: "Delivery", value: `Lagos in ${lagosDeliveryDays} days, carefully packed. Pickup free.` },
   ];
 
   return (

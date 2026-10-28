@@ -7,6 +7,7 @@ import { formatNaira } from "@/lib/format";
 import { getOrder, nextSteps, PAYMENT_LABELS } from "@/lib/orders";
 import { payForOrder } from "@/lib/payment-actions";
 import { productThumbByNumber } from "@/lib/product-images";
+import { deliveryEstimate } from "@/lib/site";
 
 // Order pages contain personal details; keep them out of search results.
 export const metadata: Metadata = { title: "Your order", robots: { index: false, follow: false } };
@@ -143,7 +144,7 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/or
               <p className="mt-2 leading-snug">
                 {PAYMENT_LABELS[order.paymentMethod]}
                 <br />
-                {order.method === "delivery" ? "Arrives in 1–2 days in Lagos" : "Usually ready the same day"}
+                {order.method === "delivery" ? `Arrives in ${deliveryEstimate(order.state)}` : "Usually ready the same day"}
               </p>
             </div>
           </div>

@@ -282,6 +282,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
 | `STORE_OPENING_HOURS` | No | Store opening hours |
 | `STORE_PHONE` | No | Contact phone number |
 | `STORE_EMAIL` | No | Contact email address |
+| `LAGOS_DELIVERY_DAYS` | No | Delivery time in Lagos. Defaults to `1–2` |
 | `DELIVERY_DAYS` | No | Delivery time outside Lagos. Defaults to `3–5` |
 | `DELIVERY_FEE` | No | Delivery fee in naira. Defaults to `3500` |
 | `FREE_DELIVERY_THRESHOLD` | No | Order value in naira above which delivery is free. Defaults to `50000` |

@@ -30,7 +30,9 @@ export default function TermsPage() {
 
       <h2>Delivery and pickup</h2>
       <ul>
-        <li>Lagos orders usually arrive in 1–2 days. Elsewhere in Nigeria, {site.deliveryDays} days.</li>
+        <li>
+          Lagos orders usually arrive in {site.lagosDeliveryDays} days. Elsewhere in Nigeria, {site.deliveryDays} days.
+        </li>
         <li>
           Delivery costs {formatNaira(pricing.deliveryFee)}, and is free on orders over{" "}
           {formatNaira(pricing.freeDeliveryThreshold)}.

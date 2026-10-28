@@ -18,6 +18,7 @@ export default async function CheckoutPage() {
         <CheckoutForm
           prices={Object.fromEntries(products.map((product) => [product.slug, product.price]))}
           pricing={pricing}
+          lagosDeliveryDays={site.lagosDeliveryDays}
           deliveryDays={site.deliveryDays}
           account={user?.email ? { email: user.email, name: user.name ?? "" } : null}
           googleEnabled={authConfigured()}
