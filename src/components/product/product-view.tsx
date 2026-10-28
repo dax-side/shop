@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toBagItem, type Product } from "@/lib/catalogue";
 import { formatNaira } from "@/lib/format";
 import { productImages, viewLabel } from "@/lib/product-images";
 import { AddToBagButton } from "../bag/add-to-bag-button";
+import { ArrowLeftIcon, ArrowRightIcon } from "../icons";
 import { NewBadge, ProductPhoto } from "../product-photo";
 import { QuantityStepper } from "../quantity-stepper";
 
@@ -14,9 +15,26 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
   const [finish, setFinish] = useState(product.finishes[0]?.name);
   const [view, setView] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const track = useRef<HTMLDivElement>(null);
   const images = productImages(product.slug);
 
-  const caption = [product.name, finish?.toLowerCase(), viewLabel(view)].filter(Boolean).join(", ");
+  const caption = (index: number) =>
+    [product.name, finish?.toLowerCase(), images.length ? viewLabel(index) : undefined].filter(Boolean).join(", ");
+
+  // The photos sit side by side in a scroll-snap track: swipe on touch screens, thumbnails, arrows or the
+  // arrow keys elsewhere. The current view follows the scroll position.
+  function show(index: number) {
+    const el = track.current;
+    if (!el) return;
+    const next = Math.max(0, Math.min(images.length - 1, index));
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollTo({ left: next * el.clientWidth, behavior: smooth ? "smooth" : "auto" });
+  }
+
+  function syncView() {
+    const el = track.current;
+    if (el?.clientWidth) setView(Math.round(el.scrollLeft / el.clientWidth));
+  }
   const addLabel = `Add to bag · ${formatNaira(product.price * quantity)}`;
   const bagItem = toBagItem(product, finish);
 
@@ -30,12 +48,12 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
   return (
     <div className="grid gap-6 md:grid-cols-12 md:gap-8">
       <div className="-mx-4 -mt-4 flex gap-3 sm:mx-0 sm:mt-0 md:col-span-6">
-        <ul className="hidden w-14 shrink-0 flex-col gap-2 lg:flex">
+        <ul className="hidden w-14 shrink-0 flex-col gap-2 md:flex">
           {images.map((image, index) => (
             <li key={image.src}>
               <button
                 type="button"
-                onClick={() => setView(index)}
+                onClick={() => show(index)}
                 aria-label={`Show ${viewLabel(index)} view`}
                 aria-pressed={view === index}
                 className={`relative block aspect-square w-full overflow-hidden border ${
@@ -48,33 +66,78 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
             </li>
           ))}
         </ul>
-        <div className="relative flex-1">
+        <div className="relative min-w-0 flex-1">
           {product.isNew && (
             <span className="absolute top-3 left-3 z-10 md:hidden">
               <NewBadge />
             </span>
           )}
-          <ProductPhoto
-            tone={product.tone}
-            caption={caption}
-            image={images[view]}
-            counter={`${view + 1} / ${images.length}`}
-            className="aspect-square md:aspect-[4/5]"
-            sizes="(min-width: 768px) 50vw, 100vw"
-            preload={view === 0}
-          />
-          <div className="absolute bottom-3 left-3 flex gap-1.5 lg:hidden">
-            {images.map((image, index) => (
+          {images.length ? (
+            <div
+              ref={track}
+              onScroll={syncView}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+                  event.preventDefault();
+                  show(view + (event.key === "ArrowRight" ? 1 : -1));
+                }
+              }}
+              tabIndex={0}
+              aria-label={`${product.name} photos`}
+              className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline-2 [&::-webkit-scrollbar]:hidden"
+            >
+              {images.map((image, index) => (
+                <ProductPhoto
+                  key={image.src}
+                  tone={product.tone}
+                  caption={caption(index)}
+                  image={image}
+                  counter={`${index + 1} / ${images.length}`}
+                  className="aspect-square w-full shrink-0 snap-center md:aspect-[4/5]"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  preload={index === 0}
+                />
+              ))}
+            </div>
+          ) : (
+            <ProductPhoto tone={product.tone} caption={caption(0)} className="aspect-square md:aspect-[4/5]" />
+          )}
+          {images.length > 1 && (
+            <>
               <button
-                key={image.src}
                 type="button"
-                onClick={() => setView(index)}
-                aria-label={`Show ${viewLabel(index)} view`}
-                aria-pressed={view === index}
-                className={`h-1 w-4 ${view === index ? "bg-paper" : "bg-paper/50"}`}
-              />
-            ))}
-          </div>
+                onClick={() => show(view - 1)}
+                disabled={view === 0}
+                aria-label="Previous photo"
+                className="absolute top-1/2 left-3 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-paper/85 text-ink hover:bg-paper disabled:invisible md:grid"
+              >
+                <ArrowLeftIcon width={14} height={14} />
+              </button>
+              <button
+                type="button"
+                onClick={() => show(view + 1)}
+                disabled={view === images.length - 1}
+                aria-label="Next photo"
+                className="absolute top-1/2 right-3 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-paper/85 text-ink hover:bg-paper disabled:invisible md:grid"
+              >
+                <ArrowRightIcon width={14} height={14} />
+              </button>
+              <div className="absolute bottom-0 left-1 flex md:hidden">
+                {images.map((image, index) => (
+                  <button
+                    key={image.src}
+                    type="button"
+                    onClick={() => show(index)}
+                    aria-label={`Show ${viewLabel(index)} view`}
+                    aria-pressed={view === index}
+                    className="flex h-11 w-7 items-center justify-center"
+                  >
+                    <span className={`h-1 w-4 ${view === index ? "bg-paper" : "bg-paper/50"}`} />
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
