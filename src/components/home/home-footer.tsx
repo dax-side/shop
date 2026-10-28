@@ -52,7 +52,7 @@ export function HomeFooter() {
         </div>
         <p
           aria-hidden
-          className="display container-page -mb-[0.2em] mt-2 text-center text-[21vw] leading-[0.8] whitespace-nowrap"
+          className="display container-page mt-2 pb-[max(0.75rem,0.06em)] text-center text-[21vw] leading-[0.8] whitespace-nowrap"
         >
           Oja Supply
         </p>
