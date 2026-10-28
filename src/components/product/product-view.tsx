@@ -93,7 +93,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
                   caption={caption(index)}
                   image={image}
                   counter={`${index + 1} / ${images.length}`}
-                  className="aspect-square w-full shrink-0 snap-center md:aspect-[4/5]"
+                  className="aspect-square w-full shrink-0 snap-center snap-always md:aspect-[4/5]"
                   sizes="(min-width: 768px) 50vw, 100vw"
                   preload={index === 0}
                 />
