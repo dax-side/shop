@@ -26,7 +26,7 @@
 
 ## About
 
-Oja Supply Co. is a storefront for household goods picked to be used every day, not kept for best. Shoppers browse a catalogue grouped by room (Kitchen, Table, Bath & Linen, Tools, Paper & Desk), view product details and finishes, add items to a bag, and check out for delivery across Nigeria or pickup from the store in Lagos.
+Oja Supply Co. is a storefront for household goods picked to be used every day, not kept for best. Shoppers browse a catalogue grouped by room (Kitchen, Table, Bath & Linen, Tools, Paper & Desk), view product details, add items to a bag, and check out for delivery across Nigeria or pickup from the store in Lagos.
 
 Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, and customers can sign in with Google. The same account works on the website and in the mobile app: the bag is stored with the account, so an item added on one shows up on the other within about a second.
 
@@ -37,7 +37,7 @@ Prices are in Naira (₦). Orders are stored in Postgres, confirmed by email, an
 | Feature | Description | Status |
 | --- | --- | --- |
 | Home page | Hero, shop by room with room photos, catalogue with category filters and a "Show more" button (24 at a time), "made by hand" workshop and store photos, how it works, newsletter signup | Done |
-| Product page | Image gallery, finish options, quantity, details table, "goes well with" | Done |
+| Product page | Image gallery, quantity, details table, "goes well with" | Done |
 | Bag | Add, update and remove items with a running total | Done |
 | Checkout | Delivery or pickup, contact and address details, payment method, server-validated order with server-side pricing | Done |
 | Persistence | 100 products across five rooms, each with several photos; orders, order lines and newsletter subscribers stored in Neon Postgres | Done |

@@ -20,14 +20,13 @@ export function ProductView({
   roomName: string;
   lagosDeliveryDays: string;
 }) {
-  const [finish, setFinish] = useState(product.finishes[0]?.name);
   const [view, setView] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const track = useRef<HTMLDivElement>(null);
   const images = productImages(product.slug);
 
   const caption = (index: number) =>
-    [product.name, finish?.toLowerCase(), images.length ? viewLabel(index) : undefined].filter(Boolean).join(", ");
+    [product.name, images.length ? viewLabel(index) : undefined].filter(Boolean).join(", ");
 
   // The photos sit side by side in a scroll-snap track: swipe on touch screens, thumbnails, arrows or the
   // arrow keys elsewhere. The current view follows the scroll position.
@@ -44,7 +43,7 @@ export function ProductView({
     if (el?.clientWidth) setView(Math.round(el.scrollLeft / el.clientWidth));
   }
   const addLabel = `Add to bag · ${formatNaira(product.price * quantity)}`;
-  const bagItem = toBagItem(product, finish);
+  const bagItem = toBagItem(product);
 
   const details = [
     { label: "Material", value: product.details.material },
@@ -164,33 +163,6 @@ export function ProductView({
 
         <div className="mt-5 border-t border-ink pt-5">
           <p className="max-w-md text-[0.9375rem] leading-relaxed">{product.description}</p>
-
-          {product.finishes.length > 0 && (
-            <fieldset className="mt-6">
-              <legend className="label text-[0.625rem]">Finish — {finish}</legend>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {product.finishes.map((option) => (
-                  <label
-                    key={option.name}
-                    className={`flex cursor-pointer items-center gap-2 rounded-full border py-1 pr-4 pl-1 text-xs has-focus-visible:outline-2 ${
-                      finish === option.name ? "border-ink" : "border-ink/30 hover:border-ink"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="finish"
-                      value={option.name}
-                      checked={finish === option.name}
-                      onChange={() => setFinish(option.name)}
-                      className="sr-only"
-                    />
-                    <span className="size-6 rounded-full" style={{ background: option.swatch }} />
-                    {option.name}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-          )}
 
           <div className="mt-6 flex items-center justify-between gap-3 md:justify-start">
             <span className="label text-[0.625rem] md:hidden">Quantity</span>
