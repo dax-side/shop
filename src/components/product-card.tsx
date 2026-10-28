@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
         sizes="(min-width: 1024px) 25vw, 50vw"
       />
       <p className="mt-3 font-mono text-[0.625rem] text-muted">
-        No. {product.number} · {getRoom(product.room)?.name}
+        {getRoom(product.room)?.name}
       </p>
       <h3 className="mt-0.5 text-sm font-medium leading-tight">
         <Link href={`/products/${product.slug}`} className="after:absolute after:inset-0 group-hover:underline">

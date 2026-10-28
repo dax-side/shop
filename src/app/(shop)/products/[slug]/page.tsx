@@ -37,7 +37,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
               </li>
               <li aria-hidden>/</li>
               <li aria-current="page" className="text-muted">
-                No. {product.number}
+                {product.name}
               </li>
             </ol>
           </nav>

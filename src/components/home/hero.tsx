@@ -77,7 +77,7 @@ function FeaturedPhoto({
       />
       <div className="mt-2 flex justify-between font-mono text-[0.6875rem]">
         <span className="group-hover:underline">
-          No. {product.number} {product.name}
+          {product.name}
         </span>
         <span>{formatNaira(product.price)}</span>
       </div>

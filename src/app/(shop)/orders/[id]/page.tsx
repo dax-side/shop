@@ -97,8 +97,7 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/or
                 <span className="flex-1">
                   <span className="block font-medium">{item.name}</span>
                   <span className="font-mono text-[0.6875rem] text-muted">
-                    No. {item.number}
-                    {item.finish && ` · ${item.finish}`} · Qty {item.quantity}
+                    {item.finish && `${item.finish} · `}Qty {item.quantity}
                   </span>
                 </span>
                 <span className="font-mono text-sm">{formatNaira(item.lineTotal)}</span>
