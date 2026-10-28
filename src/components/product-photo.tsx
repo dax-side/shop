@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ProductImage } from "@/lib/product-images";
+import { FadeImage } from "./fade-image";
 
 type ProductPhotoProps = {
   tone: string;
@@ -40,9 +41,12 @@ export function ProductPhoto({
     );
   }
 
+  // Preloaded photos sit above the fold and show at once; the rest fade in as they load.
+  const Photo = preload ? Image : FadeImage;
+
   return (
     <div className={`relative overflow-hidden ${className}`} style={{ background: tone }}>
-      <Image
+      <Photo
         src={image.src}
         alt={image.alt}
         fill
