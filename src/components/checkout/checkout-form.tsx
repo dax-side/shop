@@ -324,7 +324,7 @@ function BagLines({ items }: { items: BagItem[] }) {
           <span className="flex-1">
             <span className="block text-sm font-medium">{item.name}</span>
             <span className="font-mono text-[0.625rem] text-muted">
-              {item.finish ? `${item.finish} · ` : ""}Qty {item.quantity}
+              Qty {item.quantity}
             </span>
           </span>
           <span className="font-mono text-xs">{formatNaira(item.price * item.quantity)}</span>

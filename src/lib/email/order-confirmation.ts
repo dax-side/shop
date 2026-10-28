@@ -40,9 +40,7 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
         </td>
         <td style="padding:12px 16px;border-bottom:1px solid ${colors.line};">
           <p style="margin:0;font-family:${fonts.sans};font-size:16px;font-weight:600;color:${colors.ink};">${escape(item.name)}</p>
-          <p style="margin:4px 0 0;font-family:${fonts.mono};font-size:12px;color:${colors.muted};">${
-            item.finish ? `${escape(item.finish)} · ` : ""
-          }Qty ${item.quantity}</p>
+          <p style="margin:4px 0 0;font-family:${fonts.mono};font-size:12px;color:${colors.muted};">Qty ${item.quantity}</p>
         </td>
         <td align="right" style="padding:12px 0;border-bottom:1px solid ${colors.line};font-family:${fonts.mono};font-size:14px;color:${colors.ink};white-space:nowrap;">${formatNaira(item.lineTotal)}</td>
       </tr>`,
@@ -149,7 +147,7 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
     "In your order:",
     ...order.items.map(
       (item) =>
-        `- ${item.name}${item.finish ? ` (${item.finish})` : ""} x${item.quantity}: ${formatNaira(item.lineTotal)}`,
+        `- ${item.name} x${item.quantity}: ${formatNaira(item.lineTotal)}`,
     ),
     "",
     `Subtotal: ${formatNaira(order.subtotal)}`,

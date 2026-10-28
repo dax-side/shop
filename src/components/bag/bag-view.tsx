@@ -47,7 +47,6 @@ export function BagView() {
                         {item.name}
                       </Link>
                       <p className="font-mono text-[0.625rem] text-muted">
-                        {item.finish && `${item.finish} · `}
                         {formatNaira(item.price)} each
                       </p>
                     </div>
