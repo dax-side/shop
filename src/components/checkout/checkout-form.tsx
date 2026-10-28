@@ -18,6 +18,7 @@ import { Choice, SelectField, Step, TextField } from "./fields";
 type CheckoutFormProps = {
   prices: Record<string, number>;
   pricing: PricingConfig;
+  lagosDeliveryDays: string;
   deliveryDays: string;
   account: { email: string; name: string } | null;
   googleEnabled: boolean;
@@ -36,6 +37,7 @@ const subscribeNoop = () => () => {};
 export function CheckoutForm({
   prices,
   pricing,
+  lagosDeliveryDays,
   deliveryDays,
   account,
   googleEnabled,
@@ -168,7 +170,7 @@ export function CheckoutForm({
               onChange={() => setMethod("delivery")}
               title="Delivery"
               aside={deliveryFee}
-              description={`Lagos in 1–2 days. Elsewhere in ${deliveryDays} days.`}
+              description={`Lagos in ${lagosDeliveryDays} days. Elsewhere in ${deliveryDays} days.`}
             />
             <Choice
               name="method"

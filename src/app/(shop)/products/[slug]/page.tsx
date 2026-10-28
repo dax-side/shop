@@ -6,6 +6,7 @@ import { ProductView } from "@/components/product/product-view";
 import { SiteFooter } from "@/components/site-footer";
 import { getRoom } from "@/lib/catalogue";
 import { getProduct } from "@/lib/products";
+import { site } from "@/lib/site";
 
 export async function generateMetadata({ params }: PageProps<"/products/[slug]">): Promise<Metadata> {
   const product = await getProduct((await params).slug);
@@ -41,7 +42,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
               </li>
             </ol>
           </nav>
-          <ProductView product={product} roomName={room.name} />
+          <ProductView product={product} roomName={room.name} lagosDeliveryDays={site.lagosDeliveryDays} />
         </div>
         <GoesWellWith product={product} />
       </main>

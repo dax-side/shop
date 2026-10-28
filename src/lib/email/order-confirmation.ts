@@ -1,7 +1,7 @@
 import "server-only";
 import { formatNaira } from "../format";
 import { nextSteps, PAYMENT_LABELS, type OrderWithItems } from "../orders";
-import { site } from "../site";
+import { deliveryEstimate, site } from "../site";
 
 const colors = { paper: "#f1efea", ink: "#171614", muted: "#5f5b54", line: "#d9d5cd" };
 const fonts = {
@@ -117,7 +117,7 @@ export function orderConfirmationEmail(order: OrderWithItems, orderUrl: string) 
         <td valign="top" width="50%" style="padding-left:12px;">
           ${label("Paying with")}
           <p style="margin:0;font-family:${fonts.sans};font-size:15px;line-height:1.5;color:${colors.ink};">${PAYMENT_LABELS[order.paymentMethod]}<br>${
-            order.method === "delivery" ? "Arrives in 1–2 days in Lagos" : "Usually ready the same day"
+            order.method === "delivery" ? `Arrives in ${deliveryEstimate(order.state)}` : "Usually ready the same day"
           }</p>
         </td>
       </tr></table>

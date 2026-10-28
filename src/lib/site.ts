@@ -7,6 +7,7 @@ export const site = {
   openingHours: process.env.STORE_OPENING_HOURS || undefined,
   phone: process.env.STORE_PHONE || undefined,
   email: process.env.STORE_EMAIL || undefined,
+  lagosDeliveryDays: process.env.LAGOS_DELIVERY_DAYS || "1–2",
   deliveryDays: process.env.DELIVERY_DAYS || "3–5",
   returnWindowDays: process.env.RETURN_WINDOW_DAYS || "14",
 };
@@ -29,6 +30,11 @@ export function siteUrl() {
   const vercelHost =
     process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL;
   return vercelHost ? `https://${vercelHost}` : "http://localhost:3000";
+}
+
+// "1–2 days in Lagos" or "3–5 days", for an order delivered to the given state.
+export function deliveryEstimate(state: string | null | undefined) {
+  return state === "Lagos" ? `${site.lagosDeliveryDays} days in Lagos` : `${site.deliveryDays} days`;
 }
 
 // "at 12 Allen Avenue. Open Mon–Sat, 9am–6pm." with whichever parts are set.

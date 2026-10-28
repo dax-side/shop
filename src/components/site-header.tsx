@@ -16,7 +16,7 @@ export function SiteHeader() {
     <header>
       <div className="bg-ink text-paper">
         <div className="container-page flex h-8 items-center justify-center font-mono text-[0.6875rem] sm:justify-between">
-          <span>Delivery across Lagos in 1–2 days</span>
+          <span>Delivery across Lagos in {site.lagosDeliveryDays} days</span>
           <span className="hidden sm:inline">
             {site.storeAddress ? `Pickup at ${site.storeAddress}` : "Free pickup in Lagos"}
           </span>
