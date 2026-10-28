@@ -143,7 +143,7 @@ export function ProductView({ product, roomName }: { product: Product; roomName:
 
       <div className="md:col-span-6 lg:col-span-5 lg:col-start-8">
         <p className="label flex items-center gap-2 text-[0.625rem]">
-          No. {product.number} · {roomName}
+          {roomName}
           {product.isNew && (
             <span className="hidden md:inline">
               <NewBadge />

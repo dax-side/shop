@@ -22,10 +22,9 @@ export function HowItWorks() {
       <div className="container-page py-14 sm:py-16">
         <h2 className="display text-4xl sm:text-5xl">How it works</h2>
         <ol className="mt-6 grid gap-8 sm:mt-8 md:grid-cols-3 md:gap-6">
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <li key={step.title} className="border-t border-paper pt-4">
-              <span className="font-mono text-[0.625rem]">{String(index + 1).padStart(2, "0")}</span>
-              <h3 className="mt-1 text-lg font-medium">{step.title}</h3>
+              <h3 className="text-lg font-medium">{step.title}</h3>
               <p className="mt-3 max-w-sm text-sm leading-snug text-paper/85">{step.body}</p>
             </li>
           ))}

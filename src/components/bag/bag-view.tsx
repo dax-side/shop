@@ -47,8 +47,8 @@ export function BagView() {
                         {item.name}
                       </Link>
                       <p className="font-mono text-[0.625rem] text-muted">
-                        No. {item.number}
-                        {item.finish && ` · ${item.finish}`} · {formatNaira(item.price)} each
+                        {item.finish && `${item.finish} · `}
+                        {formatNaira(item.price)} each
                       </p>
                     </div>
                     <div className="flex items-center gap-4">

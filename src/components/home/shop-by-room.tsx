@@ -14,14 +14,13 @@ export function ShopByRoom() {
         </div>
 
         <ul className="mt-5 border-t border-ink sm:mt-6">
-          {rooms.map((room, index) => (
+          {rooms.map((room) => (
             <li key={room.slug} className="border-b border-ink">
               <Link
                 href={`/?room=${room.slug}#catalogue`}
                 scroll={false}
-                className="group grid grid-cols-[2rem_3.5rem_1fr_auto] items-center gap-3 py-3 sm:grid-cols-[4rem_5rem_1fr_1fr_auto] sm:gap-4"
+                className="group grid grid-cols-[3.5rem_1fr_auto] items-center gap-3 py-3 sm:grid-cols-[5rem_1fr_1fr_auto] sm:gap-4"
               >
-                <span className="font-mono text-[0.625rem]">{String(index + 1).padStart(2, "0")}</span>
                 <span className="relative block aspect-square overflow-hidden bg-sand-2">
                   <Image
                     src={roomImages[room.slug].src}

@@ -24,9 +24,7 @@ export function MadeByHand() {
                 <div className="relative aspect-[3/4] overflow-hidden bg-sand-2">
                   <FadeImage src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 22vw, 33vw" className="object-cover" />
                 </div>
-                <p className="mt-2 font-mono text-[0.6875rem]">
-                  {String(index + 1).padStart(2, "0")} · {image.label}
-                </p>
+                <p className="mt-2 font-mono text-[0.6875rem]">{image.label}</p>
               </li>
             ))}
           </ul>
